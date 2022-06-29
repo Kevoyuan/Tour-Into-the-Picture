@@ -25,7 +25,7 @@ pos_VanishingPoint = [va vb];
 roi_VanishingPoint = images.roi.Point(gca,'Position',pos_VanishingPoint,"Color",'k',"LineWidth",5);
 hold on
 % Draw inner rectangle
-20
+555555
 % [x y w h]= x and y elements determine the location (top-left) and the w and h elements determine the size
 pos_InnerRectangle = [va-250,vb-250,500,500];
 roi_InnerRectangle = drawrectangle('Color','k','FaceAlpha', 0, ...
