@@ -29,16 +29,16 @@ hold on
 % [x y w h]= x and y elements determine the location (top-left) and the w and h elements determine the size
 pos_InnerRectangle = [va-250,vb-250,500,500];
 roi_InnerRectangle = drawrectangle('Color','k','FaceAlpha', 0, ...
-    'FaceSelectable',(false),'LineWidth',1,'MarkerSize',8);
+    'FaceSelectable',(false),'LineWidth',1);
 roi_InnerRectangle.Position = pos_InnerRectangle
 
 % Draw 4 radial lines
 % 1. 4 edges of inner rectangle
-
-r_top_left = [pos_InnerRectangle(1), pos_InnerRectangle(2)];
-r_top_right = [pos_InnerRectangle(1) + pos_InnerRectangle(3), pos_InnerRectangle(2)];
-r_bottom_left = [pos_InnerRectangle(1), pos_InnerRectangle(2)+pos_InnerRectangle(4)];
-r_botton_right = [pos_InnerRectangle(1)+pos_InnerRectangle(3), pos_InnerRectangle(2)+pos_InnerRectangle(4)];
+% 
+% r_top_left = [pos_InnerRectangle(1), pos_InnerRectangle(2)];
+% r_top_right = [pos_InnerRectangle(1) + pos_InnerRectangle(3), pos_InnerRectangle(2)];
+% r_bottom_left = [pos_InnerRectangle(1), pos_InnerRectangle(2)+pos_InnerRectangle(4)];
+% r_botton_right = [pos_InnerRectangle(1)+pos_InnerRectangle(3), pos_InnerRectangle(2)+pos_InnerRectangle(4)];
 
 
 % roi_line1 = drawline('Position',[r_top_left;pos_VanishingPoint],'Color','r');
@@ -47,46 +47,53 @@ r_botton_right = [pos_InnerRectangle(1)+pos_InnerRectangle(3), pos_InnerRectangl
 % roi_line4 = drawline('Position',[r_botton_right;pos_VanishingPoint],'Color','r');
 
 
-% Get Positions of vanishing point & inner rectangle
+%% Get Positions of vanishing point & inner rectangle
 % 1. position of vanishing point
 
-addlistener(roi_VanishingPoint,'MovingROI',@(src, evt) roiChange(src,evt,'Updated_VanishingPoint'));
+
+% addlistener(roi_VanishingPoint,'MovingROI',@(src, evt) roiChange(src,evt,'Updated_VanishingPoint'));
 %% 
 % 2. position of inner rectangle
 
-addlistener(roi_InnerRectangle,'MovingROI',@(src, evt) roiChange(src,evt,'Updated_InnerRectangle'));
+% addlistener(roi_InnerRectangle,'MovingROI',@(src, evt) roiChange(src,evt,'Updated_InnerRectangle'));
 %% 
 % updated vertices of inner rectangle
 
-Updated_InnerRectangle = 'Updated_InnerRectangle.mat';
-save(Updated_InnerRectangle)
-load Updated_InnerRectangle.mat
+% Updated_InnerRectangle = 'Updated_InnerRectangle.mat';
+% save(Updated_InnerRectangle)
+% load Updated_InnerRectangle.mat
+
 
 % updated_top_left = [Updated_InnerRectangle(1), Updated_InnerRectangle(2)]
 % updated_top_right = [Updated_InnerRectangle(1) + Updated_InnerRectangle(3), Updated_InnerRectangle(2)]
 % updated_bottom_left = [Updated_InnerRectangle(1), Updated_InnerRectangle(2)+Updated_InnerRectangle(4)]
 % updated_botton_right = [Updated_InnerRectangle(1)+Updated_InnerRectangle(3), Updated_InnerRectangle(2)+Updated_InnerRectangle(4)]
 
-updated_top_left = [pos_InnerRectangle(1), pos_InnerRectangle(2)]
-updated_top_right = [pos_InnerRectangle(1) + pos_InnerRectangle(3), pos_InnerRectangle(2)]
-updated_bottom_left = [pos_InnerRectangle(1), pos_InnerRectangle(2)+pos_InnerRectangle(4)]
-updated_botton_right = [pos_InnerRectangle(1)+pos_InnerRectangle(3), pos_InnerRectangle(2)+pos_InnerRectangle(4)]
 
+roi_InnerRectangle.Position
 
+updated_top_left = [roi_InnerRectangle.Position(1), roi_InnerRectangle.Position(2)]
+updated_top_right = [roi_InnerRectangle.Position(1) + roi_InnerRectangle.Position(3), roi_InnerRectangle.Position(2)]
+updated_bottom_left = [roi_InnerRectangle.Position(1), roi_InnerRectangle.Position(2)+roi_InnerRectangle.Position(4)]
+updated_botton_right = [roi_InnerRectangle.Position(1)+roi_InnerRectangle.Position(3), roi_InnerRectangle.Position(2)+roi_InnerRectangle.Position(4)]
 %% 
 % updated position of vanishing point
 
 Updated_VanishingPoint = 'Updated_VanishingPoint.mat';
 save(Updated_VanishingPoint)
 
+V = roi_VanishingPoint.Position;
 
 % h = drawline('Position',[500 500;500 1500],'Color','r');
 
-radialline_left(pos_VanishingPoint,updated_top_left,Image2);
-radialline_left(pos_VanishingPoint,updated_bottom_left,Image2);
+% 
+% radialline_left(V,updated_top_left,Image2);
+% radialline_left(V,updated_bottom_left,Image2);
+% 
+% radialline_right(V,updated_top_right,Image2);
+% radialline_right(V,updated_botton_right,Image2);
 
-radialline_right(pos_VanishingPoint,updated_top_right,Image2);
-radialline_right(pos_VanishingPoint,updated_botton_right,Image2);
+
 %%
 function radialline_left(CenterPoint, ThroPoint, img)
 % CenterPoint: radial line start point
@@ -106,6 +113,7 @@ line([points(1),CenterPoint(1)],[points(2),CenterPoint(2)],'Color', 'r', 'LineWi
 end
 
 function radialline_right(CenterPoint, ThroPoint, img)
+
 % coefficients = polyfit([x1 x2], [y1 y2], 1);
 coefficients = polyfit([CenterPoint(1) ThroPoint(1)], [CenterPoint(2) ThroPoint(2)], 1);
 a = coefficients (1);
@@ -121,4 +129,20 @@ end
 function roi = roiChange(~,evt,roi)
     assignin('base',roi,evt.CurrentPosition);
 
+end
+
+function radialline_right_test(CenterPoint, ThroPoint, img)
+
+% coefficients = polyfit([x1 x2], [y1 y2], 1);
+CenterPoint
+
+coefficients = polyfit([CenterPoint(1) ThroPoint(1)], [CenterPoint(2) ThroPoint(2)], 1);
+a = coefficients (1);
+b = coefficients (2);
+
+aLine = [a,-1,b];
+
+points = lineToBorderPoints(aLine,size(img));
+
+line([points(3),CenterPoint(1)],[points(4),CenterPoint(2)],'Color', 'r', 'LineWidth', 2);
 end
