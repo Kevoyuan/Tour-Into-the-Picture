@@ -85,18 +85,15 @@ roi_InnerRectangle.Position = pos_InnerRectangle
 % radialline_right(V,updated_top_right,Image2);
 % radialline_right(V,updated_botton_right,Image2);
 
-l1 = addlistener(roi_VanishingPoint,'MovingROI',@(src, evt) radialline(src,evt,roi_InnerRectangle,Image2));
-
-
-
-
+l1 = addlistener(roi_VanishingPoint,'MovingROI',@(src, evt) radialline_vp(src,evt,roi_InnerRectangle,Image2));
+l1 = addlistener(roi_InnerRectangle,'MovingROI',@(src, evt) radialline_rect(src,evt,roi_VanishingPoint,Image2));
 %% 
 % live updatable radial line
 
-function radialline(src, evt,rect,img)
+function radialline_vp(src, evt,rect,img)
 
-% l1=addlistener(rect,'MovingROI',@(src, evt) radialline(src,evt,roi_InnerRectangle,Image2));
 
+% get the inner rectangle position
 rect_top_left = [rect.Position(1), rect.Position(2)];
 rect_top_right = [rect.Position(1) + rect.Position(3), rect.Position(2)];
 rect_bottom_left = [rect.Position(1), rect.Position(2)+rect.Position(4)];
@@ -135,9 +132,52 @@ for x = 1:4
 
 end
 
-
 end
 
+function radialline_rect(src, evt,vp,img)
+
+% get current inner rectangle position
+rect = evt.CurrentPosition;
+rect_top_left = [rect(1), rect(2)];
+rect_top_right = [rect(1) + rect(3), rect(2)];
+rect_bottom_left = [rect(1), rect(2)+rect(4)];
+rect_botton_right = [rect(1)+rect(3), rect(2)+rect(4)];
+
+EdgePoint = {rect_top_left,rect_top_right,rect_bottom_left,rect_botton_right};
+
+% update radial lines (delete the last movement generated lines)
+l3 = findall(gcf,'Type', 'Line');
+
+delete(l3);
+
+% get the vanishing point position
+C = vp.Position;
+
+lines = zeros(1,4);
+
+for x = 1:4
+    ThroPoint = EdgePoint{x};
+    aLine = TwoPointLine(C, ThroPoint);
+    % get border point coordinates
+    points = lineToBorderPoints(aLine,size(img));
+
+    %     calcuate the distance from vanishing point (C) to border
+    distance_C2Border = pdist([C(1),C(2);points(3),points(4)],'euclidean');
+     %     calcuate the distance from inner rectangle edge to border
+    distance_Edge2Border = pdist([ThroPoint(1),ThroPoint(2);points(3),points(4)],'euclidean');
+
+    if distance_C2Border > distance_Edge2Border
+
+        lines(x) = line([C(1),points(3)],[C(2),points(4)],'Color', 'r', 'LineWidth', 2);
+    else
+        lines(x) = line([C(1),points(1)],[C(2),points(2)],'Color', 'r', 'LineWidth', 2);
+    end
+
+    %     make sure that vanishing point is on the top layer
+    uistack(lines(x),'down',2);
+end
+
+end
 
 function aLine = TwoPointLine(C, ThroPoint)
 % coefficients = polyfit([x1 x2], [y1 y2], 1);
