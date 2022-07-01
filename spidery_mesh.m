@@ -117,15 +117,27 @@ delete(l2);
 C = evt.CurrentPosition;
 
 lines = zeros(1,4);
+
 for x = 1:4
     ThroPoint = EdgePoint{x};
     aLine = TwoPointLine(C, ThroPoint);
     % get border point coordinates
     points = lineToBorderPoints(aLine,size(img));
-    
-    lines(x) = line(points(:,[1,3])',points(:,[2,4])','Color', 'r', 'LineWidth', 2);
+
+%     calcuate the distance from vanishing point to border 
+    distance_C2Border = pdist([C(1),C(2);points(3),points(4)],'euclidean');
+    distance_Edge2Border = pdist([ThroPoint(1),ThroPoint(2);points(3),points(4)],'euclidean');
+
+    if distance_C2Border > distance_Edge2Border
+
+        lines(x) = line([C(1),points(3)],[C(2),points(4)],'Color', 'r', 'LineWidth', 2);
+    else
+        lines(x) = line([C(1),points(1)],[C(2),points(2)],'Color', 'r', 'LineWidth', 2);
+    end
+
+%     make sure that vanishing point is on the top layer
     uistack(lines(x),'down',2);    
-%     uistack(roi_VanishingPoint,"top")
+
 end
 
 
