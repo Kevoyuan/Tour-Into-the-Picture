@@ -49,11 +49,11 @@ roi_InnerRectangle.Position = pos_InnerRectangle
 % Get Positions of vanishing point & inner rectangle
 % 1. position of vanishing point
 
-addlistener(roi_VanishingPoint,'MovingROI',@(src, evt) roiChange(src,evt,'Updated_VanishingPoint'));
+% addlistener(roi_VanishingPoint,'MovingROI',@(src, evt) roiChange(src,evt,'Updated_VanishingPoint'));
 %% 
 % 2. position of inner rectangle
 
-addlistener(roi_InnerRectangle,'MovingROI',@(src, evt) roiChange(src,evt,'Updated_InnerRectangle'));
+% addlistener(roi_InnerRectangle,'MovingROI',@(src, evt) roiChange(src,evt,'Updated_InnerRectangle'));
 %% 
 % updated vertices of inner rectangle
 
@@ -77,10 +77,10 @@ updated_botton_right = [roi_InnerRectangle.Position(1)+roi_InnerRectangle.Positi
 %% 
 % updated position of vanishing point
 
-Updated_VanishingPoint = 'Updated_VanishingPoint.mat';
-save(Updated_VanishingPoint)
-
-V = roi_VanishingPoint.Position;
+% Updated_VanishingPoint = 'Updated_VanishingPoint.mat';
+% save(Updated_VanishingPoint)
+% 
+% V = roi_VanishingPoint.Position;
 
 % h = drawline('Position',[500 500;500 1500],'Color','r');
 
@@ -91,66 +91,56 @@ V = roi_VanishingPoint.Position;
 % radialline_right(V,updated_top_right,Image2);
 % radialline_right(V,updated_botton_right,Image2);
 
-l1 = addlistener(roi_VanishingPoint,'MovingROI',@(src, evt) radialline_right_test(src,evt,updated_botton_right,Image2));
+l1 = addlistener(roi_VanishingPoint,'MovingROI',@(src, evt) radialline(src,evt,roi_InnerRectangle,Image2));
 
 
-%%
-function radialline_left(CenterPoint, ThroPoint, img)
-% CenterPoint: radial line start point
-% ThroPoint: radial line through point
-% img: backgroud image
 
-% coefficients = polyfit([x1 x2], [y1 y2], 1);
-coefficients = polyfit([CenterPoint(1) ThroPoint(1)], [CenterPoint(2) ThroPoint(2)], 1);
-a = coefficients (1);
-b = coefficients (2);
-
-aLine = [a,-1,b];
-
-points = lineToBorderPoints(aLine,size(img));
-
-line([points(1),CenterPoint(1)],[points(2),CenterPoint(2)],'Color', 'r', 'LineWidth', 2);
-end
-
-function radialline_right(CenterPoint, ThroPoint, img)
-
-% coefficients = polyfit([x1 x2], [y1 y2], 1);
-coefficients = polyfit([CenterPoint(1) ThroPoint(1)], [CenterPoint(2) ThroPoint(2)], 1);
-a = coefficients (1);
-b = coefficients (2);
-
-aLine = [a,-1,b];
-
-points = lineToBorderPoints(aLine,size(img));
-
-line([points(3),CenterPoint(1)],[points(4),CenterPoint(2)],'Color', 'r', 'LineWidth', 2);
-end
-
-function roi = roiChange(~,evt,roi)
-    assignin('base',roi,evt.CurrentPosition);
-
-end
 
 %% 
 % live updatable radial line
 
+function radialline(src, evt,rect,img)
 
-function radialline_right_test(src, evt,ThroPoint,img)
+% l1=addlistener(rect,'MovingROI',@(src, evt) radialline(src,evt,roi_InnerRectangle,Image2));
 
-l = findall(gcf,'Type', 'Line'); 
+rect_top_left = [rect.Position(1), rect.Position(2)];
+rect_top_right = [rect.Position(1) + rect.Position(3), rect.Position(2)];
+rect_bottom_left = [rect.Position(1), rect.Position(2)+rect.Position(4)];
+rect_botton_right = [rect.Position(1)+rect.Position(3), rect.Position(2)+rect.Position(4)];
 
-delete(l); 
+EdgePoint = {rect_top_left,rect_top_right,rect_bottom_left,rect_botton_right};
+
+l2 = findall(gcf,'Type', 'Line'); 
+
+delete(l2); 
 % get current vanishing point position
 C = evt.CurrentPosition;
+
+
+for x = 1:4
+    ThroPoint = EdgePoint{x};
+    aLine = TwoPointLine(C, ThroPoint);
+    % get border point coordinates
+    points = lineToBorderPoints(aLine,size(img));
+    
+    line(points(:,[1,3])',points(:,[2,4])','Color', 'r', 'LineWidth', 2);
+
+end
+
+
+end
+
+
+function aLine = TwoPointLine(C, ThroPoint)
 % coefficients = polyfit([x1 x2], [y1 y2], 1);
 coefficients = polyfit([C(1) ThroPoint(1)], [C(2) ThroPoint(2)], 1);
 a = coefficients (1);
 b = coefficients (2);
-
+% Define a line with the equation, a * x + y + b = 0.
 aLine = [a,-1,b];
 
-points = lineToBorderPoints(aLine,size(img));
+end
 
-line([points(3),C(1)],[points(4),C(2)],'Color', 'r', 'LineWidth', 2);
-drawnow
+function rect_pos(src, evt)
+evt.CurrentPosition;
 end
