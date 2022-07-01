@@ -11,7 +11,7 @@ imshow(Image2);
 hold on
 
 % get the size of the img
-[m,n]=size(IGray2);
+[m,n] = size(IGray2);
 
 
 % Draw vanishing point
@@ -35,12 +35,6 @@ roi_InnerRectangle.Position = pos_InnerRectangle
 
 % Draw 4 radial lines
 % 1. 4 edges of inner rectangle
-% 
-% r_top_left = [pos_InnerRectangle(1), pos_InnerRectangle(2)];
-% r_top_right = [pos_InnerRectangle(1) + pos_InnerRectangle(3), pos_InnerRectangle(2)];
-% r_bottom_left = [pos_InnerRectangle(1), pos_InnerRectangle(2)+pos_InnerRectangle(4)];
-% r_botton_right = [pos_InnerRectangle(1)+pos_InnerRectangle(3), pos_InnerRectangle(2)+pos_InnerRectangle(4)];
-
 
 % roi_line1 = drawline('Position',[r_top_left;pos_VanishingPoint],'Color','r');
 % roi_line2 = drawline('Position',[r_top_right;pos_VanishingPoint],'Color','r');
@@ -60,34 +54,34 @@ roi_InnerRectangle.Position = pos_InnerRectangle
 % Updated_InnerRectangle = 'Updated_InnerRectangle.mat';
 % save(Updated_InnerRectangle)
 % load Updated_InnerRectangle.mat
-% 
-% 
+%
+%
 % updated_top_left = [Updated_InnerRectangle(1), Updated_InnerRectangle(2)]
 % updated_top_right = [Updated_InnerRectangle(1) + Updated_InnerRectangle(3), Updated_InnerRectangle(2)]
 % updated_bottom_left = [Updated_InnerRectangle(1), Updated_InnerRectangle(2)+Updated_InnerRectangle(4)]
 % updated_botton_right = [Updated_InnerRectangle(1)+Updated_InnerRectangle(3), Updated_InnerRectangle(2)+Updated_InnerRectangle(4)]
-% 
-% 
+%
+%
 % roi_InnerRectangle.Position
 
-updated_top_left = [roi_InnerRectangle.Position(1), roi_InnerRectangle.Position(2)]
-updated_top_right = [roi_InnerRectangle.Position(1) + roi_InnerRectangle.Position(3), roi_InnerRectangle.Position(2)]
-updated_bottom_left = [roi_InnerRectangle.Position(1), roi_InnerRectangle.Position(2)+roi_InnerRectangle.Position(4)]
-updated_botton_right = [roi_InnerRectangle.Position(1)+roi_InnerRectangle.Position(3), roi_InnerRectangle.Position(2)+roi_InnerRectangle.Position(4)]
+% updated_top_left = [roi_InnerRectangle.Position(1), roi_InnerRectangle.Position(2)]
+% updated_top_right = [roi_InnerRectangle.Position(1) + roi_InnerRectangle.Position(3), roi_InnerRectangle.Position(2)]
+% updated_bottom_left = [roi_InnerRectangle.Position(1), roi_InnerRectangle.Position(2)+roi_InnerRectangle.Position(4)]
+% updated_botton_right = [roi_InnerRectangle.Position(1)+roi_InnerRectangle.Position(3), roi_InnerRectangle.Position(2)+roi_InnerRectangle.Position(4)]
 %% 
 % updated position of vanishing point
 
 % Updated_VanishingPoint = 'Updated_VanishingPoint.mat';
 % save(Updated_VanishingPoint)
-% 
+%
 % V = roi_VanishingPoint.Position;
 
 % h = drawline('Position',[500 500;500 1500],'Color','r');
 
-% 
+%
 % radialline_left(V,updated_top_left,Image2);
 % radialline_left(V,updated_bottom_left,Image2);
-% 
+%
 % radialline_right(V,updated_top_right,Image2);
 % radialline_right(V,updated_botton_right,Image2);
 
@@ -110,9 +104,9 @@ rect_botton_right = [rect.Position(1)+rect.Position(3), rect.Position(2)+rect.Po
 
 EdgePoint = {rect_top_left,rect_top_right,rect_bottom_left,rect_botton_right};
 
-l2 = findall(gcf,'Type', 'Line'); 
+l2 = findall(gcf,'Type', 'Line');
 
-delete(l2); 
+delete(l2);
 % get current vanishing point position
 C = evt.CurrentPosition;
 
@@ -124,8 +118,9 @@ for x = 1:4
     % get border point coordinates
     points = lineToBorderPoints(aLine,size(img));
 
-%     calcuate the distance from vanishing point to border 
+    %     calcuate the distance from vanishing point (C) to border
     distance_C2Border = pdist([C(1),C(2);points(3),points(4)],'euclidean');
+     %     calcuate the distance from inner rectangle edge to border
     distance_Edge2Border = pdist([ThroPoint(1),ThroPoint(2);points(3),points(4)],'euclidean');
 
     if distance_C2Border > distance_Edge2Border
@@ -135,11 +130,10 @@ for x = 1:4
         lines(x) = line([C(1),points(1)],[C(2),points(2)],'Color', 'r', 'LineWidth', 2);
     end
 
-%     make sure that vanishing point is on the top layer
-    uistack(lines(x),'down',2);    
+    %     make sure that vanishing point is on the top layer
+    uistack(lines(x),'down',2);
 
 end
-
 
 
 end
@@ -155,8 +149,8 @@ aLine = [a,-1,b];
 
 end
 
-function rect_pos(src, evt)
-R=evt.CurrentPosition;
-
-
-end
+% function rect_pos(src, evt)
+% R = evt.CurrentPosition;
+%
+%
+% end
