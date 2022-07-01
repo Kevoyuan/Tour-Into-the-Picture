@@ -116,16 +116,18 @@ delete(l2);
 % get current vanishing point position
 C = evt.CurrentPosition;
 
-
+lines = zeros(1,4);
 for x = 1:4
     ThroPoint = EdgePoint{x};
     aLine = TwoPointLine(C, ThroPoint);
     % get border point coordinates
     points = lineToBorderPoints(aLine,size(img));
     
-    line(points(:,[1,3])',points(:,[2,4])','Color', 'r', 'LineWidth', 2);
-
+    lines(x) = line(points(:,[1,3])',points(:,[2,4])','Color', 'r', 'LineWidth', 2);
+    uistack(lines(x),'down',2);    
+%     uistack(roi_VanishingPoint,"top")
 end
+
 
 
 end
@@ -142,5 +144,7 @@ aLine = [a,-1,b];
 end
 
 function rect_pos(src, evt)
-evt.CurrentPosition;
+R=evt.CurrentPosition;
+
+
 end
