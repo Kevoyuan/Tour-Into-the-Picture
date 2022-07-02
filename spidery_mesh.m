@@ -273,9 +273,3 @@ b = coefficients (2);
 aLine = [a,-1,b];
 
 end
-
-% function rect_pos(src, evt)
-% R = evt.CurrentPosition;
-%
-%
-% end
