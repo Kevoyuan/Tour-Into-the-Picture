@@ -3,7 +3,7 @@ clear;
 close
 
 
-Image2 = imread('uhren-turm.jpg');
+Image2 = imread('shopping-mall.png');
 IGray2 = rgb_to_gray(Image2);
 figure;
 imshow(Image2);
@@ -28,10 +28,10 @@ hold on
 
 
 % [x y w h]= x and y elements determine the location (top-left) and the w and h elements determine the size
-pos_InnerRectangle = [.5*va,.5*vb,.5*va,.5*va];
+pos_InnerRectangle = [0.6*va,0.6*vb,0.5*va+0.25*vb,0.8*va];
 roi_InnerRectangle = drawrectangle('Color','k','FaceAlpha', 0, ...
     'FaceSelectable',(false),'LineWidth',1);
-roi_InnerRectangle.Position = pos_InnerRectangle
+roi_InnerRectangle.Position = pos_InnerRectangle;
 
 % Draw 4 radial lines
 % 1. 4 edges of inner rectangle
@@ -42,11 +42,13 @@ roi_InnerRectangle.Position = pos_InnerRectangle
 % roi_line4 = drawline('Position',[r_botton_right;pos_VanishingPoint],'Color','r');
 % Get Positions of vanishing point & inner rectangle
 % 1. position of vanishing point
-%% 
+
+
+%%
 % 2. position of inner rectangle
 
 % addlistener(roi_InnerRectangle,'MovingROI',@(src, evt) roiChange(src,evt,'Updated_InnerRectangle'));
-%% 
+%%
 % updated vertices of inner rectangle
 
 % Updated_InnerRectangle = 'Updated_InnerRectangle.mat';
@@ -66,34 +68,41 @@ roi_InnerRectangle.Position = pos_InnerRectangle
 % updated_top_right = [roi_InnerRectangle.Position(1) + roi_InnerRectangle.Position(3), roi_InnerRectangle.Position(2)]
 % updated_bottom_left = [roi_InnerRectangle.Position(1), roi_InnerRectangle.Position(2)+roi_InnerRectangle.Position(4)]
 % updated_botton_right = [roi_InnerRectangle.Position(1)+roi_InnerRectangle.Position(3), roi_InnerRectangle.Position(2)+roi_InnerRectangle.Position(4)]
-%% 
+%%
 % updated position of vanishing point
 
 % Updated_VanishingPoint = 'Updated_VanishingPoint.mat';
 % save(Updated_VanishingPoint)
 %
 % V = roi_VanishingPoint.Position;
-% 
+%
 % % h = drawline('Position',[500 500;500 1500],'Color','r');
-% 
+%
 % %
 % radialline_left(V,updated_top_left,Image2);
 % radialline_left(V,updated_bottom_left,Image2);
-% 
+%
 % radialline(V,updated_top_right,Image2);
 % radialline(V,updated_botton_right,Image2);
 
 l1 = addlistener(roi_VanishingPoint,'MovingROI',@(src, evt) radialline_vp(src,evt,roi_InnerRectangle,Image2));
 l2 = addlistener(roi_InnerRectangle,'MovingROI',@(src, evt) radialline_rect(src,evt,roi_VanishingPoint,Image2));
 % l2 = addlistener(V,'MovingROI',@(src, evt) radialline_rl(src,evt,roi_VanishingPoint,roi_InnerRectangle,Image2));
-%% 
+
+
+
+
+
+
+%%
 % live updatable radial line
 
-function radialline_vp(src, evt,rect,img)
+%%
+function BorderPoint = radialline_vp(src, evt,rect,img)
+BorderPoint =zeros(1,4);
 
-% get the inner rectangle position
 rect = rect.Position;
-
+% get the inner rectangle position
 rect_top_left = [rect(1), rect(2)];
 rect_top_right = [rect(1) + rect(3), rect(2)];
 rect_bottom_left = [rect(1), rect(2)+rect(4)];
@@ -103,17 +112,19 @@ rect_botton_right = [rect(1)+rect(3), rect(2)+rect(4)];
 EdgePoint = {rect_top_left,rect_top_right,rect_bottom_left,rect_botton_right};
 
 % remove all existing radial lines
-allLine = findobj(gcf,'Type', 'images.roi.Line');
+allLine = findobj(gcf,'Type', 'Line');
 delete(allLine);
 
 % remove all existing border points
-% allPoint = findall(gcf,'Type','images.roi.Point');
-% delete(allPoint);
+allPoint = findall(gcf,'Type','Point');
+delete(allPoint);
 
 % get current vanishing point position
 C = evt.CurrentPosition;
 
-lines = zeros(1,4);
+RadialLine = zeros(1,4);
+BorderPointPlot = zeros(1,4);
+
 
 for x = 1:4
     ThroPoint = EdgePoint{x};
@@ -126,20 +137,32 @@ for x = 1:4
     %     calcuate the distance from inner rectangle edge to border
     distance_Edge2Border = pdist([ThroPoint(1),ThroPoint(2);points(3),points(4)],'euclidean');
 
-    if distance_C2Border > distance_Edge2Border       
-        lines(x) = drawline('Position',[C(1) C(2);points(3) points(4)],'Color','r');
-    else       
-        lines(x) = drawline('Position',[C(1) C(2);points(1) points(2)],'Color','r');
+    if distance_C2Border > distance_Edge2Border
+        %         lines(x) = drawline('Position',[C(1) C(2);points(3) points(4)],'Color','r');
+        %     else
+        %         lines(x) = drawline('Position',[C(1) C(2);points(1) points(2)],'Color','r');
+        RadialLine(x) = line([C(1),points(3)],[C(2),points(4)],'Color', 'r', 'LineWidth', 2);
+        BorderPointPlot(x) = plot(points(3), points(4),'-s','MarkerSize',10, ...
+            'MarkerEdgeColor','red','MarkerFaceColor','r');
+%         BorderPoint(x) = drawpoint("Position",[points(3) points(4)],"Visible","off");
+    else
+        RadialLine(x) = line([C(1),points(1)],[C(2),points(2)],'Color', 'r', 'LineWidth', 2);
+        BorderPointPlot(x) = plot(points(1), points(2),'-s','MarkerSize',10, ...
+            'MarkerEdgeColor','red','MarkerFaceColor','r');
+%         BorderPoint(x) = drawpoint("Position",[points(1) points(2)],"Visible","off");
     end
 
     %     make sure that vanishing point is on the top layer
-    uistack(lines(x),'down',2);
+    uistack(RadialLine(x),'down',2);
+    uistack(BorderPointPlot(x),'down',2);
+
 
 end
 
 end
 
-function radialline_rect(src, evt,vp,img)
+function BorderPoint = radialline_rect(src, evt,vp,img)
+BorderPoint = zeros(1,4);
 
 % get current inner rectangle position
 rect = evt.CurrentPosition;
@@ -152,13 +175,14 @@ rect_botton_right = [rect(1)+rect(3), rect(2)+rect(4)];
 EdgePoint = {rect_top_left,rect_top_right,rect_bottom_left,rect_botton_right};
 
 % remove all existing radial lines
-allLine = findobj(gcf,'Type', 'images.roi.Line');
+allLine = findobj(gcf,'Type', 'Line');
 delete(allLine);
 
 % get the vanishing point position
 C = vp.Position;
 
-lines = zeros(1,4);
+RadialLine = zeros(1,4);
+BorderPointPlot = zeros(1,4);
 
 for x = 1:4
     ThroPoint = EdgePoint{x};
@@ -168,65 +192,75 @@ for x = 1:4
 
     %     calcuate the distance from vanishing point (C) to border
     distance_C2Border = pdist([C(1),C(2);points(3),points(4)],'euclidean');
-     %     calcuate the distance from inner rectangle edge to border
+    %     calcuate the distance from inner rectangle edge to border
     distance_Edge2Border = pdist([ThroPoint(1),ThroPoint(2);points(3),points(4)],'euclidean');
 
-    if distance_C2Border > distance_Edge2Border       
-        lines(x) = drawline('Position',[C(1) C(2);points(3) points(4)],'Color','r');
-    else       
-        lines(x) = drawline('Position',[C(1) C(2);points(1) points(2)],'Color','r');
+    if distance_C2Border > distance_Edge2Border
+        %         lines(x) = drawline('Position',[C(1) C(2);points(3) points(4)],'Color','r');
+        %     else
+        %         lines(x) = drawline('Position',[C(1) C(2);points(1) points(2)],'Color','r');
+        RadialLine(x) = line([C(1),points(3)],[C(2),points(4)],'Color', 'r', 'LineWidth', 2);
+        BorderPointPlot(x) = plot(points(3), points(4),'-s','MarkerSize',10, ...
+            'MarkerEdgeColor','red','MarkerFaceColor','r');
+%         BorderPoint(x) = drawpoint("Position",[points(3) points(4)],"Visible","off");
+    else
+        RadialLine(x) = line([C(1),points(1)],[C(2),points(2)],'Color', 'r', 'LineWidth', 2);
+        BorderPointPlot(x) = plot(points(1), points(2),'-s','MarkerSize',10, ...
+            'MarkerEdgeColor','red','MarkerFaceColor','r');
+%         BorderPoint(x) = drawpoint("Position",[points(1) points(2)],"Visible","off");
     end
 
     %     make sure that vanishing point is on the top layer
-    uistack(lines(x),'down',2);
-end
+    uistack(RadialLine(x),'down',2);
 
+
+end
+    uistack(vp,'top');
 end
 
 % function radialline_rl(src, evt,vp,rect,img)
-% 
+%
+%
 % % get the inner rectangle position
-% rect = rect.Position;
-% 
-% rect_top_left = [rect(1), rect(2)];
-% rect_top_right = [rect(1) + rect(3), rect(2)];
-% rect_bottom_left = [rect(1), rect(2)+rect(4)];
-% rect_botton_right = [rect(1)+rect(3), rect(2)+rect(4)];
-% 
+% rect_top_left = [rect.Position(1), rect.Position(2)];
+% rect_top_right = [rect.Position(1) + rect.Position(3), rect.Position(2)];
+% rect_bottom_left = [rect.Position(1), rect.Position(2)+rect.Position(4)];
+% rect_botton_right = [rect.Position(1)+rect.Position(3), rect.Position(2)+rect.Position(4)];
+%
 % EdgePoint = {rect_top_left,rect_top_right,rect_bottom_left,rect_botton_right};
-% 
+%
 % % remove all existing radial lines
-% allLine = findobj(gcf,'Type', 'images.roi.Line');
+% allLine = findall(gcf,'Type', 'Line');
 % delete(allLine);
-% 
-% 
+%
 % % get vanishing point position
 % C = vp.Position
-% 
+%
 % lines = zeros(1,4);
-% 
+%
 % for x = 1:4
 %     ThroPoint = EdgePoint{x};
 %     aLine = TwoPointLine(C, ThroPoint);
 %     % get border point coordinates
 %     points = lineToBorderPoints(aLine,size(img));
-% 
+%
 %     %     calcuate the distance from vanishing point (C) to border
 %     distance_C2Border = pdist([C(1),C(2);points(3),points(4)],'euclidean');
 %     %     calcuate the distance from inner rectangle edge to border
 %     distance_Edge2Border = pdist([ThroPoint(1),ThroPoint(2);points(3),points(4)],'euclidean');
-% 
-%     if distance_C2Border > distance_Edge2Border       
-%         lines(x) = drawline('Position',[C(1) C(2);points(3) points(4)],'Color','r');
-%     else       
-%         lines(x) = drawline('Position',[C(1) C(2);points(1) points(2)],'Color','r');
+%
+%     if distance_C2Border > distance_Edge2Border
+%
+%         lines(x) = drawline([C(1),points(3)],[C(2),points(4)],'Color', 'r', 'LineWidth', 2);
+%     else
+%         lines(x) = drawline([C(1),points(1)],[C(2),points(2)],'Color', 'r', 'LineWidth', 2);
 %     end
-% 
+%
 %     %     make sure that vanishing point is on the top layer
 %     uistack(lines(x),'down',2);
-% 
+%
 % end
-% 
+%
 % end
 
 
