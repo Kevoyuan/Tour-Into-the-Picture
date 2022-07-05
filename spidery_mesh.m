@@ -9,11 +9,14 @@ imshow(Image2);
 
 hold on
 
+%% 
 % get the size of the img
+
 [m, n] = size(IGray2);
 
 % Draw vanishing point
 % initial VanishingPoint(middle of the Picture)
+
 
 vb = .5 * (m);
 va = .5 * (n);
@@ -29,8 +32,9 @@ pos_InnerRectangle = [0.6 * va, 0.6 * vb, 0.5 * va + 0.25 * vb, 0.8 * va];
 roi_InnerRectangle = drawrectangle('Color', 'k', 'FaceAlpha', 0, ...
     'FaceSelectable', (false), 'LineWidth', 1);
 roi_InnerRectangle.Position = pos_InnerRectangle;
+%% 
+% *Draw 4 radial lines*
 
-% Draw 4 radial lines
 
 l1 = addlistener(roi_VanishingPoint, 'MovingROI', @(src, evt) radialline_vp(src, evt, roi_VanishingPoint, roi_InnerRectangle, Image2));
 l2 = addlistener(roi_InnerRectangle, 'MovingROI', @(src, evt) radialline_ir(src, evt, roi_VanishingPoint, roi_InnerRectangle, Image2));
@@ -38,10 +42,16 @@ l2 = addlistener(roi_InnerRectangle, 'MovingROI', @(src, evt) radialline_ir(src,
 % roi_BorderPoint = drawpoint("Color",'r',"LineWidth",5);
 
 % get the position of Vanishing Poit(VP) and Inner Rectangle(IR),
+
+Updated_InnerRectangle = zeros(1,4);
+Updated_VanishingPoint = zeros(1,2);
 addlistener(roi_InnerRectangle, 'ROIMoved', @(src, evt) roiChange(src, evt, 'Updated_InnerRectangle'));
 addlistener(roi_VanishingPoint, 'ROIMoved', @(src, evt) roiChange(src, evt, 'Updated_VanishingPoint'));
-%%
-% functions for radial line
+
+
+
+%% 
+% *functions for radial line*
 
 function BorderPoint = radialline_vp(src, evt, vp, rect, img)
     BorderPoint = zeros(1, 4);
