@@ -1,0 +1,50 @@
+% input image
+im1 = imread("Waldwiese.jpg");
+figure;
+imshow(im1);
+hold on;
+
+% draw vanishing point
+ROI_1 = drawpoint();
+vanishingpoint = ROI_1.Position;
+
+% draw inner rectangular
+ROI_2 = drawrectangle();
+
+yrange = ylim;
+% calculate the 11 points
+% rear wall
+P7 =  [ROI_2.Position(1),ROI_2.Position(2)];
+P8 =  [ROI_2.Position(1) + ROI_2.Position(3),ROI_2.Position(2)];
+P1 =  [ROI_2.Position(1),ROI_2.Position(2) + ROI_2.Position(4)];
+P2 =  [ROI_2.Position(1) + ROI_2.Position(3),ROI_2.Position(2) + ROI_2.Position(4)];
+plot(P7(1),P7(2),'*','Color','r');
+hold on;
+plot(P8(1),P8(2),'*','Color','r');
+hold on;
+plot(P1(1),P1(2),'*','Color','r');
+hold on;
+plot(P2(1),P2(2),'*','Color','r');
+hold on;
+
+% ceiling
+[k,b] = lineequation(vanishingpoint,P7);
+P9 = [-b/k,yrange(1)];
+plot(P9(1),P9(2),'*','Color','r');
+hold on;
+plot([vanishingpoint(1),P9(1)],[vanishingpoint(2),P9(2)],'r');
+
+[k,b] = lineequation(vanishingpoint,P8);
+P10 = [-b/k,yrange(1)];
+plot(P10(1),P10(2),'*','Color','r');
+hold on;
+plot([vanishingpoint(1),P10(1)],[vanishingpoint(2),P10(2)],'r');
+
+function [k,b] = lineequation(P1,P2)
+    if P2(1) == P1(1)
+        k = 0;
+    else
+        k = (P2(2) - P1(2))/(P2(1) - P1(1));
+    end
+    b = P2(2) - P2(1) * k;
+end
