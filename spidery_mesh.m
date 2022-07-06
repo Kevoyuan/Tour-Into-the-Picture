@@ -50,7 +50,7 @@ addlistener(roi_VanishingPoint, 'ROIMoved', @(src, evt) roiChange(src, evt, 'Upd
 %     Updated_BorderPoint(3,1) Updated_BorderPoint(3,2); ...
 %     Updated_BorderPoint(4,1) Updated_BorderPoint(4,2)],Image2);
 
-addlistener(roi_InnerRectangle, 'ROIMoved', @(src, evt) MouseControl(src, evt, Updated_BorderPoint, Image2));
+% addlistener(roi_InnerRectangle, 'ROIMoved', @(src, evt) MouseControl(src, evt, Updated_BorderPoint, Image2));
 
 %%
 % *functions for radial line*
@@ -197,41 +197,53 @@ function roi = roiChange(~, evt, roi)
     assignin('base', roi, evt.CurrentPosition);
 end
 
-function MouseControl(gcf, BorderPoint, img)
-    P = [BorderPoint(1, 1) BorderPoint(1, 2); ...
-            BorderPoint(2, 1) BorderPoint(2, 2); ...
-            BorderPoint(3, 1) BorderPoint(3, 2); ...
-            BorderPoint(4, 1) BorderPoint(4, 2)];
+function MouseControl(~,BorderPoint,img)
 
-    % 1: cast; 0: release
-    mouseSign = 0;
+P = [BorderPoint(1,1) BorderPoint(1,2); ...
+    BorderPoint(2,1) BorderPoint(2,2); ...
+    BorderPoint(3,1) BorderPoint(3,2); ...
+    BorderPoint(4,1) BorderPoint(4,2)];
 
-    % initialze
 
-    Pscatter_fig = scatter(P(:, 1), P(:, 2), 'b*');
+% image size
 
-    hold on
+% [m, n] = size(img);
 
-    %     Pplot_fig = plot(P(:, 1), P(:, 2), 'g');
-    %     hold on
+% 1: cast; 0: release
 
-    axis([0 1.2 * max(P(:, 1)) 0 1.2 * max(P(:, 2))])
+mouseSign = 0;
 
-    % callback
+% initialze
 
-    set(gcf, 'WindowButtonMotionFcn', @ButtonMotionFcn, ...
+Pscatter_fig = plot(P(:, 1), P(:, 2), 'b*');
+
+hold on
+
+%     Pplot_fig = plot(P(:, 1), P(:, 2), 'g');
+
+%     hold on
+
+% axis([0 m 0 n])
+
+% callback
+
+set(gcf, 'WindowButtonMotionFcn', @ButtonMotionFcn, ...
     'WindowButtonDownFcn', @ButttonDownFcn, 'WindowButtonUpFcn', @ButttonUpFcn);
 
-    % mouse move
+% mouse move
 
     function ButtonMotionFcn(~, ~)
+
+
 
         if mouseSign == 1
 
             % call back current position
 
             mousePoint = get(gca, 'CurrentPoint');
+
             mousePonit_x = mousePoint(1, 1);
+
             mousePonit_y = mousePoint(1, 2);
 
             % distance from mouse position to target
@@ -239,15 +251,19 @@ function MouseControl(gcf, BorderPoint, img)
             dis = zeros;
 
             for i = 1:size(P, 1)
+
                 dis(i, 1) = sqrt((P(i, 1) - mousePonit_x)^2 + (P(i, 2) - mousePonit_y)^2);
+
             end
 
             [val, row] = min(dis);
 
             % determin the drag range
 
-            if val <= size(img, 1) / 10
+            if val <= size(img,1)/10
+
                 P(row, 1) = mousePonit_x;
+
                 P(row, 2) = mousePonit_y;
 
                 % delete old fig
@@ -260,7 +276,7 @@ function MouseControl(gcf, BorderPoint, img)
 
                 % update fig
 
-                Pscatter_fig = scatter(P(:, 1), P(:, 2), 'b*');
+                Pscatter_fig = plot(P(:, 1), P(:, 2), 'b*');
 
                 hold on
 
@@ -268,34 +284,53 @@ function MouseControl(gcf, BorderPoint, img)
 
                 %             hold on
                 %             [xmin xmax ymin ymax]
-                axis([0 1.2 * max(P(:, 1)) 0 1.2 * max(P(:, 2))])
+%                 axis([0 m 0 n])
+
             end
+
         end
+
     end
 
-    % drag
+% drag
 
     function ButttonDownFcn(~, ~)
 
-        switch (get(gcf, 'SelectionType'))
+        switch(get(gcf, 'SelectionType'))
+
             case 'normal'
+
                 mouseSign = 1;
+
                 str = 'left click';
+
             case 'alt'
+
                 str = 'right click/ctrl+left';
+
             case 'open'
+
                 str = 'double click';
+
             otherwise
+
                 str = 'other';
+
         end
 
         disp(str);
+
     end
 
-    % release
+% release
+
     function ButttonUpFcn(~, ~)
+
         mouseSign = 0;
+
         disp('release')
+
     end
 
 end
+
