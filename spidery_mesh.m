@@ -44,13 +44,13 @@ addlistener(roi_VanishingPoint, 'ROIMoved', @(src, evt) roiChange(src, evt, 'Upd
 % Updated_BorderPoint = zeros(4, 2);
 % Updated_VanishingPoint = zeros(1, 2);
 % Updated_InnerRectangle = zeros(1, 4);
-% 
+%
 % MouseControl(figure(1), [Updated_BorderPoint(1,1) Updated_BorderPoint(1,2); ...
 %     Updated_BorderPoint(2,1) Updated_BorderPoint(2,2); ...
 %     Updated_BorderPoint(3,1) Updated_BorderPoint(3,2); ...
 %     Updated_BorderPoint(4,1) Updated_BorderPoint(4,2)],Image2);
 
-addlistener(roi_InnerRectangle, 'ROIMoved', @(src, evt) MouseControl(src, evt, roi_InnerRectangle, Image2));
+addlistener(roi_InnerRectangle, 'ROIMoved', @(src, evt) MouseControl(src, evt, Updated_BorderPoint, Image2));
 
 %%
 % *functions for radial line*
@@ -155,9 +155,10 @@ function radialline_ir(src, evt, vp, rect, img)
 
         %     calcuate the distance from vanishing point (C) to border
         distance_C2Border = pdist([C(1), C(2); points(3), points(4)], 'euclidean');
+
         %     calcuate the distance from inner rectangle edge to border
         distance_Edge2Border = pdist([ThroPoint(1), ThroPoint(2); points(3), points(4)], 'euclidean');
-        %     delete(roi_BorderPoint);
+
         if distance_C2Border > distance_Edge2Border
 
             RadialLine(x) = line([C(1), points(3)], [C(2), points(4)], 'Color', 'r', 'LineWidth', 2);
@@ -174,15 +175,13 @@ function radialline_ir(src, evt, vp, rect, img)
 
         %     make sure that vanishing point is on the top layer
         uistack(RadialLine(x), 'down', 2);
-        %     uistack(BorderPointPlot(x),'down',2);
         uistack(vp, 'up', 2);
         uistack(rect, 'up', 2);
+
         assignin('base', 'Updated_BorderPoint', BorderPoint);
     end
 
 end
-
-
 
 function aLine = TwoPointLine(C, ThroPoint)
     % coefficients = polyfit([x1 x2], [y1 y2], 1);
@@ -196,23 +195,15 @@ end
 
 function roi = roiChange(~, evt, roi)
     assignin('base', roi, evt.CurrentPosition);
-
 end
 
-% function [k,b] = lineequation(P1,P2)
-%     if P2(1) == P1(1)
-%         k = 0;
-%     else
-%         k = (P2(2) - P1(2))/(P2(1) - P1(1));
-%     end
-%     b = P2(2) - P2(1) * k;
-% end
+function MouseControl(gcf, BorderPoint, img)
+    P = [BorderPoint(1, 1) BorderPoint(1, 2); ...
+            BorderPoint(2, 1) BorderPoint(2, 2); ...
+            BorderPoint(3, 1) BorderPoint(3, 2); ...
+            BorderPoint(4, 1) BorderPoint(4, 2)];
 
-
-function MouseControl(gcf, P,img)
-
- % 1: cast; 0: release
-
+    % 1: cast; 0: release
     mouseSign = 0;
 
     % initialze
@@ -221,118 +212,90 @@ function MouseControl(gcf, P,img)
 
     hold on
 
-%     Pplot_fig = plot(P(:, 1), P(:, 2), 'g');
-
-%     hold on
+    %     Pplot_fig = plot(P(:, 1), P(:, 2), 'g');
+    %     hold on
 
     axis([0 1.2 * max(P(:, 1)) 0 1.2 * max(P(:, 2))])
 
     % callback
 
     set(gcf, 'WindowButtonMotionFcn', @ButtonMotionFcn, ...
-        'WindowButtonDownFcn', @ButttonDownFcn, 'WindowButtonUpFcn', @ButttonUpFcn);
+    'WindowButtonDownFcn', @ButttonDownFcn, 'WindowButtonUpFcn', @ButttonUpFcn);
 
     % mouse move
 
     function ButtonMotionFcn(~, ~)
 
+        if mouseSign == 1
 
+            % call back current position
 
-    if mouseSign == 1
+            mousePoint = get(gca, 'CurrentPoint');
+            mousePonit_x = mousePoint(1, 1);
+            mousePonit_y = mousePoint(1, 2);
 
-    % call back current position
+            % distance from mouse position to target
 
-        mousePoint = get(gca, 'CurrentPoint');
+            dis = zeros;
 
-        mousePonit_x = mousePoint(1, 1);
+            for i = 1:size(P, 1)
+                dis(i, 1) = sqrt((P(i, 1) - mousePonit_x)^2 + (P(i, 2) - mousePonit_y)^2);
+            end
 
-        mousePonit_y = mousePoint(1, 2);
+            [val, row] = min(dis);
 
-        % distance from mouse position to target 
+            % determin the drag range
 
-        dis = zeros;
+            if val <= size(img, 1) / 10
+                P(row, 1) = mousePonit_x;
+                P(row, 2) = mousePonit_y;
 
-        for i = 1:size(P, 1)
+                % delete old fig
 
-            dis(i, 1) = sqrt((P(i, 1) - mousePonit_x)^2 + (P(i, 2) - mousePonit_y)^2);
+                delete(Pscatter_fig)
 
+                %             delete(Pplot_fig)
+
+                %         clf (gcf)
+
+                % update fig
+
+                Pscatter_fig = scatter(P(:, 1), P(:, 2), 'b*');
+
+                hold on
+
+                %             Pplot_fig = plot(P(:, 1), P(:, 2), 'g');
+
+                %             hold on
+                %             [xmin xmax ymin ymax]
+                axis([0 1.2 * max(P(:, 1)) 0 1.2 * max(P(:, 2))])
+            end
         end
-
-        [val, row] = min(dis);
-    
-        % determin the drag range
-    
-        if val <= size(img,1)/10
-    
-            P(row, 1) = mousePonit_x;
-    
-            P(row, 2) = mousePonit_y;
-    
-             % delete old fig
-    
-            delete(Pscatter_fig)
-    
-%             delete(Pplot_fig)
-    
-%         clf (gcf)
-    
-        % update fig
-    
-            Pscatter_fig = scatter(P(:, 1), P(:, 2), 'b*');
-    
-            hold on
-    
-%             Pplot_fig = plot(P(:, 1), P(:, 2), 'g');
-    
-%             hold on
-%             [xmin xmax ymin ymax] 
-            axis([0 1.2 * max(P(:, 1)) 0 1.2 * max(P(:, 2))])
-    
-        end
-
-    end
-
     end
 
     % drag
-    
+
     function ButttonDownFcn(~, ~)
-    
-        switch(get(gcf, 'SelectionType'))
-    
+
+        switch (get(gcf, 'SelectionType'))
             case 'normal'
-    
-            mouseSign = 1;
-    
-            str = 'left click';
-    
+                mouseSign = 1;
+                str = 'left click';
             case 'alt'
-    
-            str = 'right click/ctrl+left';
-    
+                str = 'right click/ctrl+left';
             case 'open'
-    
-            str = 'double click';
-    
+                str = 'double click';
             otherwise
-    
-            str = 'other';
-    
-         end
-    
-        disp(str);
-    
+                str = 'other';
         end
 
+        disp(str);
+    end
+
     % release
-
     function ButttonUpFcn(~, ~)
-
         mouseSign = 0;
-
         disp('release')
-
     end
 
 end
-
