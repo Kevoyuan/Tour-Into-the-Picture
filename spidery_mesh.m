@@ -11,6 +11,10 @@ hold on
 %%
 % get the size of the img
 
+global m;
+global n;
+global BorderPoint;
+
 [m, n] = size(IGray2);
 
 % Draw vanishing point
@@ -30,11 +34,12 @@ pos_InnerRectangle = [0.6 * va, 0.6 * vb, 0.5 * va + 0.25 * vb, 0.8 * va];
 roi_InnerRectangle = drawrectangle('Color', 'k', 'FaceAlpha', 0, ...
     'FaceSelectable', (false), 'LineWidth', 1);
 roi_InnerRectangle.Position = pos_InnerRectangle;
+
 %%
 % *Draw 4 radial lines*
 
-l1 = addlistener(roi_VanishingPoint, 'MovingROI', @(src, evt) radialline_vp(src, evt, roi_VanishingPoint, roi_InnerRectangle, Image2));
-l2 = addlistener(roi_InnerRectangle, 'MovingROI', @(src, evt) radialline_ir(src, evt, roi_VanishingPoint, roi_InnerRectangle, Image2));
+l1 = addlistener(roi_VanishingPoint, 'MovingROI', @(src, evt) radialline_vp(src, evt, roi_VanishingPoint, roi_InnerRectangle,Image2));
+l2 = addlistener(roi_InnerRectangle, 'MovingROI', @(src, evt) radialline_ir(src, evt, roi_VanishingPoint, roi_InnerRectangle,Image2));
 
 % get the position of Vanishing Poit(VP) and Inner Rectangle(IR),
 
@@ -50,287 +55,214 @@ addlistener(roi_VanishingPoint, 'ROIMoved', @(src, evt) roiChange(src, evt, 'Upd
 %     Updated_BorderPoint(3,1) Updated_BorderPoint(3,2); ...
 %     Updated_BorderPoint(4,1) Updated_BorderPoint(4,2)],Image2);
 
-% addlistener(roi_InnerRectangle, 'ROIMoved', @(src, evt) MouseControl(src, evt, Updated_BorderPoint, Image2));
+% addlistener(roi_InnerRectangle, 'ROIMoved', @(src, evt) radialline_bp(src, evt));
+P = BorderPoint;
+
+% P9, P10, P3, P4
+P9 = images.roi.Point(gca, "LineWidth", 10);
+P9.Position = P(1,:);
+P10 = images.roi.Point(gca, "LineWidth", 10);
+P10.Position = P(2,:);
+P3 = images.roi.Point(gca, "LineWidth", 10);
+P3.Position = P(3,:);
+P4 = images.roi.Point(gca, "LineWidth", 10);
+P4.Position = P(4,:);
+
+addlistener(roi_InnerRectangle,'ROIMoved',@(r1,evt) BorderPointEvent(roi_InnerRectangle,evt,P9,P10,P3,P4));
+addlistener(roi_VanishingPoint,'ROIMoved',@(r1,evt) BorderPointEvent(roi_VanishingPoint,evt,P9,P10,P3,P4));
+
+
 
 %%
 % *functions for radial line*
 
-function radialline_vp(src, evt, vp, rect, img)
+function radialline_vp(src, evt, vp, rect,img)
 
-    BorderPoint = zeros(4, 2);
+global BorderPoint
+global BorderPointPlot
 
-    rect_pos = rect.Position;
-    % get the inner rectangle position
-    rect_top_left = [rect_pos(1), rect_pos(2)];
-    rect_top_right = [rect_pos(1) + rect_pos(3), rect_pos(2)];
-    rect_bottom_left = [rect_pos(1), rect_pos(2) + rect_pos(4)];
-    rect_bottom_right = [rect_pos(1) + rect_pos(3), rect_pos(2) + rect_pos(4)];
+BorderPoint = zeros(4, 2);
 
-    % save as cell
-    EdgePoint = {rect_top_left, rect_top_right, rect_bottom_left, rect_bottom_right};
+rect_pos = rect.Position;
+% get the inner rectangle position
+rect_top_left = [rect_pos(1), rect_pos(2)];
+rect_top_right = [rect_pos(1) + rect_pos(3), rect_pos(2)];
+rect_bottom_left = [rect_pos(1), rect_pos(2) + rect_pos(4)];
+rect_bottom_right = [rect_pos(1) + rect_pos(3), rect_pos(2) + rect_pos(4)];
 
-    % remove all existing radial lines
-    allLine = findobj(gcf, 'Type', 'Line');
-    delete(allLine);
+% save as cell
+EdgePoint = {rect_top_left, rect_top_right, rect_bottom_left, rect_bottom_right};
 
-    % remove all existing border points
-    allPoint = findall(gcf, 'Type', 'Point');
-    delete(allPoint);
+% remove all existing radial lines
+allLine = findobj(gcf, 'Type', 'Line');
+delete(allLine);
 
-    % get current vanishing point position
-    C = evt.CurrentPosition;
+% remove all existing border points
+allPoint = findall(gcf, 'Type', 'Point');
+delete(allPoint);
 
-    RadialLine = zeros(1, 4);
-    BorderPointPlot = zeros(1, 4);
+% get current vanishing point position
+C = evt.CurrentPosition;
 
-    for x = 1:4
-        ThroPoint = EdgePoint{x};
-        aLine = TwoPointLine(C, ThroPoint);
-        % get border point coordinates
-        points = lineToBorderPoints(aLine, size(img));
+RadialLine = zeros(1, 4);
+BorderPointPlot = zeros(1, 4);
 
-        %     calcuate the distance from vanishing point (C) to border
-        distance_C2Border = pdist([C(1), C(2); points(3), points(4)], 'euclidean');
-        %     calcuate the distance from inner rectangle edge to border
-        distance_Edge2Border = pdist([ThroPoint(1), ThroPoint(2); points(3), points(4)], 'euclidean');
+for x = 1:4
+    ThroPoint = EdgePoint{x};
+    aLine = TwoPointLine(C, ThroPoint);
+    % get border point coordinates
+    points = lineToBorderPoints(aLine, size(img));
 
-        if distance_C2Border > distance_Edge2Border
+    %     calcuate the distance from vanishing point (C) to border
+    distance_C2Border = pdist([C(1), C(2); points(3), points(4)], 'euclidean');
+    %     calcuate the distance from inner rectangle edge to border
+    distance_Edge2Border = pdist([ThroPoint(1), ThroPoint(2); points(3), points(4)], 'euclidean');
 
-            RadialLine(x) = plot([C(1), points(3)], [C(2), points(4)], 'Color', 'r', 'LineWidth', 2);
-            BorderPointPlot(x) = plot(points(3), points(4), '-s', 'MarkerSize', 10, ...
-                'MarkerEdgeColor', 'red', 'MarkerFaceColor', 'r');
+    if distance_C2Border > distance_Edge2Border
 
-            BorderPoint(x, :) = [points(3) points(4)];
+        RadialLine(x) = plot([C(1), points(3)], [C(2), points(4)], 'Color', 'r', 'LineWidth', 2);
+        BorderPointPlot(x) = plot(points(3), points(4), '-s', 'MarkerSize', 10, ...
+            'MarkerEdgeColor', 'red', 'MarkerFaceColor', 'r');
 
-        else
-            RadialLine(x) = plot([C(1), points(1)], [C(2), points(2)], 'Color', 'r', 'LineWidth', 2);
-            BorderPointPlot(x) = plot(points(1), points(2), '-s', 'MarkerSize', 10, ...
-                'MarkerEdgeColor', 'red', 'MarkerFaceColor', 'r');
+        BorderPoint(x, :) = [points(3) points(4)];
 
-            BorderPoint(x, :) = [points(1) points(2)];
+    else
+        RadialLine(x) = plot([C(1), points(1)], [C(2), points(2)], 'Color', 'r', 'LineWidth', 2);
+        BorderPointPlot(x) = plot(points(1), points(2), '-s', 'MarkerSize', 10, ...
+            'MarkerEdgeColor', 'red', 'MarkerFaceColor', 'r');
 
-        end
-
-        %     make sure that vanishing point is on the top layer
-        uistack(RadialLine(x), 'down', 2);
-        %     uistack(BorderPointPlot(x),'down',2);
-        uistack(vp, 'up', 2);
-        uistack(rect, 'up', 2);
-
-        %         save borderPoints to Workspace
-        assignin('base', 'Updated_BorderPoint', BorderPoint);
+        BorderPoint(x, :) = [points(1) points(2)];
 
     end
+
+    %     make sure that vanishing point is on the top layer
+    uistack(RadialLine(x), 'down', 2);
+    %     uistack(BorderPointPlot(x),'down',2);
+    uistack(vp, 'up', 2);
+    uistack(rect, 'up', 2);
+
+    %         save borderPoints to Workspace
+    %     assignin('base', 'Updated_BorderPoint', BorderPoint);
 
 end
 
-function radialline_ir(src, evt, vp, rect, img)
-    BorderPoint = zeros(4, 2);
+end
 
-    % get current inner rectangle position
-    rect_pos = evt.CurrentPosition;
+function radialline_ir(src, evt, vp, rect,img)
 
-    rect_top_left = [rect_pos(1), rect_pos(2)];
-    rect_top_right = [rect_pos(1) + rect_pos(3), rect_pos(2)];
-    rect_bottom_left = [rect_pos(1), rect_pos(2) + rect_pos(4)];
-    rect_botton_right = [rect_pos(1) + rect_pos(3), rect_pos(2) + rect_pos(4)];
+global BorderPoint
+global BorderPointPlot
 
-    EdgePoint = {rect_top_left, rect_top_right, rect_bottom_left, rect_botton_right};
+BorderPoint = zeros(4, 2);
 
-    % remove all existing radial lines
-    allLine = findobj(gcf, 'Type', 'Line');
-    delete(allLine);
+% get current inner rectangle position
+rect_pos = evt.CurrentPosition;
 
-    % get the vanishing point position
-    C = vp.Position;
+rect_top_left = [rect_pos(1), rect_pos(2)];
+rect_top_right = [rect_pos(1) + rect_pos(3), rect_pos(2)];
+rect_bottom_left = [rect_pos(1), rect_pos(2) + rect_pos(4)];
+rect_botton_right = [rect_pos(1) + rect_pos(3), rect_pos(2) + rect_pos(4)];
 
-    RadialLine = zeros(1, 4);
-    BorderPointPlot = zeros(1, 4);
+EdgePoint = {rect_top_left, rect_top_right, rect_bottom_left, rect_botton_right};
 
-    for x = 1:4
-        ThroPoint = EdgePoint{x};
-        aLine = TwoPointLine(C, ThroPoint);
-        % get border point coordinates
-        points = lineToBorderPoints(aLine, size(img));
+% remove all existing radial lines
+allLine = findobj(gcf, 'Type', 'Line');
+delete(allLine);
 
-        %     calcuate the distance from vanishing point (C) to border
-        distance_C2Border = pdist([C(1), C(2); points(3), points(4)], 'euclidean');
+% get the vanishing point position
+C = vp.Position;
 
-        %     calcuate the distance from inner rectangle edge to border
-        distance_Edge2Border = pdist([ThroPoint(1), ThroPoint(2); points(3), points(4)], 'euclidean');
+RadialLine = zeros(1, 4);
+BorderPointPlot = zeros(1, 4);
 
-        if distance_C2Border > distance_Edge2Border
+for x = 1:4
+    ThroPoint = EdgePoint{x};
+    aLine = TwoPointLine(C, ThroPoint);
+    % get border point coordinates
+    points = lineToBorderPoints(aLine, size(img));
 
-            RadialLine(x) = line([C(1), points(3)], [C(2), points(4)], 'Color', 'r', 'LineWidth', 2);
-            BorderPointPlot(x) = plot(points(3), points(4), '-s', 'MarkerSize', 10, ...
-                'MarkerEdgeColor', 'red', 'MarkerFaceColor', 'r');
+    %     calcuate the distance from vanishing point (C) to border
+    distance_C2Border = pdist([C(1), C(2); points(3), points(4)], 'euclidean');
 
-            BorderPoint(x, :) = [points(3) points(4)];
-        else
-            RadialLine(x) = line([C(1), points(1)], [C(2), points(2)], 'Color', 'r', 'LineWidth', 2);
-            BorderPointPlot(x) = plot(points(1), points(2), '-s', 'MarkerSize', 10, ...
-                'MarkerEdgeColor', 'red', 'MarkerFaceColor', 'r');
-            BorderPoint(x, :) = [points(1) points(2)];
-        end
+    %     calcuate the distance from inner rectangle edge to border
+    distance_Edge2Border = pdist([ThroPoint(1), ThroPoint(2); points(3), points(4)], 'euclidean');
 
-        %     make sure that vanishing point is on the top layer
-        uistack(RadialLine(x), 'down', 2);
-        uistack(vp, 'up', 2);
-        uistack(rect, 'up', 2);
+    if distance_C2Border > distance_Edge2Border
 
-        assignin('base', 'Updated_BorderPoint', BorderPoint);
+        RadialLine(x) = line([C(1), points(3)], [C(2), points(4)], 'Color', 'r', 'LineWidth', 2);
+        BorderPointPlot(x) = plot(points(3), points(4), '-s', 'MarkerSize', 10, ...
+            'MarkerEdgeColor', 'red', 'MarkerFaceColor', 'r');
+
+        BorderPoint(x, :) = [points(3) points(4)];
+    else
+        RadialLine(x) = line([C(1), points(1)], [C(2), points(2)], 'Color', 'r', 'LineWidth', 2);
+        BorderPointPlot(x) = plot(points(1), points(2), '-s', 'MarkerSize', 10, ...
+            'MarkerEdgeColor', 'red', 'MarkerFaceColor', 'r');
+        BorderPoint(x, :) = [points(1) points(2)];
     end
+
+    %     make sure that vanishing point is on the top layer
+    uistack(RadialLine(x), 'down', 2);
+    uistack(vp, 'up', 2);
+    uistack(rect, 'up', 2);
+
+    %     assignin('base', 'Updated_BorderPoint', BorderPoint);
+end
 
 end
 
 function aLine = TwoPointLine(C, ThroPoint)
-    % coefficients = polyfit([x1 x2], [y1 y2], 1);
-    coefficients = polyfit([C(1) ThroPoint(1)], [C(2) ThroPoint(2)], 1);
-    a = coefficients (1);
-    b = coefficients (2);
-    % Define a line with the equation, a * x + y + b = 0.
-    aLine = [a, -1, b];
+% coefficients = polyfit([x1 x2], [y1 y2], 1);
+coefficients = polyfit([C(1) ThroPoint(1)], [C(2) ThroPoint(2)], 1);
+a = coefficients (1);
+b = coefficients (2);
+% Define a line with the equation, a * x + y + b = 0.
+aLine = [a, -1, b];
 
 end
 
 function roi = roiChange(~, evt, roi)
-    assignin('base', roi, evt.CurrentPosition);
+assignin('base', roi, evt.CurrentPosition);
 end
 
-function MouseControl(~,BorderPoint,img)
 
-P = [BorderPoint(1,1) BorderPoint(1,2); ...
-    BorderPoint(2,1) BorderPoint(2,2); ...
-    BorderPoint(3,1) BorderPoint(3,2); ...
-    BorderPoint(4,1) BorderPoint(4,2)];
 
+function BorderPointEvent(~,~,roi9,roi10,roi3,roi4)
 
-% image size
+global BorderPoint
+global BorderPointPlot
 
-% [m, n] = size(img);
+P = BorderPoint;
+roi9.Position = P(1,:);
+roi10.Position = P(2,:);
+roi3.Position = P(3,:);
+roi4.Position = P(4,:);
 
-% 1: cast; 0: release
 
-mouseSign = 0;
-
-% initialze
-
-Pscatter_fig = plot(P(:, 1), P(:, 2), 'b*');
-
-hold on
-
-%     Pplot_fig = plot(P(:, 1), P(:, 2), 'g');
-
-%     hold on
-
-% axis([0 m 0 n])
-
-% callback
-
-set(gcf, 'WindowButtonMotionFcn', @ButtonMotionFcn, ...
-    'WindowButtonDownFcn', @ButttonDownFcn, 'WindowButtonUpFcn', @ButttonUpFcn);
-
-% mouse move
-
-    function ButtonMotionFcn(~, ~)
-
-
-
-        if mouseSign == 1
-
-            % call back current position
-
-            mousePoint = get(gca, 'CurrentPoint');
-
-            mousePonit_x = mousePoint(1, 1);
-
-            mousePonit_y = mousePoint(1, 2);
-
-            % distance from mouse position to target
-
-            dis = zeros;
-
-            for i = 1:size(P, 1)
-
-                dis(i, 1) = sqrt((P(i, 1) - mousePonit_x)^2 + (P(i, 2) - mousePonit_y)^2);
-
-            end
-
-            [val, row] = min(dis);
-
-            % determin the drag range
-
-            if val <= size(img,1)/10
-
-                P(row, 1) = mousePonit_x;
-
-                P(row, 2) = mousePonit_y;
-
-                % delete old fig
-
-                delete(Pscatter_fig)
-
-                %             delete(Pplot_fig)
-
-                %         clf (gcf)
-
-                % update fig
-
-                Pscatter_fig = plot(P(:, 1), P(:, 2), 'b*');
-
-                hold on
-
-                %             Pplot_fig = plot(P(:, 1), P(:, 2), 'g');
-
-                %             hold on
-                %             [xmin xmax ymin ymax]
-%                 axis([0 m 0 n])
-
-            end
-
-        end
-
-    end
-
-% drag
-
-    function ButttonDownFcn(~, ~)
-
-        switch(get(gcf, 'SelectionType'))
-
-            case 'normal'
-
-                mouseSign = 1;
-
-                str = 'left click';
-
-            case 'alt'
-
-                str = 'right click/ctrl+left';
-
-            case 'open'
-
-                str = 'double click';
-
-            otherwise
-
-                str = 'other';
-
-        end
-
-        disp(str);
-
-    end
-
-% release
-
-    function ButttonUpFcn(~, ~)
-
-        mouseSign = 0;
-
-        disp('release')
-
-    end
-
+uistack(BorderPointPlot, 'down', 5);
+uistack(roi9, 'up', 2);
+uistack(roi10, 'up', 2);
+uistack(roi3, 'up', 2);
+uistack(roi4, 'up', 2);
 end
 
+
+function BP2VP(~,~,roi9,roi10,roi3,roi4)
+
+global BorderPoint
+global BorderPointPlot
+
+P = BorderPoint;
+
+
+
+
+
+
+
+uistack(BorderPointPlot, 'down', 5);
+uistack(roi9, 'up', 2);
+uistack(roi10, 'up', 2);
+uistack(roi3, 'up', 2);
+uistack(roi4, 'up', 2);
+end
