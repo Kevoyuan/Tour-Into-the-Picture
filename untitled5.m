@@ -1,5 +1,5 @@
 % input image
-im1 = imread("Waldwiese.jpg");
+im1 = imread("metro-station.png");
 figure;
 imshow(im1);
 hold on;

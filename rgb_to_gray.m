@@ -25,6 +25,6 @@ function gray_image = rgb_to_gray(input_image)
             end
             gray_image=uint8(gray_image);
       else 
-          gray_image = input_image
+          gray_image = input_image;
     
 end
