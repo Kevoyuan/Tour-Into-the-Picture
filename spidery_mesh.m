@@ -2,7 +2,7 @@ clc;
 clear;
 close
 
-Image2 = imread('uhren-turm.jpg');
+Image2 = imread('metro-station.png');
 IGray2 = rgb_to_gray(Image2);
 figure;
 imshow(Image2);
@@ -13,7 +13,7 @@ hold on
 
 global m;
 global n;
-global BorderPoint;
+
 
 [m, n] = size(IGray2);
 
@@ -133,7 +133,7 @@ for x = 1:4
     %     make sure that vanishing point is on the top layer
     uistack(RadialLine(x), 'down', 2);
     uistack(BorderPointPlot(x), 'down', 2);
-    uistack(vp, 'up', 2);
+    uistack(vp, 'up', 4);
     uistack(rect, 'up', 2);
 
     %         save borderPoints to Workspace
@@ -223,6 +223,7 @@ end
 function BorderPointEvent(~, ~, roi9, roi10, roi3, roi4)
 
 global BorderPoint
+global BorderPointPlot
 
 P = BorderPoint;
 roi9.Position = P(1, :);
@@ -230,7 +231,7 @@ roi10.Position = P(2, :);
 roi3.Position = P(3, :);
 roi4.Position = P(4, :);
 
-% uistack(BorderPointPlot, 'down', 5);
+uistack(BorderPointPlot, 'down', 5);
 uistack(roi9, 'up', 8);
 uistack(roi10, 'up', 8);
 uistack(roi3, 'up', 8);
@@ -309,11 +310,11 @@ roi4.Position = roi{3};
 
 line([roi1_pos(1), vp.Position(1)], [roi1_pos(2), vp.Position(2)], 'Color', 'r', 'LineWidth', 2);
 
-uistack(vp, 'up', 7);
-uistack(roi1, 'up', 6);
-uistack(roi2, 'up', 6);
-uistack(roi3, 'up', 6);
-uistack(roi4, 'up', 6);
+uistack(vp, 'up', 8);
+uistack(roi1, 'up', 7);
+uistack(roi2, 'up', 7);
+uistack(roi3, 'up', 7);
+uistack(roi4, 'up', 7);
 
 end
 
@@ -387,11 +388,11 @@ roi4.Position = roi{3};
 
 line([roi1_pos(1), vp.Position(1)], [roi1_pos(2), vp.Position(2)], 'Color', 'r', 'LineWidth', 2);
 
-uistack(vp, 'up', 7);
-uistack(roi1, 'up', 6);
-uistack(roi2, 'up', 6);
-uistack(roi3, 'up', 6);
-uistack(roi4, 'up', 6);
+uistack(vp, 'up', 8);
+uistack(roi1, 'up', 7);
+uistack(roi2, 'up', 7);
+uistack(roi3, 'up', 7);
+uistack(roi4, 'up', 7);
 
 end
 
@@ -465,11 +466,11 @@ roi4.Position = roi{3};
 
 line([roi1_pos(1), vp.Position(1)], [roi1_pos(2), vp.Position(2)], 'Color', 'r', 'LineWidth', 2);
 
-uistack(vp, 'up', 7);
-uistack(roi1, 'up', 6);
-uistack(roi2, 'up', 6);
-uistack(roi3, 'up', 6);
-uistack(roi4, 'up', 6);
+uistack(vp, 'up', 8);
+uistack(roi1, 'up', 7);
+uistack(roi2, 'up', 7);
+uistack(roi3, 'up', 7);
+uistack(roi4, 'up', 7);
 
 end
 
@@ -543,10 +544,10 @@ roi4.Position = roi{3};
 
 line([roi1_pos(1), vp.Position(1)], [roi1_pos(2), vp.Position(2)], 'Color', 'r', 'LineWidth', 2);
 
-uistack(vp, 'up', 7);
-uistack(roi1, 'up', 6);
-uistack(roi2, 'up', 6);
-uistack(roi3, 'up', 6);
-uistack(roi4, 'up', 6);
+uistack(vp, 'up', 8);
+uistack(roi1, 'up', 7);
+uistack(roi2, 'up', 7);
+uistack(roi3, 'up', 7);
+uistack(roi4, 'up', 7);
 
 end
