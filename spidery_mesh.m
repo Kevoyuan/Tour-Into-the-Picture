@@ -2,7 +2,7 @@ clc;
 clear;
 close
 
-Image2 = imread('metro-station.png');
+Image2 = imread('shopping-mall.png');
 IGray2 = rgb_to_gray(Image2);
 figure;
 imshow(Image2);
@@ -30,7 +30,7 @@ roi_VanishingPoint = drawpoint(gca, 'Position', pos_VanishingPoint, "Color", 'k'
 % Draw inner rectangle
 
 % [x y w h]= x and y elements determine the location (top-left) and the w and h elements determine the size
-pos_InnerRectangle = [0.6 * va, 0.6 * vb, 0.5 * va + 0.1 * vb, 0.5 * va];
+pos_InnerRectangle = [0.6 * va, 0.6 * vb, 0.5 * va + 0.2 * vb, 0.65 * va];
 roi_InnerRectangle = drawrectangle('Color', 'k', 'FaceAlpha', 0, ...
     'FaceSelectable', (false), 'LineWidth', 1);
 roi_InnerRectangle.Position = pos_InnerRectangle;
@@ -247,12 +247,12 @@ global n
 
 rect_pos = rect.Position;
 % get the inner rectangle position
-% rect_top_left = [rect_pos(1), rect_pos(2)];
+rect_top_left = [rect_pos(1), rect_pos(2)];
 rect_top_right = [rect_pos(1) + rect_pos(3), rect_pos(2)];
 rect_bottom_left = [rect_pos(1), rect_pos(2) + rect_pos(4)];
 rect_bottom_right = [rect_pos(1) + rect_pos(3), rect_pos(2) + rect_pos(4)];
 
-EdgePoint = {rect_bottom_left, rect_top_right, rect_bottom_right};
+EdgePoint = {rect_bottom_left, rect_top_right, rect_bottom_right,rect_top_left};
 
 allLine = findobj(gcf, 'Type', 'Line');
 delete(allLine);
@@ -279,7 +279,7 @@ vp_pos = [x_intersect, y_intersect];
 
 roi = cell(1, 3);
 RadialLine = zeros(1, 3);
-for x = 1:3
+for x = 1:4
     ThroPoint = EdgePoint{x};
     aLine = TwoPointLine(vp_pos, ThroPoint);
     % get border point coordinates
@@ -300,17 +300,22 @@ for x = 1:3
 
         RadialLine(x) = line([roi_pos(1), vp.Position(1)], [roi_pos(2), vp.Position(2)], 'Color', 'r', 'LineWidth', 2);
     end
-    roi{x} = roi_pos;
+    if x == 4
+        break
+    else
+        roi{x} = roi_pos;
+    end
 
 end
+
 
 roi2.Position = roi{1};
 roi3.Position = roi{2};
 roi4.Position = roi{3};
 
-line([roi1_pos(1), vp.Position(1)], [roi1_pos(2), vp.Position(2)], 'Color', 'r', 'LineWidth', 2);
+% line([roi1_pos(1), vp.Position(1)], [roi1_pos(2), vp.Position(2)], 'Color', 'r', 'LineWidth', 2);
 
-uistack(vp, 'up', 8);
+uistack(vp, 'up', 9);
 uistack(roi1, 'up', 7);
 uistack(roi2, 'up', 7);
 uistack(roi3, 'up', 7);
@@ -327,10 +332,10 @@ rect_pos = rect.Position;
 % get the inner rectangle position
 rect_top_left = [rect_pos(1), rect_pos(2)];
 rect_top_right = [rect_pos(1) + rect_pos(3), rect_pos(2)];
-% rect_bottom_left = [rect_pos(1), rect_pos(2) + rect_pos(4)];
+rect_bottom_left = [rect_pos(1), rect_pos(2) + rect_pos(4)];
 rect_bottom_right = [rect_pos(1) + rect_pos(3), rect_pos(2) + rect_pos(4)];
 
-EdgePoint = {rect_top_left, rect_top_right, rect_bottom_right};
+EdgePoint = {rect_top_left, rect_top_right, rect_bottom_right,rect_bottom_left};
 
 allLine = findobj(gcf, 'Type', 'Line');
 delete(allLine);
@@ -357,7 +362,7 @@ vp_pos = [x_intersect, y_intersect];
 
 roi = cell(1, 3);
 RadialLine = zeros(1, 3);
-for x = 1:3
+for x = 1:4
     ThroPoint = EdgePoint{x};
     aLine = TwoPointLine(vp_pos, ThroPoint);
     % get border point coordinates
@@ -378,7 +383,11 @@ for x = 1:3
 
         RadialLine(x) = line([roi_pos(1), vp.Position(1)], [roi_pos(2), vp.Position(2)], 'Color', 'r', 'LineWidth', 2);
     end
-    roi{x} = roi_pos;
+    if x == 4
+        break
+    else
+        roi{x} = roi_pos;
+    end
 
 end
 
@@ -388,7 +397,7 @@ roi4.Position = roi{3};
 
 line([roi1_pos(1), vp.Position(1)], [roi1_pos(2), vp.Position(2)], 'Color', 'r', 'LineWidth', 2);
 
-uistack(vp, 'up', 8);
+uistack(vp, 'up', 9);
 uistack(roi1, 'up', 7);
 uistack(roi2, 'up', 7);
 uistack(roi3, 'up', 7);
@@ -404,11 +413,11 @@ global n
 rect_pos = rect.Position;
 % get the inner rectangle position
 rect_top_left = [rect_pos(1), rect_pos(2)];
-% rect_top_right = [rect_pos(1) + rect_pos(3), rect_pos(2)];
+rect_top_right = [rect_pos(1) + rect_pos(3), rect_pos(2)];
 rect_bottom_left = [rect_pos(1), rect_pos(2) + rect_pos(4)];
 rect_bottom_right = [rect_pos(1) + rect_pos(3), rect_pos(2) + rect_pos(4)];
 
-EdgePoint = {rect_bottom_right, rect_top_left, rect_bottom_left};
+EdgePoint = {rect_bottom_right, rect_top_left, rect_bottom_left,rect_top_right};
 
 allLine = findobj(gcf, 'Type', 'Line');
 delete(allLine);
@@ -435,7 +444,7 @@ vp_pos = [x_intersect, y_intersect];
 
 roi = cell(1, 3);
 RadialLine = zeros(1, 3);
-for x = 1:3
+for x = 1:4
     ThroPoint = EdgePoint{x};
     aLine = TwoPointLine(vp_pos, ThroPoint);
     % get border point coordinates
@@ -456,7 +465,11 @@ for x = 1:3
 
         RadialLine(x) = line([roi_pos(1), vp.Position(1)], [roi_pos(2), vp.Position(2)], 'Color', 'r', 'LineWidth', 2);
     end
-    roi{x} = roi_pos;
+    if x == 4
+        break
+    else
+        roi{x} = roi_pos;
+    end
 
 end
 
@@ -466,7 +479,7 @@ roi4.Position = roi{3};
 
 line([roi1_pos(1), vp.Position(1)], [roi1_pos(2), vp.Position(2)], 'Color', 'r', 'LineWidth', 2);
 
-uistack(vp, 'up', 8);
+uistack(vp, 'up', 9);
 uistack(roi1, 'up', 7);
 uistack(roi2, 'up', 7);
 uistack(roi3, 'up', 7);
@@ -484,9 +497,9 @@ rect_pos = rect.Position;
 rect_top_left = [rect_pos(1), rect_pos(2)];
 rect_top_right = [rect_pos(1) + rect_pos(3), rect_pos(2)];
 rect_bottom_left = [rect_pos(1), rect_pos(2) + rect_pos(4)];
-% rect_bottom_right = [rect_pos(1) + rect_pos(3), rect_pos(2) + rect_pos(4)];
+rect_bottom_right = [rect_pos(1) + rect_pos(3), rect_pos(2) + rect_pos(4)];
 
-EdgePoint = {rect_top_right, rect_top_left, rect_bottom_left};
+EdgePoint = {rect_top_right, rect_top_left, rect_bottom_left,rect_bottom_right};
 
 allLine = findobj(gcf, 'Type', 'Line');
 delete(allLine);
@@ -513,7 +526,7 @@ vp_pos = [x_intersect, y_intersect];
 
 roi = cell(1, 3);
 RadialLine = zeros(1, 3);
-for x = 1:3
+for x = 1:4
     ThroPoint = EdgePoint{x};
     aLine = TwoPointLine(vp_pos, ThroPoint);
     % get border point coordinates
@@ -534,7 +547,11 @@ for x = 1:3
 
         RadialLine(x) = line([roi_pos(1), vp.Position(1)], [roi_pos(2), vp.Position(2)], 'Color', 'r', 'LineWidth', 2);
     end
-    roi{x} = roi_pos;
+    if x == 4
+        break
+    else
+        roi{x} = roi_pos;
+    end
 
 end
 
@@ -544,7 +561,7 @@ roi4.Position = roi{3};
 
 line([roi1_pos(1), vp.Position(1)], [roi1_pos(2), vp.Position(2)], 'Color', 'r', 'LineWidth', 2);
 
-uistack(vp, 'up', 8);
+uistack(vp, 'up', 9);
 uistack(roi1, 'up', 7);
 uistack(roi2, 'up', 7);
 uistack(roi3, 'up', 7);
