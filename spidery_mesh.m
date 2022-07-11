@@ -10,7 +10,7 @@ imshow(Image2);
 hold on
 %%
 % get the size of the img
-
+global OutterPoint
 global m;
 global n;
 
@@ -50,14 +50,14 @@ l4 = addlistener(roi_VanishingPoint, 'ROIMoved', @(src, evt) roiChange(src, evt,
 % P = [1,0.5;m,0.5;1,m;n,m];
 
 % P9, P10, P3, P4
-P9 = images.roi.Point(gca, "MarkerSize", 1, "Color", "r");
+P9 = images.roi.Point(gca, "MarkerSize", 1);
 
 % P9.Position = P(1, :);
-P10 = images.roi.Point(gca, "MarkerSize", 1, "Color", "r");
+P10 = images.roi.Point(gca, "MarkerSize", 1);
 % P10.Position = P(2, :);
-P3 = images.roi.Point(gca, "MarkerSize", 1, "Color", "r");
+P3 = images.roi.Point(gca, "MarkerSize", 1);
 % P3.Position = P(3, :);
-P4 = images.roi.Point(gca, "MarkerSize", 1, "Color", "r");
+P4 = images.roi.Point(gca, "MarkerSize", 1);
 % P4.Position = P(4, :);
 
 l5 = addlistener(roi_InnerRectangle, 'ROIMoved', @(r1, evt) BorderPointEvent(roi_InnerRectangle, evt, P9, P10, P3, P4));
@@ -74,7 +74,7 @@ l10 = addlistener(P4, 'MovingROI', @(r1, evt) P4NewVP(P4, evt, P10, P9, P3, roi_
 function radialline_vp(src, evt, vp, rect, img)
 
 global BorderPoint
-global BorderPointPlot
+% global BorderPointPlot
 
 BorderPoint = zeros(4, 2);
 
@@ -100,7 +100,7 @@ delete(allPoint);
 C = evt.CurrentPosition;
 
 RadialLine = zeros(1, 4);
-BorderPointPlot = zeros(1, 4);
+% BorderPointPlot = zeros(1, 4);
 
 for x = 1:4
     ThroPoint = EdgePoint{x};
@@ -116,15 +116,15 @@ for x = 1:4
     if distance_C2Border > distance_Edge2Border
 
         RadialLine(x) = plot([C(1), points(3)], [C(2), points(4)], 'Color', 'r', 'LineWidth', 2);
-        BorderPointPlot(x) = plot(points(3), points(4), '-s', 'MarkerSize', 10, ...
-            'MarkerEdgeColor', 'red', 'MarkerFaceColor', 'r');
+%         BorderPointPlot(x) = plot(points(3), points(4), '-s', 'MarkerSize', 10, ...
+%             'MarkerEdgeColor', 'red', 'MarkerFaceColor', 'r');
 
         BorderPoint(x, :) = [points(3) points(4)];
 
     else
         RadialLine(x) = plot([C(1), points(1)], [C(2), points(2)], 'Color', 'r', 'LineWidth', 2);
-        BorderPointPlot(x) = plot(points(1), points(2), '-s', 'MarkerSize', 10, ...
-            'MarkerEdgeColor', 'red', 'MarkerFaceColor', 'r');
+%         BorderPointPlot(x) = plot(points(1), points(2), '-s', 'MarkerSize', 10, ...
+%             'MarkerEdgeColor', 'red', 'MarkerFaceColor', 'r');
 
         BorderPoint(x, :) = [points(1) points(2)];
 
@@ -132,7 +132,7 @@ for x = 1:4
 
     %     make sure that vanishing point is on the top layer
     uistack(RadialLine(x), 'down', 2);
-    uistack(BorderPointPlot(x), 'down', 2);
+%     uistack(BorderPointPlot(x), 'down', 2);
     uistack(vp, 'up', 4);
     uistack(rect, 'up', 2);
 
@@ -146,7 +146,7 @@ end
 function radialline_ir(src, evt, vp, rect, img)
 
 global BorderPoint
-global BorderPointPlot
+% global BorderPointPlot
 
 % BorderPoint = zeros(4, 2);
 
@@ -185,14 +185,14 @@ for x = 1:4
     if distance_C2Border > distance_Edge2Border
 
         RadialLine(x) = line([C(1), points(3)], [C(2), points(4)], 'Color', 'r', 'LineWidth', 2);
-        BorderPointPlot(x) = plot(points(3), points(4), '-s', 'MarkerSize', 10, ...
-            'MarkerEdgeColor', 'red', 'MarkerFaceColor', 'r');
+%         BorderPointPlot(x) = plot(points(3), points(4), '-s', 'MarkerSize', 10, ...
+%             'MarkerEdgeColor', 'red', 'MarkerFaceColor', 'r');
 
         BorderPoint(x, :) = [points(3) points(4)];
     else
         RadialLine(x) = line([C(1), points(1)], [C(2), points(2)], 'Color', 'r', 'LineWidth', 2);
-        BorderPointPlot(x) = plot(points(1), points(2), '-s', 'MarkerSize', 10, ...
-            'MarkerEdgeColor', 'red', 'MarkerFaceColor', 'r');
+%         BorderPointPlot(x) = plot(points(1), points(2), '-s', 'MarkerSize', 10, ...
+%             'MarkerEdgeColor', 'red', 'MarkerFaceColor', 'r');
         BorderPoint(x, :) = [points(1) points(2)];
     end
 
@@ -223,7 +223,7 @@ end
 function BorderPointEvent(~, ~, roi9, roi10, roi3, roi4)
 
 global BorderPoint
-global BorderPointPlot
+% global BorderPointPlot
 
 P = BorderPoint;
 roi9.Position = P(1, :);
@@ -231,7 +231,7 @@ roi10.Position = P(2, :);
 roi3.Position = P(3, :);
 roi4.Position = P(4, :);
 
-uistack(BorderPointPlot, 'down', 5);
+% uistack(BorderPointPlot, 'down', 5);
 uistack(roi9, 'up', 8);
 uistack(roi10, 'up', 8);
 uistack(roi3, 'up', 8);
@@ -240,7 +240,7 @@ end
 
 function P9NewVP(roi1, evt, roi2, roi3, roi4, rect, vp)
 
-%     global BorderPoint
+global OutterPoint
 % global BorderPointPlot
 global m
 global n
@@ -300,18 +300,21 @@ for x = 1:4
 
         RadialLine(x) = line([roi_pos(1), vp.Position(1)], [roi_pos(2), vp.Position(2)], 'Color', 'r', 'LineWidth', 2);
     end
-    if x == 4
-        break
-    else
-        roi{x} = roi_pos;
-    end
 
+    roi{x} = roi_pos;
 end
 
 
 roi2.Position = roi{1};
 roi3.Position = roi{2};
 roi4.Position = roi{3};
+
+OutterPoint(1,:) = roi{4};
+OutterPoint(2,:) = roi{2};
+OutterPoint(3,:) = roi{1};
+OutterPoint(4,:) = roi{3};
+
+
 
 % line([roi1_pos(1), vp.Position(1)], [roi1_pos(2), vp.Position(2)], 'Color', 'r', 'LineWidth', 2);
 
@@ -324,7 +327,7 @@ uistack(roi4, 'up', 7);
 end
 
 function P3NewVP(roi1, evt, roi2, roi3, roi4, rect, vp)
-
+global OutterPoint
 global m
 global n
 
@@ -395,6 +398,12 @@ roi2.Position = roi{1};
 roi3.Position = roi{2};
 roi4.Position = roi{3};
 
+% OutterPoint(1,:) = roi{1};
+% OutterPoint(2,:) = roi{2};
+% OutterPoint(3,:) = roi{4};
+% OutterPoint(4,:) = roi{3};
+
+
 line([roi1_pos(1), vp.Position(1)], [roi1_pos(2), vp.Position(2)], 'Color', 'r', 'LineWidth', 2);
 
 uistack(vp, 'up', 9);
@@ -406,7 +415,7 @@ uistack(roi4, 'up', 7);
 end
 
 function P10NewVP(roi1, evt, roi2, roi3, roi4, rect, vp)
-
+global OutterPoint
 global m
 global n
 
@@ -477,6 +486,11 @@ roi2.Position = roi{1};
 roi3.Position = roi{2};
 roi4.Position = roi{3};
 
+% OutterPoint(1,:) = roi{2};
+% OutterPoint(2,:) = roi{4};
+% OutterPoint(3,:) = roi{3};
+% OutterPoint(4,:) = roi{1};
+
 line([roi1_pos(1), vp.Position(1)], [roi1_pos(2), vp.Position(2)], 'Color', 'r', 'LineWidth', 2);
 
 uistack(vp, 'up', 9);
@@ -488,7 +502,7 @@ uistack(roi4, 'up', 7);
 end
 
 function P4NewVP(roi1, evt, roi2, roi3, roi4, rect, vp)
-
+global OutterPoint
 global m
 global n
 
@@ -558,6 +572,11 @@ end
 roi2.Position = roi{1};
 roi3.Position = roi{2};
 roi4.Position = roi{3};
+
+% OutterPoint(1,:) = roi{2};
+% OutterPoint(2,:) = roi{1};
+% OutterPoint(3,:) = roi{3};
+% OutterPoint(4,:) = roi{4};
 
 line([roi1_pos(1), vp.Position(1)], [roi1_pos(2), vp.Position(2)], 'Color', 'r', 'LineWidth', 2);
 
