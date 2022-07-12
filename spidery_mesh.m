@@ -1,4 +1,4 @@
-function [l1,l2,l5,l6,l7,l8,l9,l10] = spidery_mesh(Image2)
+function [l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,OutterPoint] = spidery_mesh(Image2)
 IGray2 = rgb_to_gray(Image2);
 h = figure('Name','Spidery Mesh','Position',[0,0,700,400]);
 imshow(Image2);
@@ -37,8 +37,8 @@ l2 = addlistener(roi_InnerRectangle, 'MovingROI', @(src, evt) radialline_ir(src,
 
 % get the position of Vanishing Poit(VP) and Inner Rectangle(IR),
 
-% l3 = addlistener(roi_InnerRectangle, 'ROIMoved', @(src, evt) roiChange(src, evt, 'Updated_InnerRectangle'));
-% l4 = addlistener(roi_VanishingPoint, 'ROIMoved', @(src, evt) roiChange(src, evt, 'Updated_VanishingPoint'));
+l3 = addlistener(roi_InnerRectangle, 'ROIMoved', @(src, evt) roiChange(src, evt, 'Updated_InnerRectangle'));
+l4 = addlistener(roi_VanishingPoint, 'ROIMoved', @(src, evt) roiChange(src, evt, 'Updated_VanishingPoint'));
 
 % initial P
 
@@ -196,9 +196,9 @@ aLine = [a, -1, b];
 
 end
 % 
-% function roi = roiChange(~, evt, roi)
-% assignin('base', roi, evt.CurrentPosition);
-% end
+function roi = roiChange(~, evt, roi)
+assignin('base', roi, evt.CurrentPosition);
+end
 
 function BorderPointEvent(~, ~, roi9, roi10, roi3, roi4)
 
