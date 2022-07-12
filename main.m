@@ -3,7 +3,7 @@ clear;
 
 %% inputs for test
 
-Img = imread("oil-painting.png");
+Img = imread("simple-room.png");
 n =1;
 %% Spidery mesh
 

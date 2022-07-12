@@ -13,7 +13,7 @@ function [image_pad, new_Pixel_Vertex] = get_image_pad(input_image, Pixel_Vertex
         end
     end
 
-    max_pad = ceil(max_pad)+5;
+    max_pad = ceil(max_pad+0.1*size(input_image,1));
 
     Zeros_border = zeros(size(input_image,1)+2*max_pad, size(input_image,2)+2*max_pad,3);
     Zero_border = gray2ind(Zeros_border);
