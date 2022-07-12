@@ -1,5 +1,5 @@
 % input image
-im1 = imread("Waldwiese.jpg");
+im1 = imread("Die Oude Kerk in Amsterdam.jpg");
 figure;
 imshow(im1);
 hold on;
@@ -68,8 +68,8 @@ P12 = [xrange(2),k_v8*xrange(2)+b_v8];
 plot(P12(1),P12(2),'*','Color','r');
 hold on;
 
-P4= [xrange(2),k_v2*xrange(2)+b_v2];
-plot(P4(1),P4(2),'*','Color','r');
+P6= [xrange(2),k_v2*xrange(2)+b_v2];
+plot(P6(1),P6(2),'*','Color','r');
 hold on;
 
 function [k,b] = lineequation(P1,P2)
