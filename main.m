@@ -17,3 +17,8 @@ TwelfPoints = gen12Points(Updated_VanishingPoint,Updated_InnerRectangle,OutterPo
 
 
 [image_pad, new_Pixel_Vertex] = get_image_pad(Img, TwelfPoints);
+%% foreground
+[fg3D fg_polygon_function] = fg2Dto3D(n,image_pad,TwelfPoints);
+% n is the number of the foregroundobjects
+% fg3D size(3,4*n)
+% fg_polygon_function n*1 system
