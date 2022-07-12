@@ -151,6 +151,7 @@ switch edge_line
 
 end
 
+
     % line1
     x1 = [vp(1) rect_edge(1)];
     y1 = [vp(2)  rect_edge(2)];
