@@ -1,10 +1,6 @@
-clc;
-clear;
-close
-
-Image2 = imread('shopping-mall.png');
+function [l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,OutterPoint] = spidery_mesh(Image2)
 IGray2 = rgb_to_gray(Image2);
-figure;
+h = figure('Name','Spidery Mesh','Position',[0,0,700,400]);
 imshow(Image2);
 
 hold on
@@ -66,6 +62,7 @@ l7 = addlistener(P9, 'MovingROI', @(r1, evt) P9NewVP(P9, evt, P3, P10, P4, roi_I
 l8 = addlistener(P3, 'MovingROI', @(r1, evt) P3NewVP(P3, evt, P9, P10, P4, roi_InnerRectangle, roi_VanishingPoint, IGray2));
 l9 = addlistener(P10, 'MovingROI', @(r1, evt) P10NewVP(P10, evt, P4, P9, P3, roi_InnerRectangle, roi_VanishingPoint, IGray2));
 l10 = addlistener(P4, 'MovingROI', @(r1, evt) P4NewVP(P4, evt, P10, P9, P3, roi_InnerRectangle, roi_VanishingPoint, IGray2));
+end
 
 %%
 % *functions for radial line*
@@ -198,7 +195,7 @@ b = coefficients(2);
 aLine = [a, -1, b];
 
 end
-
+% 
 function roi = roiChange(~, evt, roi)
 assignin('base', roi, evt.CurrentPosition);
 end
