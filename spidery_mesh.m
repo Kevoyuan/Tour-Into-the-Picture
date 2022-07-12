@@ -26,8 +26,8 @@ roi_VanishingPoint = drawpoint(gca, 'Position', pos_VanishingPoint, "Color", 'k'
 
 % [x y w h]= x and y elements determine the location (top-left) and the w and h elements determine the size
 pos_InnerRectangle = [0.6 * va, 0.6 * vb, 0.5 * va + 0.2 * vb, 0.65 * va];
-roi_InnerRectangle = drawrectangle('Color', 'k', 'FaceAlpha', 0, ...
-    'FaceSelectable', (false), 'LineWidth', 1);
+roi_InnerRectangle = drawrectangle('Color', 'r', 'FaceAlpha', 0, ...
+    'FaceSelectable', (false), 'LineWidth', 2);
 roi_InnerRectangle.Position = pos_InnerRectangle;
 
 % initial updated position
