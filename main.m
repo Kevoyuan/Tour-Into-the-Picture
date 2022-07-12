@@ -30,7 +30,8 @@ Img_pad = imread("input_image_pad.png");
 imshow(Img_pad)
 hold on
 
-plot(new_TwelfPoints(1,:),new_TwelfPoints(2,:),'rO')
+plot_2D_background(new_TwelfPoints,Updated_InnerRectangle)
+
 
 
 
