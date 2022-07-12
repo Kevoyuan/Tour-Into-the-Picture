@@ -1,4 +1,4 @@
-function [l1,l2,l5,l6,l7,l8,l9,l10,vanishing_point,inner_rectangle] = spidery_mesh(Image2)
+function [l1,l2,l5,l6,l7,l8,l9,l10] = spidery_mesh(Image2)
 IGray2 = rgb_to_gray(Image2);
 h = figure('Name','Spidery Mesh','Position',[0,0,700,400]);
 imshow(Image2);
