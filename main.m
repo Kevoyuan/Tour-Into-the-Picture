@@ -2,7 +2,7 @@
 clear;
 
 %% inputs for test
-
+addpath('img')
 Img = imread("simple-room.png");
 n =1;
 %% Spidery mesh
