@@ -18,5 +18,5 @@ Kf = [f,0,0;0,f,0;0,0,1];
 % intrinsic matrix
 K = Ks*Kf;
 
-P3_hom = K\[u,v,1]';
+P3_hom =K\[u,v,1]';
 end
