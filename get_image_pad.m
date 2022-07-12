@@ -1,4 +1,6 @@
-function [image_pad, new_Pixel_Vertex] = get_image_pad(input_image, Pixel_Vertex)    
+function [image_pad, new_Pixel_Vertex] = get_image_pad(input_image, Pixel_Vertex)  
+% Pixel_Vertex: positions of Point1~Point12, size = 2 * 12
+% Pixel_Vertex= [x1,x2,...x12; y1, y2,...y12]
     max_pad = 0;
     %iterate the 2D coordinates of 12 points, in order to find max absolute
     %x/y-coordinate
