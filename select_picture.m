@@ -1,12 +1,13 @@
 rgbImage = imread('peppers.png');
-ROI = roipoly(rgbImage); % Select a closed polygon
+grayImage= rgb_to_gray(rgbImage);
+ROI = roipoly(grayImage); % Select a closed polygon
 subplot(3, 1, 1);
-imshow(rgbImage);
+imshow(grayImage);
 axis('on', 'image');
 title('Original Image');
 
 % Mask the image using bsxfun() function to multiply the mask by each channel individually.
-maskedRgbImage = bsxfun(@times, rgbImage, cast(ROI, 'like', rgbImage));
+maskedRgbImage = bsxfun(@times, grayImage, cast(ROI, 'like', grayImage));
 whos maskedRgbImage
 
 % Display the masked image.
