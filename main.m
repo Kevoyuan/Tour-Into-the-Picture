@@ -1,20 +1,24 @@
 % main
 clear;
 
+%% inputs for test
+
 Img = imread("sagrada_familia.png");
+n =1;
+%% Spidery mesh
 
 [l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,OutterPoint] = spidery_mesh(Img);
 hold on
 
 
 uiwait
-
-
+%% generate 12 pointsc
 %  close the figure window to obtain 12 points matrix
 %  size(TwelfPoints) = (2,12)
 
 TwelfPoints = gen12Points(Updated_VanishingPoint,Updated_InnerRectangle,OutterPoint);
 
+%% add black outline
 
 [image_pad, new_Pixel_Vertex] = get_image_pad(Img, TwelfPoints);
 %% foreground
