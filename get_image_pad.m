@@ -14,7 +14,7 @@ function [image_pad, new_Pixel_Vertex] = get_image_pad(input_image, Pixel_Vertex
     Zero_border = gray2ind(Zeros_border);
     Zero_border((max_pad+1):(end-max_pad), (max_pad+1):(end-max_pad), :) = input_image;
     image_pad = Zero_border;
-    imwrite(image_pad,'oil-painting_pad.png');
+    imwrite(image_pad,'input_image_pad.png');
     
     %get the 2D coordinates of 12 points in new image after padding
     new_Pixel_Vertex = zeros(2,12);
