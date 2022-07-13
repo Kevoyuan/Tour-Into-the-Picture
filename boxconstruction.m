@@ -1,4 +1,9 @@
 function [twelfPoints_3D,Vanishing_point] = boxconstruction(twelfPoints,k)
+% all the points through the function twoD2threeD is projected onto the z=1 plane,
+% afterwards all the points are dragged onto their corresponding plane. 
+% In the end, the z coordinated is magnified by a factor k which is given
+% by the user
+
     P1 = twelfPoints(:,1);
     P2 = twelfPoints(:,2);
     P3 = twelfPoints(:,3);
