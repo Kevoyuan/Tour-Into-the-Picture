@@ -53,7 +53,7 @@ k = 0.55 * size(Img,1);
 %[twelfPoints_3D,vanishingpoint3d] = boxconstruction(vanishingpoint,twelfPoints);
 
 %% foreground
-[fg3D fg_polygon_function] = fg2Dto3D(n,image_pad,TwelfPoints);
+[fg3D fg_polygon_function] = fg2Dto3D(n,image_pad,new_TwelfPoints_vp);
 % n is the number of the foregroundobjects
 % fg3D size(3,4*n)
 % fg_polygon_function n*1 system
