@@ -1,6 +1,6 @@
 % main
 clear;
-
+clc;
 %% inputs for test
 addpath('img')
 Img = imread("simple-room.png");
