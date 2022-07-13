@@ -34,11 +34,17 @@ plot_2D_background(new_TwelfPoints,Updated_InnerRectangle)
 
 
 
+%% 3D box construction
+% real implementation
+%[TwelfPoints_3D,VanishingPoint_3D] = boxconstruction(Updated_VanishingPoint,new_TwelfPoints);
 
-
+% for testing, please run twelfPoints.m for simple extraction of 2D
+% coordinatnions of the 12 Points
+twelfPoints = [P1',P2',P3',P4',P5',P6',P7',P8',P9',P10',P11',P12'];
+[twelfPoints_3D,vanishingpoint3d] = boxconstruction(vanishingpoint,twelfPoints);
 
 %% foreground
-[fg3D fg_polygon_function] = fg2Dto3D(n,image_pad,TwelfPoints);
+%[fg3D fg_polygon_function] = fg2Dto3D(n,image_pad,TwelfPoints);
 % n is the number of the foregroundobjects
 % fg3D size(3,4*n)
 % fg_polygon_function n*1 system
