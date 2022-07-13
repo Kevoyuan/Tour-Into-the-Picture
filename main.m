@@ -41,6 +41,32 @@ hold on
 plot_2D_background(new_TwelfPoints_vp,Updated_InnerRectangle)
 hold off
 
+%% sperate 5 regions 
+
+[leftwall, rearwall, rightwall, ceiling, floor] = image_matting(image_pad, new_TwelfPoints_vp);
+%P should be [x y],instead of [x;y]
+P1 = new_TwelfPoints_vp(:,1)';
+P2 = new_TwelfPoints_vp(:,2)';
+P3 = new_TwelfPoints_vp(:,3)';
+P4 = new_TwelfPoints_vp(:,4)';
+P5 = new_TwelfPoints_vp(:,5)';
+P6 = new_TwelfPoints_vp(:,6)';
+P7 = new_TwelfPoints_vp(:,7)';
+P8 = new_TwelfPoints_vp(:,8)';
+P9 = new_TwelfPoints_vp(:,9)';
+P10 = new_TwelfPoints_vp(:,10)';
+P11 = new_TwelfPoints_vp(:,11)';
+P12 = new_TwelfPoints_vp(:,12)';
+P13 = new_TwelfPoints_vp(:,13)';
+
+%% perspective transform: get rectangles of 5 walls
+outH = size(Img_pad,1);
+outW = size(Img_pad,2);
+leftwall_rec = Perspective_transform(leftwall, P11, P7, P5, P1, outH, outW);
+rearwall_rec = Perspective_transform(rearwall, P7, P8, P1, P2, outH, outW);
+rightwall_rec = Perspective_transform(rightwall, P8, P12, P2, P6, outH, outW);
+ceiling_rec = Perspective_transform(ceiling, P9, P10, P7, P8, outH, outW);
+floor_rec = Perspective_transform(floor, P1, P2, P3, P4, outH, outW);
 
 %% 3D box construction
 % real implementation
