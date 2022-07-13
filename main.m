@@ -16,12 +16,12 @@ uiwait
 %  close the figure window to obtain 12 points matrix
 %  size(TwelfPoints) = (2,12)
 
-TwelfPoints = gen12Points(Updated_VanishingPoint,Updated_InnerRectangle,OutterPoint);
+TwelfPoints_vp = gen12Points(Updated_VanishingPoint,Updated_InnerRectangle,OutterPoint);
 
 
 %% add black outline
 
-[image_pad, new_TwelfPoints] = get_image_pad(Img, TwelfPoints);
+[image_pad, new_TwelfPoints] = get_image_pad(Img, TwelfPoints_vp);
 
 
 %% plot 12 points
@@ -37,7 +37,7 @@ hold off
 %% 3D box construction
 % real implementation
 k = 0.45*size(Img,1);
-[TwelfPoints_3D,VanishingPoint_3D] = boxconstruction(Updated_VanishingPoint,TwelfPoints,k);
+[TwelfPoints_3D,VanishingPoint_3D] = boxconstruction(Updated_VanishingPoint,TwelfPoints_vp,k);
 
 % for testing, please run twelfPoints.m for simple extraction of 2D
 % coordinatnions of the 12 Points
