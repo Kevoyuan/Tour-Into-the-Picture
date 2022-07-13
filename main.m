@@ -12,7 +12,7 @@ hold on
 
 
 uiwait
-%% generate 12 pointsc
+%% generate 12 points
 %  close the figure window to obtain 12 points matrix
 %  size(TwelfPoints) = (2,12)
 
