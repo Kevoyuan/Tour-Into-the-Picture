@@ -21,7 +21,7 @@ TwelfPoints_vp = gen12Points(Updated_VanishingPoint,Updated_InnerRectangle,Outte
 
 %% add black outline
 
-[image_pad, new_TwelfPoints] = get_image_pad(Img, TwelfPoints_vp);
+[image_pad, new_TwelfPoints_vp] = get_image_pad(Img, TwelfPoints_vp);
 
 
 %% plot 12 points
@@ -30,7 +30,7 @@ Img_pad = imread("input_image_pad.png");
 imshow(Img_pad)
 hold on
 
-plot_2D_background(new_TwelfPoints,Updated_InnerRectangle)
+plot_2D_background(new_TwelfPoints_vp,Updated_InnerRectangle)
 hold off
 
 
