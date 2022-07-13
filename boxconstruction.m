@@ -1,4 +1,4 @@
-function [twelfPoints_3D,Vanishing_point] = boxconstruction(vanishingpoint,twelfPoints,k)
+function [twelfPoints_3D,Vanishing_point] = boxconstruction(twelfPoints,k)
     P1 = twelfPoints(:,1);
     P2 = twelfPoints(:,2);
     P3 = twelfPoints(:,3);
@@ -11,8 +11,8 @@ function [twelfPoints_3D,Vanishing_point] = boxconstruction(vanishingpoint,twelf
     P10 = twelfPoints(:,10);
     P11 = twelfPoints(:,11);
     P12 = twelfPoints(:,12);
-    
-%     k =   0.45*size(Img,1);
+    vanishingpoint = twelfPoints(:,13);
+
     u_v = vanishingpoint(1);
     v_v = vanishingpoint(2);
     

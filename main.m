@@ -37,7 +37,7 @@ hold off
 %% 3D box construction
 % real implementation
 k = 0.45*size(Img,1);
-[TwelfPoints_3D,VanishingPoint_3D] = boxconstruction(Updated_VanishingPoint,new_TwelfPoints,k);
+[TwelfPoints_3D,VanishingPoint_3D] = boxconstruction(TwelfPoints_vp,k);
 
 % for testing, please run twelfPoints.m for simple extraction of 2D
 % coordinatnions of the 12 Points
