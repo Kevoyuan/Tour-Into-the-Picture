@@ -84,6 +84,44 @@ scatter3(p11(1),p11(2),p11(3));
 hold on;
 scatter3(p12(1),p12(2),p12(3));
 hold on;
+
+plot3([p1(1),p2(1)],[p1(2),p2(2)],[p1(3),p2(3)],'Color','r');
+hold on;
+plot3([p1(1),p7(1)],[p1(2),p7(2)],[p1(3),p7(3)],'Color','r');
+hold on;
+plot3([p8(1),p2(1)],[p8(2),p2(2)],[p8(3),p2(3)],'Color','r');
+hold on;
+plot3([p8(1),p7(1)],[p8(2),p7(2)],[p8(3),p7(3)],'Color','r');
+hold on;
+
+plot3([p1(1),p3(1)],[p1(2),p3(2)],[p1(3),p3(3)],'Color','g');
+hold on;
+plot3([p4(1),p2(1)],[p4(2),p2(2)],[p4(3),p2(3)],'Color','g');
+hold on;
+plot3([p4(1),p3(1)],[p4(2),p3(2)],[p4(3),p3(3)],'Color','g');
+hold on;
+
+plot3([p7(1),p9(1)],[p7(2),p9(2)],[p7(3),p9(3)],'Color','b');
+hold on;
+plot3([p8(1),p10(1)],[p8(2),p10(2)],[p8(3),p10(3)],'Color','b');
+hold on;
+plot3([p9(1),p10(1)],[p9(2),p10(2)],[p9(3),p10(3)],'Color','b');
+hold on;
+
+plot3([p5(1),p11(1)],[p5(2),p11(2)],[p5(3),p11(3)],'Color','k');
+hold on;
+plot3([p7(1),p11(1)],[p7(2),p11(2)],[p7(3),p11(3)],'Color','k');
+hold on;
+plot3([p5(1),p1(1)],[p5(2),p1(2)],[p5(3),p1(3)],'Color','k');
+hold on;
+
+plot3([p6(1),p12(1)],[p6(2),p12(2)],[p6(3),p12(3)],'Color','y');
+hold on;
+plot3([p6(1),p2(1)],[p6(2),p2(2)],[p6(3),p2(3)],'Color','y');
+hold on;
+plot3([p8(1),p12(1)],[p8(2),p12(2)],[p8(3),p12(3)],'Color','y');
+hold on;
+
 % scatter3(p_test(1),p_test(2),p_test(3));
 % grid off;
 % axis equal;
