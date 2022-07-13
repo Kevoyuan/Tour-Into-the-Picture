@@ -151,6 +151,9 @@ function [twelfPoints_3D,Vanishing_point] = boxconstruction(twelfPoints,k)
     plot3([p8(1),p12(1)],[p8(2),p12(2)],[p8(3),p12(3)],'Color','y');
     hold on;
     
+    plot3([0,0],[0,50],[0,0]);
+    plot3([0,50],[0,0],[0,0]);
+    plot3([0,0],[0,0],[0,50]);
     % scatter3(p_test(1),p_test(2),p_test(3));
     % grid off;
     axis equal;

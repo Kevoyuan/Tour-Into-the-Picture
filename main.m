@@ -36,8 +36,18 @@ hold off
 
 %% 3D box construction
 % real implementation
-k = 0.45*size(Img,1);
+k = 0.55 * size(Img,1);
+
+% the rear wall is red
+% the ceiling is blue
+% the floor is green
+% the left wall is black
+% the right wall is yellow
+rotate3d on;
+camproj("perspective");
 [TwelfPoints_3D,VanishingPoint_3D] = boxconstruction(new_TwelfPoints_vp,k);
+v = [50,-100,-100];
+view(v);
 
 % for testing, please run twelfPoints.m for simple extraction of 2D
 % coordinatnions of the 12 Points
