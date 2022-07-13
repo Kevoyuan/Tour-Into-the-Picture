@@ -1,7 +1,8 @@
 
-function TwelfPoints = gen12Points(vp,rect,OutterPoint)
+function TwelfPoints_VP = gen12Points(vp,rect,OutterPoint)
 global m
 global n
+global OutterPoint
 
 % % draw vanishing point
 
@@ -9,7 +10,7 @@ global n
 vanishingpoint = vp;
 
 
-% calculate the 11 points
+% calculate the 12 points
 
 Points =cell(12,1);
 
@@ -22,113 +23,108 @@ Point1 = EdgePoint{3};
 Points{1} = Point1;
 Point2 = EdgePoint{4};
 Points{2} = Point2;
+Points{13} = vanishingpoint;
 
 
 
-% ceiling
 
-Point9 = OutterPoint(1,:);
-Points{9} = Point9;
 
-if Point9(2) == 0.5 && Point9(1)< 0.5* n
-    edge_line_P9 = 1;
-% elseif Point9(1) == 0.5 && Point9(1)> 0.5* n
-%     edge_line_P9 = 3;
-elseif Point9(1) == 0.5 && Point9(2)< 0.5* m
+
+%% P9 & P11
+if OutterPoint(1,2) == 0.5 && OutterPoint(1,1)< 0.5* n
+    edge_line_P11 = 1;
+    Point9 = OutterPoint(1,:);
+    Point11 = intersection(vanishingpoint, Point7,edge_line_P11);
+
+    % elseif Point9(1) == 0.5 && Point9(1)> 0.5* n
+    %     edge_line_P9 = 3;
+
+
+elseif OutterPoint(1,1) == 0.5 && OutterPoint(1,2)< 0.5* m
     edge_line_P9 = 2;
-% elseif Point9(2) == 0.5 && Point9(2)> 0.5* m
-%     edge_line_P9 = 4;
+    Point9 = intersection(vanishingpoint, Point7,edge_line_P9);
+    Point11 = OutterPoint(1,:);
+
+    % elseif Point9(2) == 0.5 && Point9(2)> 0.5* m
+    %     edge_line_P9 = 4;
+
 end
-
-
-
-
-% plot(Point9(1),Point9(2),'*','Color','r');
-% hold on;
-% plot([vanishingpoint(1),Point9(1)],[vanishingpoint(2),Point9(2)],'r');
-% hold on;
-
-
-Point10 = OutterPoint(2,:);
-Points{10} = Point10;
-
-if Point10(2) == 0.5 && Point10(1)> 0.5* n
-    edge_line_P10 = 3;
-% elseif Point9(1) == 0.5 && Point9(1)> 0.5* n
-%     edge_line_P9 = 3;
-elseif Point10(1) == n+0.5 && Point10(2)< 0.5* m
-    edge_line_P10 = 2;
-% elseif Point9(2) == 0.5 && Point9(2)> 0.5* m
-%     edge_line_P9 = 4;
-end
-
-% plot(Point10(1),Point10(2),'*','Color','r');
-% hold on;
-% plot([vanishingpoint(1),Point10(1)],[vanishingpoint(2),Point10(2)],'r');
-
-% floor
-
-Point3 = OutterPoint(3,:);
-Points{3} = Point3;
-
-if Point3(2) == m+0.5 && Point3(1)< 0.5* n
-    edge_line_P3 = 1;
-% elseif Point9(1) == 0.5 && Point9(1)> 0.5* n
-%     edge_line_P9 = 3;
-elseif Point3(1) == 0.5 && Point3(2)> 0.5* m
-    edge_line_P3 = 4;
-% elseif Point9(2) == 0.5 && Point9(2)> 0.5* m
-%     edge_line_P9 = 4;
-end
-
-% plot(Point3(1),Point3(2),'*','Color','r');
-% hold on;
-% plot([vanishingpoint(1),Point3(1)],[vanishingpoint(2),Point3(2)],'r');
-
-
-Point4 = OutterPoint(4,:);
-Points{4} = Point4;
-
-if Point4(1) == n+0.5 && Point4(2)> 0.5* m
-    edge_line_P4 = 4;
-% elseif Point9(1) == 0.5 && Point9(1)> 0.5* n
-%     edge_line_P9 = 3;
-elseif Point4(2) == m+0.5 && Point4(1)> 0.5* n
-    edge_line_P4 = 3;
-% elseif Point9(2) == 0.5 && Point9(2)> 0.5* m
-%     edge_line_P9 = 4;
-end
-
-% plot(Point4(1),Point4(2),'*','Color','r');
-% hold on;
-% plot([vanishingpoint(1),Point4(1)],[vanishingpoint(2),Point4(2)],'r');
-%% 
-
-% left wall
-
-Point11 = intersection(vanishingpoint, Point9,edge_line_P9);
+Points{9} = Point9;
 Points{11} = Point11;
-% plot(Point11(1),Point11(2),'*','Color','r');
-% hold on;
 
-Point5 = intersection(vanishingpoint, Point3,edge_line_P3);
-Points{5} = Point5;
-% plot(Point5(1),Point5(2),'*','Color','r');
-% hold on;
 
-% right wall
-Point12 = intersection(vanishingpoint, Point10,edge_line_P10);
+%% P10 & P12
+if OutterPoint(2,2) == 0.5 && OutterPoint(2,1)> 0.5* n
+
+    edge_line_P12 = 3;
+    Point10 = OutterPoint(2,:);
+    Point12 = intersection(vanishingpoint, Point8,edge_line_P12);
+
+
+    % elseif Point9(1) == 0.5 && Point9(1)> 0.5* n
+    %     edge_line_P9 = 3;
+
+elseif OutterPoint(2,1) == n+0.5 && OutterPoint(2,2)< 0.5* m
+    edge_line_P10 = 2;
+    Point10 = intersection(vanishingpoint, Point8,edge_line_P10);
+    Point12 = OutterPoint(2,:);
+
+    % elseif Point9(2) == 0.5 && Point9(2)> 0.5* m
+    %     edge_line_P9 = 4;
+end
+Points{10} = Point10;
 Points{12} = Point12;
-% plot(Point12(1),Point12(2),'*','Color','r');
-% hold on;
 
-Point6 = intersection(vanishingpoint, Point4,edge_line_P4);
+
+
+
+%% P3 & P5
+
+if OutterPoint(3,2) == m+0.5 && OutterPoint(3,1)< 0.5* n
+    edge_line_P5 = 1;
+    Point3 = OutterPoint(3,:);
+    Point5 = intersection(vanishingpoint, Point1,edge_line_P5);
+
+
+
+    % elseif Point9(1) == 0.5 && Point9(1)> 0.5* n
+    %     edge_line_P9 = 3;
+elseif OutterPoint(3,1) == 0.5 && OutterPoint(3,2)> 0.5* m
+    edge_line_P3 = 4;
+    Point3 = intersection(vanishingpoint, Point1,edge_line_P3);
+    Point5 = OutterPoint(3,:);
+    % elseif Point9(2) == 0.5 && Point9(2)> 0.5* m
+    %     edge_line_P9 = 4;
+end
+
+Points{3} = Point3;
+Points{5} = Point5;
+
+%% P4 & P6
+
+if OutterPoint(4,2) == m+0.5 && OutterPoint(4,1)> 0.5* n
+    edge_line_P6 = 3;
+    Point4 = OutterPoint(4,:);
+    Point6 = intersection(vanishingpoint, Point2,edge_line_P6);
+
+
+    % elseif Point9(1) == 0.5 && Point9(1)> 0.5* n
+    %     edge_line_P9 = 3;
+elseif OutterPoint(4,1) == n+0.5 && OutterPoint(4,2)> 0.5* m
+    edge_line_P4 = 4;
+    Point4 = intersection(vanishingpoint, Point2,edge_line_P4);
+    Point6 = OutterPoint(4,:);
+
+    % elseif Point9(2) == 0.5 && Point9(2)> 0.5* m
+    %     edge_line_P9 = 4;
+end
+
+Points{4} = Point4;
 Points{6} = Point6;
-% plot(Point6(1),Point6(2),'*','Color','r');
-% hold on;
+%%
 
 
-TwelfPoints = (cell2mat(Points))';
+TwelfPoints_VP = (cell2mat(Points))';
 end
 
 
@@ -139,7 +135,7 @@ global n
 
 switch edge_line
     case 1
-%         [x1 y1 x2 y2]
+        %         [x1 y1 x2 y2]
         line2 = [0.5 1 0.5 2];
 
     case 2
@@ -152,22 +148,22 @@ switch edge_line
 end
 
 
-    % line1
-    x1 = [vp(1) rect_edge(1)];
-    y1 = [vp(2)  rect_edge(2)];
+% line1
+x1 = [vp(1) rect_edge(1)];
+y1 = [vp(2)  rect_edge(2)];
 
-    % line2
-    x2 = [line2(1) line2(3)];
-    y2 = [line2(2) line2(4)];
+% line2
+x2 = [line2(1) line2(3)];
+y2 = [line2(2) line2(4)];
 
-    p1 = polyfit(x1, y1, 1);
-    p2 = polyfit(x2, y2, 1);
-    
-    %calculate intersection
-    x_intersect = fzero(@(x) polyval(p1 - p2, x), 3);
-    y_intersect = polyval(p1, x_intersect);
-    
-    intersect = [x_intersect, y_intersect];
+p1 = polyfit(x1, y1, 1);
+p2 = polyfit(x2, y2, 1);
+
+%calculate intersection
+x_intersect = fzero(@(x) polyval(p1 - p2, x), 3);
+y_intersect = polyval(p1, x_intersect);
+
+intersect = [x_intersect, y_intersect];
 end
 
 
