@@ -36,8 +36,16 @@ hold off
 
 %% 3D box construction
 % real implementation
-k = 0.45*size(Img,1);
-[TwelfPoints_3D,VanishingPoint_3D] = boxconstruction(TwelfPoints_vp,k);
+k = 0.55 * size(Img,1);
+
+% the rear wall is red
+% the ceiling is blue
+% the floor is green
+% the left wall is black
+% the right wall is yellow
+
+[TwelfPoints_3D,VanishingPoint_3D] = boxconstruction(new_TwelfPoints_vp,k);
+
 
 % for testing, please run twelfPoints.m for simple extraction of 2D
 % coordinatnions of the 12 Points
@@ -45,7 +53,7 @@ k = 0.45*size(Img,1);
 %[twelfPoints_3D,vanishingpoint3d] = boxconstruction(vanishingpoint,twelfPoints);
 
 %% foreground
-%[fg3D fg_polygon_function] = fg2Dto3D(n,image_pad,TwelfPoints);
+[fg3D fg_polygon_function] = fg2Dto3D(n,image_pad,TwelfPoints);
 % n is the number of the foregroundobjects
 % fg3D size(3,4*n)
 % fg_polygon_function n*1 system

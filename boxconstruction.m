@@ -86,7 +86,11 @@ function [twelfPoints_3D,Vanishing_point] = boxconstruction(twelfPoints,k)
     % p_test = p_test / p_test(2) * ceiling;
     
     twelfPoints_3D = [p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12]; 
+
     figure;
+    rotate3d on;
+    camproj("perspective");
+    
     scatter3(Vanishing_point(1),Vanishing_point(2),Vanishing_point(3),'*');
     hold on;
     scatter3(p1(1),p1(2),p1(3));
@@ -151,8 +155,13 @@ function [twelfPoints_3D,Vanishing_point] = boxconstruction(twelfPoints,k)
     plot3([p8(1),p12(1)],[p8(2),p12(2)],[p8(3),p12(3)],'Color','y');
     hold on;
     
+    plot3([0,0],[0,50],[0,0]);
+    plot3([0,50],[0,0],[0,0]);
+    plot3([0,0],[0,0],[0,50]);
     % scatter3(p_test(1),p_test(2),p_test(3));
     % grid off;
+    v = [50,-100,-100];
+    view(v);
     axis equal;
     
     xlabel('X');
