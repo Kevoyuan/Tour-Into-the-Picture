@@ -36,7 +36,7 @@ hold off
 
 %% 3D box construction
 % real implementation
-[TwelfPoints_3D,VanishingPoint_3D] = boxconstruction(Updated_VanishingPoint,new_TwelfPoints);
+[TwelfPoints_3D,VanishingPoint_3D] = boxconstruction(Updated_VanishingPoint,TwelfPoints);
 
 % for testing, please run twelfPoints.m for simple extraction of 2D
 % coordinatnions of the 12 Points
