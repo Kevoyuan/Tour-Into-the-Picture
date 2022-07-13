@@ -1,4 +1,4 @@
-function [l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,OutterPoint] = spidery_mesh(Image2)
+function [l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,OutterPoint,Updated_VanishingPoint,Updated_InnerRectangle] = spidery_mesh(Image2)
 IGray2 = rgb_to_gray(Image2);
 h = figure('Name','Spidery Mesh','Position',[0,0,700,400]);
 imshow(Image2);
@@ -9,6 +9,7 @@ hold on
 global OutterPoint
 global m;
 global n;
+
 
 [m, n] = size(IGray2);
 
@@ -31,7 +32,7 @@ roi_InnerRectangle = drawrectangle('Color', 'r', 'FaceAlpha', 0, ...
 roi_InnerRectangle.Position = pos_InnerRectangle;
 
 % initial updated position
-Updated_VanishingPoint = pos_InnerRectangle;
+Updated_VanishingPoint = pos_VanishingPoint;
 Updated_InnerRectangle = pos_InnerRectangle;
 %%
 % *Draw 4 radial lines*
