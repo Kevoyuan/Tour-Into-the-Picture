@@ -23,6 +23,7 @@ Point1 = EdgePoint{3};
 Points{1} = Point1;
 Point2 = EdgePoint{4};
 Points{2} = Point2;
+Points{13} = vanishingpoint;
 
 
 
