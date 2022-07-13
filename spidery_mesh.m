@@ -41,8 +41,8 @@ l2 = addlistener(roi_InnerRectangle, 'MovingROI', @(src, evt) radialline_ir(src,
 
 % get the position of Vanishing Poit(VP) and Inner Rectangle(IR),
 
-l3 = addlistener(roi_InnerRectangle, 'ROIMoved', @(src, evt) roiChange(src, evt, 'Updated_InnerRectangle'));
-l4 = addlistener(roi_VanishingPoint, 'ROIMoved', @(src, evt) roiChange(src, evt, 'Updated_VanishingPoint'));
+l3 = addlistener(roi_InnerRectangle, 'MovingROI', @(src, evt) roiChange(src, evt, 'Updated_InnerRectangle'));
+l4 = addlistener(roi_VanishingPoint, 'MovingROI', @(src, evt) roiChange(src, evt, 'Updated_VanishingPoint'));
 
 % initial P
 
