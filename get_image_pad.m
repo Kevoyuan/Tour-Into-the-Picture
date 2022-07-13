@@ -1,4 +1,11 @@
+<<<<<<< HEAD
 function [image_pad, new_Pixel_Vertex] = get_image_pad(input_image, Pixel_Vertex)    
+=======
+function [image_pad, new_Pixel_Vertex] = get_image_pad(input_image, Pixel_Vertex)  
+% Pixel_Vertex: positions of Point1~Point12, size = 2 * 12
+% Pixel_Vertex= [x1,x2,...x12; y1, y2,...y12]
+    
+>>>>>>> b9d16393463a0f735932acb161679b86a11941d6
     max_pad = 0;
     %iterate the 2D coordinates of 13 points, in order to find max absolute
     %x/y-coordinate
@@ -9,9 +16,15 @@ function [image_pad, new_Pixel_Vertex] = get_image_pad(input_image, Pixel_Vertex
             end
         end
     end
+<<<<<<< HEAD
     
     max_pad = ceil(max_pad)+20;
             
+=======
+
+    max_pad = ceil(max_pad+0.1*size(input_image,1));
+
+>>>>>>> b9d16393463a0f735932acb161679b86a11941d6
     Zeros_border = zeros(size(input_image,1)+2*max_pad, size(input_image,2)+2*max_pad,3);
     Zero_border = gray2ind(Zeros_border);
     Zero_border((max_pad+1):(end-max_pad), (max_pad+1):(end-max_pad), :) = input_image;

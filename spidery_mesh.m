@@ -26,9 +26,13 @@ roi_VanishingPoint = drawpoint(gca, 'Position', pos_VanishingPoint, "Color", 'k'
 
 % [x y w h]= x and y elements determine the location (top-left) and the w and h elements determine the size
 pos_InnerRectangle = [0.6 * va, 0.6 * vb, 0.5 * va + 0.2 * vb, 0.65 * va];
-roi_InnerRectangle = drawrectangle('Color', 'k', 'FaceAlpha', 0, ...
-    'FaceSelectable', (false), 'LineWidth', 1);
+roi_InnerRectangle = drawrectangle('Color', 'r', 'FaceAlpha', 0, ...
+    'FaceSelectable', (false), 'LineWidth', 2);
 roi_InnerRectangle.Position = pos_InnerRectangle;
+
+% initial updated position
+Updated_VanishingPoint = pos_InnerRectangle;
+Updated_InnerRectangle = pos_InnerRectangle;
 %%
 % *Draw 4 radial lines*
 
@@ -37,8 +41,8 @@ l2 = addlistener(roi_InnerRectangle, 'MovingROI', @(src, evt) radialline_ir(src,
 
 % get the position of Vanishing Poit(VP) and Inner Rectangle(IR),
 
-l3 = addlistener(roi_InnerRectangle, 'ROIMoved', @(src, evt) roiChange(src, evt, 'Updated_InnerRectangle'));
-l4 = addlistener(roi_VanishingPoint, 'ROIMoved', @(src, evt) roiChange(src, evt, 'Updated_VanishingPoint'));
+l3 = addlistener(roi_InnerRectangle, 'MovingROI', @(src, evt) roiChange(src, evt, 'Updated_InnerRectangle'));
+l4 = addlistener(roi_VanishingPoint, 'MovingROI', @(src, evt) roiChange(src, evt, 'Updated_VanishingPoint'));
 
 % initial P
 
@@ -195,7 +199,7 @@ b = coefficients(2);
 aLine = [a, -1, b];
 
 end
-% 
+%
 function roi = roiChange(~, evt, roi)
 assignin('base', roi, evt.CurrentPosition);
 end
