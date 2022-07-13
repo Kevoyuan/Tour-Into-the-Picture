@@ -112,7 +112,7 @@ if OutterPoint(4,2) == m+0.5 && OutterPoint(4,1)> 0.5* n
 elseif OutterPoint(4,1) == n+0.5 && OutterPoint(4,2)> 0.5* m
     edge_line_P4 = 4;
     Point4 = intersection(vanishingpoint, Point2,edge_line_P4);
-    Point5 = OutterPoint(4,:);
+    Point6 = OutterPoint(4,:);
 
     % elseif Point9(2) == 0.5 && Point9(2)> 0.5* m
     %     edge_line_P9 = 4;
