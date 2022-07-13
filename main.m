@@ -43,11 +43,9 @@ k = 0.55 * size(Img,1);
 % the floor is green
 % the left wall is black
 % the right wall is yellow
-rotate3d on;
-camproj("perspective");
+
 [TwelfPoints_3D,VanishingPoint_3D] = boxconstruction(new_TwelfPoints_vp,k);
-v = [50,-100,-100];
-view(v);
+
 
 % for testing, please run twelfPoints.m for simple extraction of 2D
 % coordinatnions of the 12 Points
@@ -55,7 +53,7 @@ view(v);
 %[twelfPoints_3D,vanishingpoint3d] = boxconstruction(vanishingpoint,twelfPoints);
 
 %% foreground
-%[fg3D fg_polygon_function] = fg2Dto3D(n,image_pad,TwelfPoints);
+[fg3D fg_polygon_function] = fg2Dto3D(n,image_pad,TwelfPoints);
 % n is the number of the foregroundobjects
 % fg3D size(3,4*n)
 % fg_polygon_function n*1 system
