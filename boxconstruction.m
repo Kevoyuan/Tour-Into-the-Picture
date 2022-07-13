@@ -11,7 +11,8 @@ function [twelfPoints_3D,Vanishing_point] = boxconstruction(vanishingpoint,twelf
     P10 = twelfPoints(:,10);
     P11 = twelfPoints(:,11);
     P12 = twelfPoints(:,12);
-
+    
+    k = 400;
     u_v = vanishingpoint(1);
     v_v = vanishingpoint(2);
     
@@ -67,6 +68,19 @@ function [twelfPoints_3D,Vanishing_point] = boxconstruction(vanishingpoint,twelf
     p12 = twoD2threeD(u_v,v_v,P12(1), P12(2));
     p12 = p12/p12(2) * ceiling;
     
+    Vanishing_point(3) = Vanishing_point(3) * k;
+    p1(3) = p1(3) * k;
+    p2(3) = p2(3) * k;
+    p3(3) = p3(3) * k;
+    p4(3) = p4(3) * k;
+    p5(3) = p5(3) * k;
+    p6(3) = p6(3) * k;
+    p7(3) = p7(3) * k;
+    p8(3) = p8(3) * k;
+    p9(3) = p9(3) * k;
+    p10(3) = p10(3) * k;
+    p11(3) = p11(3) * k;
+    p12(3) = p12(3) * k;
     % % p_test on the ceiling
     % p_test = twoD2threeD(u_v,v_v,6,2);
     % p_test = p_test / p_test(2) * ceiling;
@@ -139,7 +153,7 @@ function [twelfPoints_3D,Vanishing_point] = boxconstruction(vanishingpoint,twelf
     
     % scatter3(p_test(1),p_test(2),p_test(3));
     % grid off;
-    % axis equal;
+    axis equal;
     
     xlabel('X');
     ylabel('Y');
