@@ -31,7 +31,7 @@ imshow(Img_pad)
 hold on
 
 plot_2D_background(new_TwelfPoints,Updated_InnerRectangle)
-
+hold off
 
 
 %% 3D box construction
