@@ -5,9 +5,17 @@ clc;
 addpath('img')
 Img = imread("simple-room.png");
 n =1;
+%% Image Segmentation
+patchsize = 9;
+fillorder = "gradient";
+[foreground,background] = ImageSegment(Img,n,patchsize,fillorder);
+for i = 1:n
+    figure;
+    imshow(foreground{i});
+end
 %% Spidery mesh
 
-[l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,OutterPoint,Updated_VanishingPoint,Updated_InnerRectangle] = spidery_mesh(Img);
+[l1,l2,l3,l4,l5,l6,l7,l8,l9,l10,OutterPoint,Updated_VanishingPoint,Updated_InnerRectangle] = spidery_mesh(background);
 hold on
 
 
@@ -21,7 +29,7 @@ TwelfPoints_vp = gen12Points(Updated_VanishingPoint,Updated_InnerRectangle,Outte
 
 %% add black outline
 
-[image_pad, new_TwelfPoints_vp] = get_image_pad(Img, TwelfPoints_vp);
+[image_pad, new_TwelfPoints_vp] = get_image_pad(background, TwelfPoints_vp);
 
 
 %% plot 12 points
@@ -53,7 +61,8 @@ k = 0.55 * size(Img,1);
 %[twelfPoints_3D,vanishingpoint3d] = boxconstruction(vanishingpoint,twelfPoints);
 
 %% foreground
-[fg3D fg_polygon_function] = fg2Dto3D(n,image_pad,TwelfPoints);
+%
+%[fg3D fg_polygon_function] = fg2Dto3D(n,image_pad,TwelfPoints);
 % n is the number of the foregroundobjects
 % fg3D size(3,4*n)
 % fg_polygon_function n*1 system
