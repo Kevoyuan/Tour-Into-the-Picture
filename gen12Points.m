@@ -106,7 +106,7 @@ end
 
 % left wall
 
-Point11 = intersection(vanishingpoint, Point9,edge_line_P9);
+Point11 = intersection(vanishingpoint, Point7,edge_line_P9);
 Points{11} = Point11;
 % plot(Point11(1),Point11(2),'*','Color','r');
 % hold on;
