@@ -17,6 +17,10 @@ function [foreground,background] = ImageSegment(im1,n,patchsize,fillorder)
         % cut out the foreground object and save it in the foreground cell
         maskedrgbimage = bsxfun(@times,im1, cast(foregroundmask, 'like', im1));
         foreground{i} = maskedrgbimage;
+        
+        % all the corners of the ROI is needed for further processing of
+        % the foreground objects
+        
 
         % merge the backgound
         background = inpaintExemplar(background,foregroundmask,"PatchSize",patchsize,"FillOrder",fillorder);
