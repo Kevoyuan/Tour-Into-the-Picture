@@ -12,16 +12,16 @@ hold on
 
 
 uiwait
-%% generate 12 pointsc
+%% generate 12 points
 %  close the figure window to obtain 12 points matrix
 %  size(TwelfPoints) = (2,12)
 
-TwelfPoints = gen12Points(Updated_VanishingPoint,Updated_InnerRectangle,OutterPoint);
+TwelfPoints_vp = gen12Points(Updated_VanishingPoint,Updated_InnerRectangle,OutterPoint);
 
 
 %% add black outline
 
-[image_pad, new_TwelfPoints] = get_image_pad(Img, TwelfPoints);
+[image_pad, new_TwelfPoints] = get_image_pad(Img, TwelfPoints_vp);
 
 
 %% plot 12 points
