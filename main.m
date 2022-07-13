@@ -36,7 +36,8 @@ plot_2D_background(new_TwelfPoints,Updated_InnerRectangle)
 
 %% 3D box construction
 % real implementation
-[TwelfPoints_3D,VanishingPoint_3D] = boxconstruction(Updated_VanishingPoint,TwelfPoints);
+k = 0.45*size(Img,1);
+[TwelfPoints_3D,VanishingPoint_3D] = boxconstruction(Updated_VanishingPoint,TwelfPoints,k);
 
 % for testing, please run twelfPoints.m for simple extraction of 2D
 % coordinatnions of the 12 Points
