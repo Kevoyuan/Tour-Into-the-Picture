@@ -1,5 +1,5 @@
 
-function TwelfPoints_VP = gen12Points(vp,rect,OutterPoint)
+function TwelfPoints = gen12Points(vp,rect,OutterPoint)
 global m
 global n
 global OutterPoint
@@ -23,7 +23,6 @@ Point1 = EdgePoint{3};
 Points{1} = Point1;
 Point2 = EdgePoint{4};
 Points{2} = Point2;
-Points{13} = vanishingpoint;
 
 
 
@@ -124,7 +123,7 @@ Points{6} = Point6;
 %%
 
 
-TwelfPoints_VP = (cell2mat(Points))';
+TwelfPoints = (cell2mat(Points))';
 end
 
 
