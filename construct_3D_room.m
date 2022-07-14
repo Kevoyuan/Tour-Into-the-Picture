@@ -14,7 +14,6 @@ function [] = construct_3D_room(wall1,wall2,wall3,wall4,wall5,threeDcoords)
     p10 = threeDcoords(:,10)';
     p11 = threeDcoords(:,11)';
     p12 = threeDcoords(:,12)';
-    p13 = threeDcoords(:,13)';
 
     %texture mapping
     cdata1_1 = flipdim(wall1,1);
