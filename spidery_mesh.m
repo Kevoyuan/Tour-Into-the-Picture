@@ -1,4 +1,4 @@
-function [l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, OutterPoint] = spidery_mesh(Img)
+function [l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, OutterPoint,Updated_VanishingPoint,Updated_InnerRectangle] = spidery_mesh(Img)
 % addpath('img')
 % Image2 = imread("simple-room.png");
 
@@ -9,6 +9,8 @@ imshow(Img);
 hold on
 %%
 % get the size of the img
+global m;
+global n;
 
 [m, n] = size(IGray2);
 
@@ -31,8 +33,8 @@ roi_InnerRectangle = drawrectangle('Color', 'r', 'FaceAlpha', 0, ...
 roi_InnerRectangle.Position = pos_InnerRectangle;
 
 % initial updated position
-% Updated_VanishingPoint = pos_VanishingPoint;
-% Updated_InnerRectangle = pos_InnerRectangle;
+Updated_VanishingPoint = pos_VanishingPoint;
+Updated_InnerRectangle = pos_InnerRectangle;
 %%
 % *Draw 4 radial lines*
 
@@ -94,6 +96,7 @@ C = evt.CurrentPosition;
 
 RadialLine = zeros(1, 4);
 % BorderPointPlot = zeros(1, 4);
+OutterPoint = zeros(4, 2);
 
 for x = 1:4
     ThroPoint = EdgePoint{x};
@@ -129,8 +132,8 @@ for x = 1:4
 end
 
 assignin('base', 'OutterPoint', OutterPoint);
-assignin('base', 'Updated_VanishingPoint', C);
 assignin('base', 'Updated_InnerRectangle', rect.Position);
+
 end
 
 function OutterPoint = radialline_ir(src, evt, vp, rect, img)
@@ -192,13 +195,10 @@ for x = 1:4
     uistack(RadialLine(x), 'down', 5);
     uistack(vp, 'up', 2);
     uistack(rect, 'up', 2);
-    assignin('base', 'OutterPoint', OutterPoint);
-    assignin('base', 'Updated_VanishingPoint', C);
-    assignin('base', 'Updated_InnerRectangle', rect_pos);
-
-
+    
 end
-
+assignin('base', 'OutterPoint', OutterPoint);
+assignin('base', 'Updated_VanishingPoint', C);
 end
 
 function aLine = TwoPointLine(C, ThroPoint)
