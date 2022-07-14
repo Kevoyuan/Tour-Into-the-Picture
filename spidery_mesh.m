@@ -129,6 +129,8 @@ for x = 1:4
 end
 
 assignin('base', 'OutterPoint', OutterPoint);
+assignin('base', 'Updated_VanishingPoint', C);
+assignin('base', 'Updated_InnerRectangle', rect.Position);
 end
 
 function OutterPoint = radialline_ir(src, evt, vp, rect, img)
@@ -158,6 +160,7 @@ C = vp.Position;
 
 RadialLine = zeros(1, 4);
 % BorderPointPlot = zeros(1, 4);
+OutterPoint = zeros(4, 2);
 
 for x = 1:4
     ThroPoint = EdgePoint{x};
@@ -190,6 +193,10 @@ for x = 1:4
     uistack(vp, 'up', 2);
     uistack(rect, 'up', 2);
     assignin('base', 'OutterPoint', OutterPoint);
+    assignin('base', 'Updated_VanishingPoint', C);
+    assignin('base', 'Updated_InnerRectangle', rect_pos);
+
+
 end
 
 end
