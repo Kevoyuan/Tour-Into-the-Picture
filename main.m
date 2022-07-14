@@ -5,7 +5,7 @@ close;
 %% inputs for test
 addpath('img')
 Img = imread("simple-room.png");
-n =1;
+n = 2;
 %% Image Segmentation
 patchsize = 9;
 fillorder = "gradient";
