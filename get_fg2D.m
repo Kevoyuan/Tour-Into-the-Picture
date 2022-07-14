@@ -21,4 +21,5 @@ else
     Mfg(:,3) = X(:,I(3));
 end
 
+Mfg = round(Mfg);
 end
