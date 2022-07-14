@@ -9,7 +9,7 @@ n = 2;
 %% Image Segmentation
 patchsize = 9;
 fillorder = "gradient";
-[foreground,background] = ImageSegment(Img,n,patchsize,fillorder);
+[fg2D,foreground,background] = ImageSegment(Img,n,patchsize,fillorder);
 for i = 1:n
     figure;
     imshow(foreground{i});
