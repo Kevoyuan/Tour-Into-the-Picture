@@ -70,11 +70,25 @@ P13 = new_TwelfPoints_vp(:,13)';
 %% perspective transform: get rectangles of 5 walls
 outH = size(Img_pad,1);
 outW = size(Img_pad,2);
+
+figure('Name', 'after perspective transformation', 'Position', [0, 0, 700, 400]);
+subplot(3, 3, 4);
 leftwall_rec = Perspective_transform(leftwall, P11, P7, P5, P1, outH, outW);
+
+subplot(3, 3, 5);
 rearwall_rec = Perspective_transform(rearwall, P7, P8, P1, P2, outH, outW);
+
+subplot(3, 3, 6);
 rightwall_rec = Perspective_transform(rightwall, P8, P12, P2, P6, outH, outW);
+
+subplot(3, 3, 2);
 ceiling_rec = Perspective_transform(ceiling, P9, P10, P7, P8, outH, outW);
+
+subplot(3, 3, 8);
 floor_rec = Perspective_transform(floor, P1, P2, P3, P4, outH, outW);
+g = gcf;
+g.WindowState = "truesize";
+hold off
 
 %% 3D box construction
 % real implementation
