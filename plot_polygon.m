@@ -27,7 +27,7 @@ function [] = plot_polygon(polygon3Dpoint,polygon_function,fgimg)
      end
  end
  textures = imread(fgimg);
- [I,map] = gray2ind(textures,16);
+ [I,map] = rgb2ind(textures,16);
  warp(X,Y,Z,I,map)
  hold on
     
