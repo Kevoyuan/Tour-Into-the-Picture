@@ -7,9 +7,15 @@ addpath('img')
 Img = imread("simple-room.png");
 n = 2;
 %% Image Segmentation
+% backgound is a rgb image
+% foreground is a cell including n foreground objects 2D image
+% fg2D is a cell containing all the 2D coordinates of the corner points of
+% n foreground objects
 patchsize = 9;
 fillorder = "gradient";
 [fg2D,foreground,background] = ImageSegment(Img,n,patchsize,fillorder);
+% if foreground representation is not needed, you can comment the following
+% codes
 for i = 1:n
     figure;
     imshow(foreground{i});
