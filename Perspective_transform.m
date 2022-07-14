@@ -50,7 +50,7 @@ function rectangle = Perspective_transform(input_image, pLT, pRT, pLB, pRB, outH
     end
     
 %     figure;
-    imshow(rectangle);
+%     imshow(rectangle);
 %     title('after perspective transformation');
     
 end
