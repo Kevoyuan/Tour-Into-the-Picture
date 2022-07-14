@@ -1,15 +1,15 @@
-function attached_bg = verticalbg_of_fg(Mfg2D,12point)
+function [attached_bg] = verticalbg_of_fg(Mfg2D,Twelfpoint)
 % this function is used to judge,to which one of the five 3D regions of the 3D background is the foreground orthogonally attached 
 % Mfg2D contains the 2D coordinate of the 4 points of the polygon, M1 = [x1 x2 x3 x4;y1 y2 y3 y4]
 
-fxv = 12point(1,[1,2,3,4])';
-fyv = 12point(2,[1,2,3,4])';
-cxv = 12point(1,[7,8,9,10])';
-cyv = 12point(2,[7,8,9,10])';
-lxv = 12point(1,[1,7,5,11])';
-lyv = 12point(2,[1,7,5,11])';
-rxv = 12point(1,[2,6,8,12])';
-ryv = 12point(2,[2,6,8,12])';
+fxv = Twelfpoint(1,[1,2,3,4])';
+fyv = Twelfpoint(2,[1,2,3,4])';
+cxv = Twelfpoint(1,[7,8,9,10])';
+cyv = Twelfpoint(2,[7,8,9,10])';
+lxv = Twelfpoint(1,[1,7,5,11])';
+lyv = Twelfpoint(2,[1,7,5,11])';
+rxv = Twelfpoint(1,[2,6,8,12])';
+ryv = Twelfpoint(2,[2,6,8,12])';
 
 xq = Mfg2D(1,:)';
 yq = Mfg2D(2,:)';
