@@ -1,5 +1,5 @@
 % main
-clear all ;
+clear;
 clc;
 close all;
 %% inputs for test
@@ -97,7 +97,7 @@ focal_length =1 ;
 d = (k-1) * focal_length;
 imgsize = size(Img_pad);
 [origin_image_pad, new_TwelfPoints_vp] = get_image_pad(Img, TwelfPoints_vp);
-[fg3D fg_polygon_function] = fg2Dto3D(n,origin_image_pad,new_TwelfPoints_vp,TwelfPoints_3D,k,d);
+[fg3D, fg_polygon_function] = fg2Dto3D(n,origin_image_pad,new_TwelfPoints_vp,TwelfPoints_3D,k,d);
 for i =1 :2
     plot_polygon(fg3D(:,4*i-3:4*i),fg_polygon_function(i),sprintf('fg%d.jpg',i));
     hold on 
