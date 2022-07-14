@@ -1,5 +1,5 @@
 % main
-clear all ;
+clear;
 clc;
 close all;
 %% inputs for test
@@ -52,29 +52,30 @@ hold off
 %% sperate 5 regions 
 
 [leftwall, rearwall, rightwall, ceiling, floor] = image_matting(image_pad, new_TwelfPoints_vp);
-%P should be [x y],instead of [x;y]
-P1 = new_TwelfPoints_vp(:,1)';
-P2 = new_TwelfPoints_vp(:,2)';
-P3 = new_TwelfPoints_vp(:,3)';
-P4 = new_TwelfPoints_vp(:,4)';
-P5 = new_TwelfPoints_vp(:,5)';
-P6 = new_TwelfPoints_vp(:,6)';
-P7 = new_TwelfPoints_vp(:,7)';
-P8 = new_TwelfPoints_vp(:,8)';
-P9 = new_TwelfPoints_vp(:,9)';
-P10 = new_TwelfPoints_vp(:,10)';
-P11 = new_TwelfPoints_vp(:,11)';
-P12 = new_TwelfPoints_vp(:,12)';
-P13 = new_TwelfPoints_vp(:,13)';
 
 %% perspective transform: get rectangles of 5 walls
+P = new_TwelfPoints_vp;
 outH = size(Img_pad,1);
 outW = size(Img_pad,2);
-leftwall_rec = Perspective_transform(leftwall, P11, P7, P5, P1, outH, outW);
-rearwall_rec = Perspective_transform(rearwall, P7, P8, P1, P2, outH, outW);
-rightwall_rec = Perspective_transform(rightwall, P8, P12, P2, P6, outH, outW);
-ceiling_rec = Perspective_transform(ceiling, P9, P10, P7, P8, outH, outW);
-floor_rec = Perspective_transform(floor, P1, P2, P3, P4, outH, outW);
+
+%figure('Name', 'after perspective transformation', 'Position', [0, 0, 700, 400]);
+%subplot(3, 3, 4);
+leftwall_rec = Perspective_transform(leftwall, P(:,11)', P(:,7)', P(:,5)', P(:,1)', outH, outW);
+
+%subplot(3, 3, 5);
+rearwall_rec = Perspective_transform(rearwall, P(:,7)', P(:,8)', P(:,1)', P(:,2)', outH, outW);
+
+%subplot(3, 3, 6);
+rightwall_rec = Perspective_transform(rightwall, P(:,8)', P(:,12)', P(:,2)', P(:,6)', outH, outW);
+
+%subplot(3, 3, 2);
+ceiling_rec = Perspective_transform(ceiling, P(:,9)', P(:,10)', P(:,7)', P(:,8)', outH, outW);
+
+%subplot(3, 3, 8);
+floor_rec = Perspective_transform(floor, P(:,1)', P(:,2)', P(:,3)', P(:,4)', outH, outW);
+%g = gcf;
+%g.WindowState = "truesize";
+%hold off
 
 %% 3D box construction
 % real implementation
@@ -92,12 +93,16 @@ k = 0.55 * size(Img,1);
 %twelfPoints = [P1',P2',P3',P4',P5',P6',P7',P8',P9',P10',P11',P12'];
 %[twelfPoints_3D,vanishingpoint3d] = boxconstruction(vanishingpoint,twelfPoints);
 
+%% construct 3D room
+
+construct_3D_room(leftwall_rec,rearwall_rec,rightwall_rec,ceiling_rec,floor_rec,TwelfPoints_3D);
+
 %% foreground
 focal_length =1 ;
 d = (k-1) * focal_length;
 imgsize = size(Img_pad);
 [origin_image_pad, new_TwelfPoints_vp] = get_image_pad(Img, TwelfPoints_vp);
-[fg3D fg_polygon_function] = fg2Dto3D(n,origin_image_pad,new_TwelfPoints_vp,TwelfPoints_3D,k,d);
+[fg3D, fg_polygon_function] = fg2Dto3D(n,origin_image_pad,new_TwelfPoints_vp,TwelfPoints_3D,k,d);
 for i =1 :2
     plot_polygon(fg3D(:,4*i-3:4*i),fg_polygon_function(i),sprintf('fg%d.jpg',i));
     hold on 
