@@ -160,6 +160,7 @@ C = vp.Position;
 
 RadialLine = zeros(1, 4);
 % BorderPointPlot = zeros(1, 4);
+OutterPoint = zeros(4, 2);
 
 for x = 1:4
     ThroPoint = EdgePoint{x};
