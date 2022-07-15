@@ -78,7 +78,7 @@ floor_rec = Perspective_transform(floor, P(:,1)', P(:,2)', P(:,3)', P(:,4)', out
 %g.WindowState = "truesize";
 %hold off
 
-uiwait
+
 %% 3D box construction
 % real implementation
 k = 0.55 * size(Img,1);
