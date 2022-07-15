@@ -4,8 +4,8 @@ clc;
 close all;
 %% inputs for test
 addpath('img')
-Img = imread("simple-room.png");
-n = 2;
+Img = imread("img\simple-room.png");
+n = 1;
 %% Image Segmentation
 % backgound is a rgb image
 % foreground is a cell including n foreground objects 2D image
