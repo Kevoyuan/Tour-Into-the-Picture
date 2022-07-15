@@ -76,7 +76,7 @@ end
 %%
 % *functions for radial line*
 
-function OutterPoint = radialline_vp(src, evt, vp, rect, img)
+function OutterPoint = radialline_vp(~, evt, vp, rect, img)
 
 global BorderPoint
 
@@ -136,7 +136,7 @@ assignin('base', 'Updated_InnerRectangle', rect.Position);
 
 end
 
-function OutterPoint = radialline_ir(src, evt, vp, rect, img)
+function OutterPoint = radialline_ir(~, evt, vp, rect, img)
 
 global BorderPoint
 
@@ -213,7 +213,7 @@ function roi = roiChange(~, evt, roi)
 assignin('base', roi, evt.CurrentPosition);
 end
 
-function OutterPoint = BorderPointEvent(roi, ~, roi9, roi10, roi3, roi4)
+function OutterPoint = BorderPointEvent(~, ~, roi9, roi10, roi3, roi4)
 
 global BorderPoint
 
