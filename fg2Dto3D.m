@@ -1,4 +1,4 @@
-function [Mfg3D poly_f] = fg2Dto3D(n,gray_image,new_TwelfPoints_vp,Twelfpoints_3D,k,d)
+function [Mfg3D poly_f Mfg2D] = fg2Dto3D(n,gray_image,new_TwelfPoints_vp,Twelfpoints_3D,k)
 % gary_image : expanded image
 % n :the number of the foregrounds object
 Mfg2D = zeros(2,4*n);
@@ -32,19 +32,15 @@ for i = 1 :n
     else
     %}
         
-        [Mfg3D(:,4*i-3:4*i)  poly_f(i)]= get_fg3D_parent(new_TwelfPoints_vp,focal_length,Mfg2D(:,4*i-3:4*i),attached_bg{i},imgsize,d,k,Twelfpoints_3D)
+        [Mfg3D(:,4*i-3:4*i)  poly_f(i)]= get_fg3D_parent(new_TwelfPoints_vp,Twelfpoints_3D,Mfg2D(:,4*i-3:4*i),attached_bg{i},k)
         outW = (max(Mfg3D(2,4*i-3:4*i))-min(Mfg3D(2,4*i-3:4*i)))/1000;
         outH = (max(Mfg3D(1,4*i-3:4*i))-min(Mfg3D(1,4*i-3:4*i)))/1000;
-        fg2Dimage = Perspective_transform(gray_image, Mfg2D(:,4*i)', Mfg2D(:,4*i-1)', Mfg2D(:,4*i-3)', Mfg2D(:,4*i-2)', round(outH), round(outW));
+        fg2Dimage = Perspective_transform(gray_image, Mfg2D(:,4*i)', Mfg2D(:,4*i-1)', Mfg2D(:,4*i-3)', Mfg2D(:,4*i-2)', round(outH), round(outW))
+        
         imwrite(fg2Dimage,sprintf('fg%d.jpg',i));
         
     % end
 end
 
 end
-%{
-    fig = uifigure;
-    message = {sprintf('please choose the foregroundobject %d',i)};
-    uialert(fig,message,'Info',...
-    'Icon','info');
-%}
+
