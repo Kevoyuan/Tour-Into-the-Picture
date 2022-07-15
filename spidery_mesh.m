@@ -48,7 +48,7 @@ l4 = addlistener(roi_VanishingPoint, 'ROIMoved', @(src, evt) roiChange(src, evt,
 
 % initial P
 
-OutterPoint = [1, 0.5; m, 0.5; 1, m; n, m];
+OutterPoint = [0.5, 0.5; m+0.5, 0.5; 0.5, m+0.5; n+0.5, m+0.5];
 
 % P9, P10, P3, P4
 P9 = images.roi.Point(gca, "MarkerSize", 1);

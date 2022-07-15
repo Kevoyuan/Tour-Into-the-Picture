@@ -49,7 +49,8 @@ hold on
 plot_2D_background(new_TwelfPoints_vp,Updated_InnerRectangle)
 hold off
 
-%% sperate 5 regions 
+uiwait
+%% sperate 5 regions
 
 [leftwall, rearwall, rightwall, ceiling, floor] = image_matting(image_pad, new_TwelfPoints_vp);
 
@@ -77,6 +78,7 @@ floor_rec = Perspective_transform(floor, P(:,1)', P(:,2)', P(:,3)', P(:,4)', out
 %g.WindowState = "truesize";
 %hold off
 
+uiwait
 %% 3D box construction
 % real implementation
 k = 0.55 * size(Img,1);
@@ -97,6 +99,7 @@ k = 0.55 * size(Img,1);
 
 construct_3D_room(leftwall_rec,rearwall_rec,rightwall_rec,ceiling_rec,floor_rec,TwelfPoints_3D);
 
+uiwait
 %% foreground
 focal_length =1 ;
 d = (k-1) * focal_length;
@@ -105,7 +108,7 @@ imgsize = size(Img_pad);
 [fg3D, fg_polygon_function] = fg2Dto3D(n,origin_image_pad,new_TwelfPoints_vp,TwelfPoints_3D,k,d);
 for i =1 :2
     plot_polygon(fg3D(:,4*i-3:4*i),fg_polygon_function(i),sprintf('fg%d.jpg',i));
-    hold on 
+    hold on
 end
 
 % n is the number of the foregroundobjects
