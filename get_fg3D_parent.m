@@ -28,7 +28,7 @@ if strcmp(atteched_bg,'floor')
     fg3D(3,4) = fg3D(3,1);
     fg3D(1:2,3) =(fg3D(3,2)/P1_3D(3)) * (fg2D(:,3)-fg2D(:,2))+fg3D(1:2,2); 
     fg3D(3,3) = fg3D(3,2);
-    fv = 0*x + 1*y +0*z -P1_3D(2)
+    fv = 0*x + 1*y +0*z -P1_3D(2);
     poly_f= get_polygon_function(fg3D(:,1),fg3D(:,2),fv);
 elseif strcmp(atteched_bg,'ceiling')
     fg3D(:,4) = transfor_ceiling2Dto3D(fg2D(:,4),P9_2D,P10_2D,P7_2D,P8_2D,P8_3D,P9_3D);
