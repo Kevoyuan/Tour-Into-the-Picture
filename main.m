@@ -104,14 +104,14 @@ construct_3D_room(leftwall_rec,rearwall_rec,rightwall_rec,ceiling_rec,floor_rec,
 camproj("perspective");
 v = [0,0,-1];
 view(v);
-for z = 0:5:200
+for z = 0:5:500
     campos([0,0,-z])
     drawnow
     pause(.1)
     campos
 end
-for z = 0:5:200
-    campos([0,0,200-z])
+for z = 0:5:500
+    campos([0,0,z-500])
     drawnow
     pause(.1)
     campos
