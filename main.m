@@ -5,7 +5,7 @@ close all;
 %% inputs for test
 addpath('img')
 Img = imread("img\simple-room.png");
-n = 1;
+n = 2;
 %% Image Segmentation
 % backgound is a rgb image
 % foreground is a cell including n foreground objects 2D image
@@ -100,28 +100,62 @@ k = 0.55 * size(Img,1);
 %% construct 3D room
 
 construct_3D_room(leftwall_rec,rearwall_rec,rightwall_rec,ceiling_rec,floor_rec,TwelfPoints_3D);
-
+%% animation
 camproj("perspective");
 v = [0,0,-1];
 view(v);
+axis equal
+%axis([-200,200,-200,200]);
+% set(gca,'XAxisLocation','bottom');
+% set(gca,'YAxisLocation','right');
+xlim([-200,200]);
+ylim([-200,200]);
+camtarget(VanishingPoint_3D);
+camup([0,-1,0]);
+
+%zoom in
 for z = 0:5:500
     campos([0,0,-z])
     drawnow
-    pause(.1)
+    pause(.05)
     campos
 end
-for z = 0:5:500
-    campos([0,0,z-500])
+%look up
+for y = 0:5:150
+    campos([0,-y,-500])
     drawnow
     pause(.1)
     campos
 end
-% hPan = sin(-pi:1:pi);
-%vPan = cos(-pi:1:pi);
-% for k = 1:length(hPan)
-%    campan(hPan(k),1)
-%    pause(1)
-% end
+%look down
+for y = 0:5:150
+    campos([0,y-150,-500])
+    drawnow
+    pause(.1)
+    campos
+end
+%look right
+for x = 0:5:150
+    campos([-x,0,-500])
+    drawnow
+    pause(.1)
+    campos
+end
+%look left
+for x = 0:5:150
+    campos([x-150,0,-500])
+    drawnow
+    pause(.1)
+    campos
+end
+% zoom out
+for z = 0:5:500
+    campos([0,0,z-500])
+    drawnow
+    pause(.05)
+    campos
+end
+
 uiwait
 %% foreground
 focal_length =1 ;
