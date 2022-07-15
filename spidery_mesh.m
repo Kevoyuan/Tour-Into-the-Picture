@@ -256,7 +256,7 @@ roi3.Position = roi{3};
 roi10.Position = roi{2};
 roi4.Position = roi{4};
 
-roi_layerup(vp, roi4, roi10, roi9, roi3);
+roi_layerup(vp, roi4, roi10, roi9, roi3,rect);
 assignin('base', 'OutterPoint', OutterPoint);
 assignin('base', 'Updated_VanishingPoint', vp_pos);
 
@@ -283,7 +283,7 @@ roi9.Position = roi{1};
 roi10.Position = roi{2};
 roi4.Position = roi{4};
 
-roi_layerup(vp, roi4, roi10, roi9, roi3);
+roi_layerup(vp, roi4, roi10, roi9, roi3,rect);
 assignin('base', 'OutterPoint', OutterPoint);
 assignin('base', 'Updated_VanishingPoint', vp_pos);
 end
@@ -309,7 +309,7 @@ roi4.Position = roi{4};
 roi9.Position = roi{1};
 roi3.Position = roi{3};
 
-roi_layerup(vp, roi4, roi10, roi9, roi3);
+roi_layerup(vp, roi4, roi10, roi9, roi3,rect);
 assignin('base', 'OutterPoint', OutterPoint);
 assignin('base', 'Updated_VanishingPoint', vp_pos);
 end
@@ -335,7 +335,7 @@ roi10.Position = roi{2};
 roi9.Position = roi{1};
 roi3.Position = roi{3};
 
-roi_layerup(vp, roi4, roi10, roi9, roi3);
+roi_layerup(vp, roi4, roi10, roi9, roi3,rect);
 assignin('base', 'OutterPoint', OutterPoint);
 assignin('base', 'Updated_VanishingPoint', vp_pos);
 end
@@ -398,11 +398,12 @@ EdgePoint = {rect_top_left, rect_top_right, rect_bottom_left, rect_bottom_right}
 
 end
 
-function roi_layerup(vp, roi4, roi10, roi9, roi3)
+function roi_layerup(vp, roi4, roi10, roi9, roi3,rect)
 
 uistack(vp, 'up', 9);
 uistack(roi4, 'up', 7);
 uistack(roi10, 'up', 7);
 uistack(roi9, 'up', 7);
 uistack(roi3, 'up', 7);
+uistack(rect, 'up', 8);
 end
