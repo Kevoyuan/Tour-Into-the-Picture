@@ -1,4 +1,4 @@
-function [l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, OutterPoint,Updated_VanishingPoint,Updated_InnerRectangle] = spidery_mesh(Img)
+function [l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, OutterPoint, Updated_VanishingPoint, Updated_InnerRectangle] = spidery_mesh(Img)
 % addpath('img')
 % Image2 = imread("simple-room.png");
 
@@ -48,7 +48,7 @@ l4 = addlistener(roi_VanishingPoint, 'ROIMoved', @(src, evt) roiChange(src, evt,
 
 % initial P
 
-OutterPoint = [0.5, 0.5; m+0.5, 0.5; 0.5, m+0.5; n+0.5, m+0.5];
+OutterPoint = [0.5, 0.5; m + 0.5, 0.5; 0.5, m + 0.5; n + 0.5, m + 0.5];
 
 % P9, P10, P3, P4
 P9 = images.roi.Point(gca, "MarkerSize", 1);
@@ -95,7 +95,7 @@ delete(allPoint);
 C = evt.CurrentPosition;
 
 RadialLine = zeros(1, 4);
-% BorderPointPlot = zeros(1, 4);
+
 OutterPoint = zeros(4, 2);
 
 for x = 1:4
@@ -139,10 +139,6 @@ end
 function OutterPoint = radialline_ir(src, evt, vp, rect, img)
 
 global BorderPoint
-
-% global BorderPointPlot
-
-% BorderPoint = zeros(4, 2);
 
 % get current inner rectangle position
 rect_pos = evt.CurrentPosition;
@@ -195,7 +191,7 @@ for x = 1:4
     uistack(RadialLine(x), 'down', 5);
     uistack(vp, 'up', 2);
     uistack(rect, 'up', 2);
-    
+
 end
 assignin('base', 'OutterPoint', OutterPoint);
 assignin('base', 'Updated_VanishingPoint', C);
@@ -212,6 +208,7 @@ aLine = [a, -1, b];
 end
 
 %
+
 function roi = roiChange(~, evt, roi)
 assignin('base', roi, evt.CurrentPosition);
 end
@@ -240,13 +237,10 @@ end
 
 function OutterPoint = P9NewVP(roi9, evt, roi3, roi10, roi4, rect, vp, img)
 
-[rect_pos, EdgePoint] = rect2edge(rect);
-
-allLine = findobj(gcf, 'Type', 'Line');
-delete(allLine);
-
 roiA_pos = evt.CurrentPosition;
 roiB_pos = roi3.Position;
+
+[rect_pos, EdgePoint] = rect2edge(rect);
 
 %line1
 x1 = [roiA_pos(1) rect_pos(1)];
@@ -255,44 +249,7 @@ y1 = [roiA_pos(2) rect_pos(2)];
 x2 = [roiB_pos(1) rect_pos(1)];
 y2 = [roiB_pos(2) rect_pos(2) + rect_pos(4)];
 
-p1 = polyfit(x1, y1, 1);
-p2 = polyfit(x2, y2, 1);
-
-%calculate intersection
-x_intersect = fzero(@(x) polyval(p1 - p2, x), 3);
-y_intersect = polyval(p1, x_intersect);
-
-vp.Position = [x_intersect, y_intersect];
-vp_pos = [x_intersect, y_intersect];
-
-roi = cell(1, 4);
-RadialLine = zeros(1, 4);
-OutterPoint = zeros(4, 2);
-
-for x = 1:4
-    ThroPoint = EdgePoint{x};
-    aLine = TwoPointLine(vp_pos, ThroPoint);
-    % get border point coordinates
-    points = lineToBorderPoints(aLine, size(img));
-
-    %     calcuate the distance from vanishing point (C) to border
-    distance_C2Border = pdist([vp_pos(1), vp_pos(2); points(3), points(4)], 'euclidean');
-
-    %     calcuate the distance from inner rectangle edge to border
-    distance_Edge2Border = pdist([ThroPoint(1), ThroPoint(2); points(3), points(4)], 'euclidean');
-
-    if distance_C2Border > distance_Edge2Border
-        roi_pos = [points(3), points(4)];
-
-    else
-        roi_pos = [points(1), points(2)];
-
-    end
-
-    RadialLine(x) = line([roi_pos(1), vp.Position(1)], [roi_pos(2), vp.Position(2)], 'Color', 'r', 'LineWidth', 2);
-    OutterPoint(x, :) = roi_pos;
-    roi{x} = roi_pos;
-end
+[roi, OutterPoint, vp_pos] = Outter_ROI(x1, x2, y1, y2, vp, img, EdgePoint);
 
 % assign new positions to ROIs
 roi3.Position = roi{3};
@@ -307,60 +264,19 @@ end
 
 function OutterPoint = P3NewVP(roi3, evt, roi9, roi10, roi4, rect, vp, img)
 
+roiA_pos = evt.CurrentPosition;
+roiB_pos = roi9.Position;
+
 [rect_pos, EdgePoint] = rect2edge(rect);
 
-allLine = findobj(gcf, 'Type', 'Line');
-delete(allLine);
-
-roi1_pos = evt.CurrentPosition;
-roi2_pos = roi9.Position;
-
 %line1
-x1 = [roi1_pos(1) rect_pos(1)];
-y1 = [roi1_pos(2) rect_pos(2) + rect_pos(4)];
+x1 = [roiA_pos(1) rect_pos(1)];
+y1 = [roiA_pos(2) rect_pos(2) + rect_pos(4)];
 %line2
-x2 = [roi2_pos(1) rect_pos(1)];
-y2 = [roi2_pos(2) rect_pos(2)];
+x2 = [roiB_pos(1) rect_pos(1)];
+y2 = [roiB_pos(2) rect_pos(2)];
 
-p1 = polyfit(x1, y1, 1);
-p2 = polyfit(x2, y2, 1);
-
-%calculate intersection
-x_intersect = fzero(@(x) polyval(p1 - p2, x), 3);
-y_intersect = polyval(p1, x_intersect);
-
-vp.Position = [x_intersect, y_intersect];
-vp_pos = [x_intersect, y_intersect];
-
-roi = cell(1, 4);
-RadialLine = zeros(1, 4);
-OutterPoint = zeros(4, 2);
-
-for x = 1:4
-    ThroPoint = EdgePoint{x};
-    aLine = TwoPointLine(vp_pos, ThroPoint);
-    % get border point coordinates
-    points = lineToBorderPoints(aLine, size(img));
-
-    %     calcuate the distance from vanishing point (C) to border
-    distance_C2Border = pdist([vp_pos(1), vp_pos(2); points(3), points(4)], 'euclidean');
-
-    %     calcuate the distance from inner rectangle edge to border
-    distance_Edge2Border = pdist([ThroPoint(1), ThroPoint(2); points(3), points(4)], 'euclidean');
-
-    if distance_C2Border > distance_Edge2Border
-        roi_pos = [points(3), points(4)];
-
-    else
-        roi_pos = [points(1), points(2)];
-
-    end
-
-    RadialLine(x) = line([roi_pos(1), vp.Position(1)], [roi_pos(2), vp.Position(2)], 'Color', 'r', 'LineWidth', 2);
-    OutterPoint(x, :) = roi_pos;
-    roi{x} = roi_pos;
-
-end
+[roi, OutterPoint, vp_pos] = Outter_ROI(x1, x2, y1, y2, vp, img, EdgePoint);
 
 % assign new positions to ROIs
 roi9.Position = roi{1};
@@ -374,60 +290,19 @@ end
 
 function OutterPoint = P10NewVP(roi10, evt, roi4, roi9, roi3, rect, vp, img)
 
+roiA_pos = evt.CurrentPosition;
+roiB_pos = roi4.Position;
+
 [rect_pos, EdgePoint] = rect2edge(rect);
 
-allLine = findobj(gcf, 'Type', 'Line');
-delete(allLine);
-
-roi1_pos = evt.CurrentPosition;
-roi2_pos = roi4.Position;
-
 %line1
-x1 = [roi1_pos(1) rect_pos(1) + rect_pos(3)];
-y1 = [roi1_pos(2) rect_pos(2)];
+x1 = [roiA_pos(1) rect_pos(1) + rect_pos(3)];
+y1 = [roiA_pos(2) rect_pos(2)];
 %line2
-x2 = [roi2_pos(1) rect_pos(1) + rect_pos(3)];
-y2 = [roi2_pos(2) rect_pos(2) + rect_pos(4)];
+x2 = [roiB_pos(1) rect_pos(1) + rect_pos(3)];
+y2 = [roiB_pos(2) rect_pos(2) + rect_pos(4)];
 
-p1 = polyfit(x1, y1, 1);
-p2 = polyfit(x2, y2, 1);
-
-%calculate intersection
-x_intersect = fzero(@(x) polyval(p1 - p2, x), 3);
-y_intersect = polyval(p1, x_intersect);
-
-vp.Position = [x_intersect, y_intersect];
-vp_pos = [x_intersect, y_intersect];
-
-roi = cell(1, 4);
-RadialLine = zeros(1, 4);
-OutterPoint = zeros(4, 2);
-
-for x = 1:4
-    ThroPoint = EdgePoint{x};
-    aLine = TwoPointLine(vp_pos, ThroPoint);
-    % get border point coordinates
-    points = lineToBorderPoints(aLine, size(img));
-
-    %     calcuate the distance from vanishing point (C) to border
-    distance_C2Border = pdist([vp_pos(1), vp_pos(2); points(3), points(4)], 'euclidean');
-
-    %     calcuate the distance from inner rectangle edge to border
-    distance_Edge2Border = pdist([ThroPoint(1), ThroPoint(2); points(3), points(4)], 'euclidean');
-
-    if distance_C2Border > distance_Edge2Border
-        roi_pos = [points(3), points(4)];
-
-    else
-        roi_pos = [points(1), points(2)];
-
-    end
-
-    RadialLine(x) = line([roi_pos(1), vp.Position(1)], [roi_pos(2), vp.Position(2)], 'Color', 'r', 'LineWidth', 2);
-    OutterPoint(x, :) = roi_pos;
-    roi{x} = roi_pos;
-
-end
+[roi, OutterPoint, vp_pos] = Outter_ROI(x1, x2, y1, y2, vp, img, EdgePoint);
 
 % assign new positions to ROIs
 roi4.Position = roi{4};
@@ -441,20 +316,31 @@ end
 
 function OutterPoint = P4NewVP(roi4, evt, roi10, roi9, roi3, rect, vp, img)
 
+roiA_pos = evt.CurrentPosition;
+roiB_pos = roi10.Position;
+
 [rect_pos, EdgePoint] = rect2edge(rect);
 
-allLine = findobj(gcf, 'Type', 'Line');
-delete(allLine);
-
-roi1_pos = evt.CurrentPosition;
-roi2_pos = roi10.Position;
-
 %line1
-x1 = [roi1_pos(1) rect_pos(1) + rect_pos(3)];
-y1 = [roi1_pos(2) rect_pos(2) + rect_pos(4)];
+x1 = [roiA_pos(1) rect_pos(1) + rect_pos(3)];
+y1 = [roiA_pos(2) rect_pos(2) + rect_pos(4)];
 %line2
-x2 = [roi2_pos(1) rect_pos(1) + rect_pos(3)];
-y2 = [roi2_pos(2) rect_pos(2)];
+x2 = [roiB_pos(1) rect_pos(1) + rect_pos(3)];
+y2 = [roiB_pos(2) rect_pos(2)];
+
+[roi, OutterPoint, vp_pos] = Outter_ROI(x1, x2, y1, y2, vp, img, EdgePoint);
+
+% assign new positions to ROIs
+roi10.Position = roi{2};
+roi9.Position = roi{1};
+roi3.Position = roi{3};
+
+roi_layerup(vp, roi4, roi10, roi9, roi3);
+assignin('base', 'OutterPoint', OutterPoint);
+assignin('base', 'Updated_VanishingPoint', vp_pos);
+end
+
+function [roi, OutterPoint, vp_pos] = Outter_ROI(x1, x2, y1, y2, vp, img, EdgePoint)
 
 p1 = polyfit(x1, y1, 1);
 p2 = polyfit(x2, y2, 1);
@@ -465,6 +351,9 @@ y_intersect = polyval(p1, x_intersect);
 
 vp.Position = [x_intersect, y_intersect];
 vp_pos = [x_intersect, y_intersect];
+
+allLine = findobj(gcf, 'Type', 'Line');
+delete(allLine);
 
 roi = cell(1, 4);
 RadialLine = zeros(1, 4);
@@ -493,17 +382,7 @@ for x = 1:4
     RadialLine(x) = line([roi_pos(1), vp.Position(1)], [roi_pos(2), vp.Position(2)], 'Color', 'r', 'LineWidth', 2);
     OutterPoint(x, :) = roi_pos;
     roi{x} = roi_pos;
-
 end
-
-% assign new positions to ROIs
-roi10.Position = roi{2};
-roi9.Position = roi{1};
-roi3.Position = roi{3};
-
-roi_layerup(vp, roi4, roi10, roi9, roi3);
-assignin('base', 'OutterPoint', OutterPoint);
-assignin('base', 'Updated_VanishingPoint', vp_pos);
 end
 
 function [rect_pos, EdgePoint] = rect2edge(rect)
