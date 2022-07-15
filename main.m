@@ -4,8 +4,8 @@ clc;
 close all;
 %% inputs for test
 addpath('img')
-Img = imread("img\simple-room.png");
-n = 2;
+Img = imread("img\oil-painting.png");
+n = 1;
 %% Image Segmentation
 % backgound is a rgb image
 % foreground is a cell including n foreground objects 2D image
@@ -14,6 +14,8 @@ n = 2;
 patchsize = 9;
 fillorder = "gradient";
 [fg2D,foreground,background] = ImageSegment(Img,n,patchsize,fillorder);
+fg2D = cell2mat(fg2D);
+fg2D = reshape(fg2D,2,[]);
 % if foreground representation is not needed, you can comment the following
 % codes
 % for i = 1:n
@@ -37,8 +39,8 @@ TwelfPoints_vp = gen12Points(Updated_VanishingPoint,Updated_InnerRectangle,Outte
 
 %% add black outline
 
-[image_pad, new_TwelfPoints_vp] = get_image_pad(background, TwelfPoints_vp);
-
+[image_pad,new_TwelfPoints_vp,new_fg2D] = get_image_pad(background, TwelfPoints_vp,fg2D);
+[origin_image_pad,~,~] = get_image_pad(Img, TwelfPoints_vp,fg2D);
 
 %% plot 12 points
 
@@ -49,7 +51,7 @@ hold on
 plot_2D_background(new_TwelfPoints_vp,Updated_InnerRectangle)
 hold off
 
-uiwait
+% uiwait
 %% sperate 5 regions
 
 [leftwall, rearwall, rightwall, ceiling, floor] = image_matting(image_pad, new_TwelfPoints_vp);
@@ -78,7 +80,7 @@ floor_rec = Perspective_transform(floor, P(:,1)', P(:,2)', P(:,3)', P(:,4)', out
 %g.WindowState = "truesize";
 %hold off
 
-
+% uiwait
 %% 3D box construction
 % real implementation
 k = 0.55 * size(Img,1);
@@ -97,9 +99,23 @@ k = 0.55 * size(Img,1);
 %twelfPoints = [P1',P2',P3',P4',P5',P6',P7',P8',P9',P10',P11',P12'];
 %[twelfPoints_3D,vanishingpoint3d] = boxconstruction(vanishingpoint,twelfPoints);
 
-%% construct 3D room
+
+%% foreground 3D coordinate and polygon function
+
+% fg3D size(3,4*n)
+% fg_polygon_function n*1 system
+[fg3D, fg_polygon_function,Fg2D] = fg2Dto3D(n,origin_image_pad,new_TwelfPoints_vp,TwelfPoints_3D,new_fg2D);
+
+
+%% %% construct 3D room
 
 construct_3D_room(leftwall_rec,rearwall_rec,rightwall_rec,ceiling_rec,floor_rec,TwelfPoints_3D);
+hold on ;
+for i =1 :n
+    plot_polygon(fg3D(:,4*i-3:4*i),fg_polygon_function(i),sprintf('fg%d.jpg',i));
+    hold on
+end
+
 %% animation
 camproj("perspective");
 v = [0,0,-1];
@@ -157,18 +173,3 @@ for z = 0:5:500
 end
 
 uiwait
-%% foreground
-focal_length =1 ;
-d = (k-1) * focal_length;
-imgsize = size(Img_pad);
-[origin_image_pad, new_TwelfPoints_vp] = get_image_pad(Img, TwelfPoints_vp);
-[fg3D, fg_polygon_function] = fg2Dto3D(n,origin_image_pad,new_TwelfPoints_vp,TwelfPoints_3D,k,d);
-for i =1 :2
-    plot_polygon(fg3D(:,4*i-3:4*i),fg_polygon_function(i),sprintf('fg%d.jpg',i));
-    hold on
-end
-
-% n is the number of the foregroundobjects
-% fg3D size(3,4*n)
-% fg_polygon_function n*1 system
-
