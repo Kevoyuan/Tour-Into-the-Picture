@@ -1,7 +1,6 @@
 function [Mfg3D poly_f Mfg2D] = fg2Dto3D(n,origin_image,new_TwelfPoints_vp,Twelfpoints_3D,Mfg2D)
 Mfg3D = zeros(3,4*n);
 attached_bg = cell(1,n); 
-focal_length = 1
 syms poly_f 
 % poly_f is the polygon function
 for i = 1 :n
