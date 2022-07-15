@@ -14,26 +14,26 @@ ryv = Twelfpoint(1,[2,6,12,8]);
 xq = Mfg2D(2,:);
 yq = Mfg2D(1,:);
 
-[inf,onf] = inpolygon(xq,yq,fxv,fyv)
-floor_sum = numel(xq(inf))
+[inf,onf] = inpolygon(xq,yq,fxv,fyv);
+floor_sum = numel(xq(inf));
 if floor_sum >=2
     attached_bg = 'floor';
     return;
 else 
-    [inc,onc] = inpolygon(xq,yq,cxv,cyv)
-    ceil_sum = numel(xq(inc))
+    [inc,onc] = inpolygon(xq,yq,cxv,cyv);
+    ceil_sum = numel(xq(inc));
     if ceil_sum >=2
         attached_bg = 'ceiling';
         return;
     else 
-        [inl,onl] = inpolygon(xq,yq,lxv,lyv)
-        left_sum = numel(xq(inl))
+        [inl,onl] = inpolygon(xq,yq,lxv,lyv);
+        left_sum = numel(xq(inl));
         if left_sum >=2
                attached_bg = 'leftwall';
                return;
         else
-            [inr,onr] = inpolygon(xq,yq,rxv,ryv)
-            right_sum = numel(xq(inr))
+            [inr,onr] = inpolygon(xq,yq,rxv,ryv);
+            right_sum = numel(xq(inr));
            if right_sum >=2
                 attached_bg = 'rightwall';
                 return;
