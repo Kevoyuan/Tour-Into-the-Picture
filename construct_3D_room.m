@@ -56,6 +56,8 @@ function [] = construct_3D_room(wall1,wall2,wall3,wall4,wall5,threeDcoords)
     xlabel('X');
     ylabel('Y');
     zlabel('Z');
+%     v = [0,0,-1];
+%     view(v);
     view(3);
     
     

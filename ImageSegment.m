@@ -2,7 +2,7 @@ function [fg2D,foreground,background] = ImageSegment(im1,n,patchsize,fillorder)
     background = im1;
     foreground = cell(1,n);
     fg2D = cell(1,n);
-    figure;
+    f1 = figure;
     imshow(background);
     
     for i = 1:n
@@ -54,6 +54,8 @@ function [fg2D,foreground,background] = ImageSegment(im1,n,patchsize,fillorder)
     
         background = inpaintExemplar(background,foregroundmask,"PatchSize",patchsize,"FillOrder",fillorder);
         %background = regionfill(background,foregroundmask(:,:,i));
-        %imshow(background);
+        imshow(background);
+        delete(ROI);
     end
+    close(f1);
 end
