@@ -4,7 +4,7 @@ clc;
 close all;
 %% inputs for test
 addpath('img')
-Img = imread("img\oil-painting.png");
+Img = imread("oil-painting.png");
 n = 1;
 %% Image Segmentation
 % backgound is a rgb image
@@ -39,8 +39,9 @@ TwelfPoints_vp = gen12Points(Updated_VanishingPoint,Updated_InnerRectangle,Outte
 
 %% add black outline
 
-[image_pad,new_TwelfPoints_vp,new_fg2D] = get_image_pad(background, TwelfPoints_vp,fg2D);
-[origin_image_pad,~,~] = get_image_pad(Img, TwelfPoints_vp,fg2D);
+[Img_pad,origin_image_pad,new_TwelfPoints_vp,new_fg2D] = get_image_pad(background,Img,TwelfPoints_vp,fg2D);
+%[image_pad,new_TwelfPoints_vp,new_fg2D] = get_image_pad(background, TwelfPoints_vp,fg2D);
+%[origin_image_pad,~,~] = get_image_pad(Img, TwelfPoints_vp,fg2D);
 
 %% plot 12 points
 
@@ -54,7 +55,7 @@ hold off
 % uiwait
 %% sperate 5 regions
 
-[leftwall, rearwall, rightwall, ceiling, floor] = image_matting(image_pad, new_TwelfPoints_vp);
+[leftwall, rearwall, rightwall, ceiling, floor] = image_matting(Img_pad, new_TwelfPoints_vp);
 
 %% perspective transform: get rectangles of 5 walls
 P = new_TwelfPoints_vp;
@@ -107,7 +108,7 @@ k = 0.55 * size(Img,1);
 [fg3D, fg_polygon_function,Fg2D] = fg2Dto3D(n,origin_image_pad,new_TwelfPoints_vp,TwelfPoints_3D,new_fg2D);
 
 
-%% %% construct 3D room
+%% construct 3D room
 
 construct_3D_room(leftwall_rec,rearwall_rec,rightwall_rec,ceiling_rec,floor_rec,TwelfPoints_3D);
 hold on ;
