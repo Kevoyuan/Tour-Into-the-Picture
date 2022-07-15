@@ -47,13 +47,13 @@ function [fg2D,foreground,background] = ImageSegment(im1,n,patchsize,fillorder)
         end
         fg2D{i} = Mfg;
         wait(ROI);
-        
+
         % separate the foreground mask and background picture
         foregroundmask =  createMask(ROI);
         foreground{i} = bsxfun(@times,im1, cast(foregroundmask, 'like', im1)); 
     
         background = inpaintExemplar(background,foregroundmask,"PatchSize",patchsize,"FillOrder",fillorder);
         %background = regionfill(background,foregroundmask(:,:,i));
-        imshow(background);
+        %imshow(background);
     end
 end

@@ -16,10 +16,10 @@ fillorder = "gradient";
 [fg2D,foreground,background] = ImageSegment(Img,n,patchsize,fillorder);
 % if foreground representation is not needed, you can comment the following
 % codes
-for i = 1:n
-    figure;
-    imshow(foreground{i});
-end
+% for i = 1:n
+%     figure;
+%     imshow(foreground{i});
+% end
 
 %% Spidery mesh
 
@@ -90,6 +90,8 @@ k = 0.55 * size(Img,1);
 % the right wall is yellow
 
 [TwelfPoints_3D,VanishingPoint_3D] = boxconstruction(new_TwelfPoints_vp,k);
+
+
 % for testing, please run twelfPoints.m for simple extraction of 2D
 % coordinatnions of the 12 Points
 %twelfPoints = [P1',P2',P3',P4',P5',P6',P7',P8',P9',P10',P11',P12'];
@@ -99,6 +101,27 @@ k = 0.55 * size(Img,1);
 
 construct_3D_room(leftwall_rec,rearwall_rec,rightwall_rec,ceiling_rec,floor_rec,TwelfPoints_3D);
 
+camproj("perspective");
+v = [0,0,-1];
+view(v);
+for z = 0:5:200
+    campos([0,0,-z])
+    drawnow
+    pause(.1)
+    campos
+end
+for z = 0:5:200
+    campos([0,0,200-z])
+    drawnow
+    pause(.1)
+    campos
+end
+% hPan = sin(-pi:1:pi);
+%vPan = cos(-pi:1:pi);
+% for k = 1:length(hPan)
+%    campan(hPan(k),1)
+%    pause(1)
+% end
 uiwait
 %% foreground
 focal_length =1 ;
