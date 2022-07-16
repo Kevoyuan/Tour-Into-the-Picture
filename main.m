@@ -150,20 +150,25 @@ end
 % end
 
 %% animation
-camproj('perspective');
-camva('manual');
 v = [0,0,-1];
 view(v);
+center = [(TwelfPoints_3D(1,1)+TwelfPoints_3D(1,2))/2,(TwelfPoints_3D(2,1)+TwelfPoints_3D(2,7))/2];
+camproj('perspective');
+camva('manual');
+camva(90);
+camup([0,-1,0]);
+camtarget([center(2),center(2),VanishingPoint_3D(3)]);
+campos([center(2),center(1),100]);
 axis equal
 %axis on
-%axis vis3d off
+axis vis3d off
 %axis([-200,200,-200,200]);
 % set(gca,'XAxisLocation','bottom');
 % set(gca,'YAxisLocation','right');
-%xlim([1*TwelfPoints_3D(1,1),-1*TwelfPoints_3D(1,1)]);
-%ylim([1*TwelfPoints_3D(2,7),-1*TwelfPoints_3D(2,7)]);
-camtarget(VanishingPoint_3D);
-camup([0,-1,0]);
+xlim([1.5*TwelfPoints_3D(1,1),1.5*TwelfPoints_3D(1,2)]);
+ylim([1.5*TwelfPoints_3D(2,7),1.5*TwelfPoints_3D(2,1)]);
+
+
 
 % %zoom in
 % for z = 2000:-10:500
@@ -209,30 +214,39 @@ camup([0,-1,0]);
 %     campos
 % end
 
+for z = 100:5:200
+    campos([0,0,z])
+    drawnow
+    pause(.1)
+    campos
+end
 %look down
 for y = 0:5:150
-    campos([0,y-150,200])
+    campos([0,-y,200])
     drawnow
     pause(.1)
     campos
 end
 %look right
-for x = 0:5:50
+for x = 0:5:100
     campos([-x,0,200])
+    camtarget([-x,0,VanishingPoint_3D(3)])
     drawnow
     pause(.1)
     campos
 end
 %look left
-for x = 50:-5:-50
+for x = 100:-5:-100
     campos([-x,0,200])
+    camtarget([-x,0,VanishingPoint_3D(3)])
     drawnow
     pause(.1)
     campos
 end
 %look right
-for x = -50:5:0
+for x = -100:5:0
     campos([-x,0,200])
+    camtarget([-x,0,VanishingPoint_3D(3)])
     drawnow
     pause(.1)
     campos
