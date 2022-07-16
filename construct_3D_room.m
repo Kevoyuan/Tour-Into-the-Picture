@@ -102,5 +102,6 @@ function [] = construct_3D_room(varargin)
         plot_polygon(fg3D(:,4*i-3:4*i),fg_polygon_function(i),sprintf('fg%d.jpg',i));
         hold on
     end
+    axis off
 
 end
