@@ -4,7 +4,7 @@ clc;
 close all;
 %% inputs for test
 addpath('img')
-Img = imread("img\oil-painting.png");
+Img = imread("img\shopping-mall.png");
 
 [sz1,sz2]=size(Img);
 
@@ -157,8 +157,12 @@ camproj('perspective');
 camva('manual');
 camva(90);
 camup([0,-1,0]);
-camtarget([center(2),center(2),VanishingPoint_3D(3)]);
-campos([center(2),center(1),100]);
+%camtarget([center(2),center(2),VanishingPoint_3D(3)]);
+%campos([center(2),center(1),100]);
+
+campos([-100,0,100]);
+camtarget([-100,0,VanishingPoint_3D(3)]);
+drawnow
 axis equal
 %axis on
 axis vis3d off
@@ -214,46 +218,55 @@ ylim([1.5*TwelfPoints_3D(2,7),1.5*TwelfPoints_3D(2,1)]);
 %     campos
 % end
 
+% 初始相机位置不应该与vp重合，而应该设置在rear wall中心处（此处因为vp偏左，所以设置为-100），否则画面将出现偏移
+% 平移相机位置的效果比固定相机位置，只进行转头好太多
+% 平移相机位置时，目标点也要同步平移
 for z = 100:5:200
-    campos([0,0,z])
+    campos([-100,0,z])
     drawnow
     pause(.1)
     campos
 end
-%look down
+
 for y = 0:5:150
-    campos([0,-y,200])
+    campos([-100,-y,200])
     drawnow
     pause(.1)
     campos
 end
-%look right
+for y = 150:-5:0
+    campos([-100,-y,200])
+    drawnow
+    pause(.1)
+    campos
+end
+
 for x = 0:5:100
-    campos([-x,0,200])
-    camtarget([-x,0,VanishingPoint_3D(3)])
+    campos([-100-x,0,200])
+    camtarget([-100-x,0,VanishingPoint_3D(3)])
     drawnow
     pause(.1)
     campos
 end
-%look left
+
 for x = 100:-5:-100
-    campos([-x,0,200])
-    camtarget([-x,0,VanishingPoint_3D(3)])
+    campos([-100-x,0,200])
+    camtarget([-100-x,0,VanishingPoint_3D(3)])
     drawnow
     pause(.1)
     campos
 end
-%look right
+
 for x = -100:5:0
-    campos([-x,0,200])
-    camtarget([-x,0,VanishingPoint_3D(3)])
+    campos([-100-x,0,200])
+    camtarget([-100-x,0,VanishingPoint_3D(3)])
     drawnow
     pause(.1)
     campos
 end
-% zoom out
+
 for z = 200:-5:100
-    campos([0,0,z])
+    campos([-100,0,z])
     drawnow
     pause(.1)
     campos
