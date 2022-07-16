@@ -17,7 +17,7 @@ if any(sz1>3200 | sz2>3200)
 
 end
 
-n = 2;
+n = 1;
 %% Image Segmentation
 % backgound is a rgb image
 % foreground is a cell including n foreground objects 2D image
@@ -25,7 +25,8 @@ n = 2;
 % n foreground objects
 patchsize = 9;
 fillorder = "gradient";
-[fg2D,foreground,background] = ImageSegment(Img,n,patchsize,fillorder);
+[fg2D_ir,foreground,background] = ImageSegment(Img,n,patchsize,fillorder);
+fg2D = find_rectangular(fg2D_ir,n);
 %fg2D = cell2mat(fg2D);
 %fg2D = reshape(fg2D,2,[]);
 % if foreground representation is not needed, you can comment the following
@@ -112,12 +113,13 @@ k = 0.55 * sz1;
 %twelfPoints = [P1',P2',P3',P4',P5',P6',P7',P8',P9',P10',P11',P12'];
 %[twelfPoints_3D,vanishingpoint3d] = boxconstruction(vanishingpoint,twelfPoints);
 
-
+TwelfPoints_3D_xdirection_change = [TwelfPoints_3D(:,2),TwelfPoints_3D(:,1),TwelfPoints_3D(:,4),TwelfPoints_3D(:,3),TwelfPoints_3D(:,6),...
+    TwelfPoints_3D(:,5),TwelfPoints_3D(:,8),TwelfPoints_3D(:,7),TwelfPoints_3D(:,10),TwelfPoints_3D(:,9),TwelfPoints_3D(:,12),TwelfPoints_3D(:,11)];
 %% foreground 3D coordinate and polygon function
 
 % fg3D size(3,4*n)
 % fg_polygon_function n*1 system
-[fg3D, fg_polygon_function,Fg2D] = fg2Dto3D(n,origin_image_pad,new_TwelfPoints_vp,TwelfPoints_3D,new_fg2D);
+[fg3D, fg_polygon_function] = fg2Dto3D(n,origin_image_pad,new_TwelfPoints_vp,TwelfPoints_3D_xdirection_change,new_fg2D);
 
 
 %% construct 3D room
