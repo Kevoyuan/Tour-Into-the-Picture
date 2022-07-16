@@ -1,4 +1,4 @@
-function [Mfg3D poly_f Mfg2D] = fg2Dto3D(n,origin_image,new_TwelfPoints_vp,Twelfpoints_3D,Mfg2D)
+function [Mfg3D poly_f] = fg2Dto3D(n,origin_image,new_TwelfPoints_vp,Twelfpoints_3D,Mfg2D)
 Mfg3D = zeros(3,4*n);
 attached_bg = cell(1,n); 
 syms poly_f 
@@ -14,20 +14,3 @@ for i = 1 :n
 end
 
 end
- %{
-    % GUI infomation
-    fig = uifigure;
-    message = {sprintf('please select the foregroundobject %d',i)};
-    uialert(fig,message,'Info',...
-    'Icon','info');
-    % diplay the image and the user begin to choose the polygon
-    %}
-
-    %{
-    if strcmp(attached_bg{i},error)
-        fig = uifigure;
-        message = {sprintf('please reselect the foregroundobject %d ',i)};
-        uialert(fig,message,'Warning',...
-        'Icon','warning');
-    else
-    %}
