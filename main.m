@@ -4,7 +4,7 @@ clc;
 close all;
 %% inputs for test
 addpath('img')
-Img = imread("img\simple-room.png");
+Img = imread("simple-room.png");
 
 [sz1,sz2]=size(Img);
 
@@ -124,12 +124,12 @@ TwelfPoints_3D_xdirection_change = [TwelfPoints_3D(:,2),TwelfPoints_3D(:,1),Twel
 
 %% construct 3D room
 
-construct_3D_room(leftwall_rec,rearwall_rec,rightwall_rec,ceiling_rec,floor_rec,TwelfPoints_3D);
-hold on ;
-for i =1 :n
-    plot_polygon(fg3D(:,4*i-3:4*i),fg_polygon_function(i),sprintf('fg%d.jpg',i));
-    hold on
-end
+construct_3D_room(leftwall_rec,rearwall_rec,rightwall_rec,ceiling_rec,floor_rec,TwelfPoints_3D,fg3D,n,fg_polygon_function);
+% hold on ;
+% for i =1 :n
+%     plot_polygon(fg3D(:,4*i-3:4*i),fg_polygon_function(i),sprintf('fg%d.jpg',i));
+%     hold on
+% end
 
 %% animation
 camproj("perspective");
