@@ -4,7 +4,7 @@ clc;
 close all;
 %% inputs for test
 addpath('img')
-Img = imread("simple-room.png");
+Img = imread("img\oil-painting.png");
 
 [sz1,sz2]=size(Img);
 
@@ -127,7 +127,7 @@ k = 0.55 * sz1;
 %[twelfPoints_3D,vanishingpoint3d] = boxconstruction(vanishingpoint,twelfPoints);
 
 TwelfPoints_3D_xdirection_change = [TwelfPoints_3D(:,2),TwelfPoints_3D(:,1),TwelfPoints_3D(:,4),TwelfPoints_3D(:,3),TwelfPoints_3D(:,6),...
-    TwelfPoints_3D(:,5),TwelfPoints_3D(:,8),TwelfPoints_3D(:,7),TwelfPoints_3D(:,10),TwelfPoints_3D(:,9),TwelfPoints_3D(:,12),TwelfPoints_3D(:,11)];
+TwelfPoints_3D(:,5),TwelfPoints_3D(:,8),TwelfPoints_3D(:,7),TwelfPoints_3D(:,10),TwelfPoints_3D(:,9),TwelfPoints_3D(:,12),TwelfPoints_3D(:,11)];
 %% foreground 3D coordinate and polygon function
 
 % fg3D size(3,4*n)
@@ -150,58 +150,98 @@ end
 % end
 
 %% animation
-camproj("perspective");
+camproj('perspective');
+camva('manual');
 v = [0,0,-1];
 view(v);
 axis equal
+%axis on
+%axis vis3d off
 %axis([-200,200,-200,200]);
 % set(gca,'XAxisLocation','bottom');
 % set(gca,'YAxisLocation','right');
-xlim([-400,400]);
-ylim([-400,400]);
+%xlim([1*TwelfPoints_3D(1,1),-1*TwelfPoints_3D(1,1)]);
+%ylim([1*TwelfPoints_3D(2,7),-1*TwelfPoints_3D(2,7)]);
 camtarget(VanishingPoint_3D);
 camup([0,-1,0]);
 
-%zoom in
-for z = 0:5:500
-    campos([0,0,-z])
-    drawnow
-    pause(.05)
-    campos
-end
-%look up
-for y = 0:5:150
-    campos([0,-y,-500])
-    drawnow
-    pause(.1)
-    campos
-end
+% %zoom in
+% for z = 2000:-10:500
+%     campos([0,0,-z])
+%     drawnow
+%     pause(.05)
+%     campos
+% end
+% %look up
+% for y = 0:5:50
+%     %campos([0,-y,-800])
+%     camtarget([0,-y,VanishingPoint_3D(3)]);
+%     drawnow
+%     pause(.1)
+%     campos
+% end
+% for y = 50:-5:0
+%     %campos([0,-y,-800])
+%     camtarget([0,-y,VanishingPoint_3D(3)]);
+%     drawnow
+%     pause(.1)
+%     campos
+% end
+% for x = 0:5:50
+%     %campos([0,-y,-800])
+%     camtarget([x,0,VanishingPoint_3D(3)]);
+%     drawnow
+%     pause(.1)
+%     campos
+% end
+% for x = 50:-5:0
+%     %campos([0,-y,-800])
+%     camtarget([-x,0,VanishingPoint_3D(3)]);
+%     drawnow
+%     pause(.1)
+%     campos
+% end
+% camtarget(VanishingPoint_3D);
+% for z = 800:10:2000
+%     campos([0,0,-z])
+%     drawnow
+%     pause(.05)
+%     campos
+% end
+
 %look down
 for y = 0:5:150
-    campos([0,y-150,-500])
+    campos([0,y-150,200])
     drawnow
     pause(.1)
     campos
 end
 %look right
-for x = 0:5:150
-    campos([-x,0,-500])
+for x = 0:5:50
+    campos([-x,0,200])
     drawnow
     pause(.1)
     campos
 end
 %look left
-for x = 0:5:150
-    campos([x-150,0,-500])
+for x = 50:-5:-50
+    campos([-x,0,200])
+    drawnow
+    pause(.1)
+    campos
+end
+%look right
+for x = -50:5:0
+    campos([-x,0,200])
     drawnow
     pause(.1)
     campos
 end
 % zoom out
-for z = 0:5:500
-    campos([0,0,z-500])
+for z = 200:-5:100
+    campos([0,0,z])
     drawnow
-    pause(.05)
+    pause(.1)
     campos
 end
 
