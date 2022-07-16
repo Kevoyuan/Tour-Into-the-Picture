@@ -50,24 +50,33 @@ elseif strcmp(atteched_bg,'ceiling')
 elseif strcmp(atteched_bg,'leftwall')
     fg3D(:,1) = transfor_left2Dto3D(fg2D(:,1),P11_2D,P7_2D,P5_2D,P1_2D,P1_3D,P11_3D);
     fg3D(:,4) = transfor_left2Dto3D(fg2D(:,4),P11_2D,P7_2D,P5_2D,P1_2D,P1_3D,P11_3D);
-    fg3D(1:2,2) =(fg3D(3,1)/P1_3D(3))* (fg2D(:,2)-fg2D(:,1))+fg3D(1:2,1);
+    % fg3D(1:2,2) =(fg3D(3,1)/P1_3D(3))* (fg2D(:,2)-fg2D(:,1))+fg3D(1:2,1);
+    fg3D(1,2) =-(fg3D(3,1)/P1_3D(3))* (fg2D(1,2)-fg2D(1,1))+fg3D(1,1);
+    fg3D(2,2) =(fg3D(3,1)/P1_3D(3))* (fg2D(2,2)-fg2D(2,1))+fg3D(2,1);
     fg3D(3,2) = fg3D(3,1);
-    fg3D(1:2,3) =(fg3D(3,4)/P1_3D(3))* (fg2D(:,3)-fg2D(:,4))+fg3D(1:2,4); 
+    % fg3D(1:2,3) =(fg3D(3,4)/P1_3D(3))* (fg2D(:,3)-fg2D(:,4))+fg3D(1:2,4); 
+    fg3D(1,3) =-(fg3D(3,4)/P1_3D(3))* (fg2D(1,3)-fg2D(1,4))+fg3D(1,4);
+    fg3D(2,3) =(fg3D(3,4)/P1_3D(3))* (fg2D(2,3)-fg2D(2,4))+fg3D(2,4);
     fg3D(3,3) = fg3D(3,4);
     fv = 1 *x + 0*y +0*z -P1_3D(1);
     poly_f= get_polygon_function(fg3D(:,1),fg3D(:,4),fv );
 elseif strcmp(atteched_bg,'rightwall')
     fg3D(:,2) = transfor_right2Dto3D(fg2D(:,2),P8_2D,P12_2D,P2_2D,P6_2D,P8_3D,P6_3D);
     fg3D(:,3) = transfor_right2Dto3D(fg2D(:,3),P8_2D,P12_2D,P2_2D,P6_2D,P8_3D,P6_3D);
-    fg3D(1:2,1) =(fg3D(3,2)/P1_3D(3)) * (fg2D(:,1)-fg2D(:,2))+fg3D(1:2,2);
+    % fg3D(1:2,1) =(fg3D(3,2)/P1_3D(3)) * (fg2D(:,1)-fg2D(:,2))+fg3D(1:2,2);
+    fg3D(1,1) =-(fg3D(3,1)/P1_3D(3))* (fg2D(1,1)-fg2D(1,2))+fg3D(1,2);
+    fg3D(2,1) =(fg3D(3,1)/P1_3D(3))* (fg2D(2,1)-fg2D(2,2))+fg3D(2,2);
     fg3D(3,1) = fg3D(3,2);
-    fg3D(1:2,4) = (fg3D(3,3)/P1_3D(3)) * (fg2D(:,4)-fg2D(:,3))+fg3D(1:2,3); 
+    % fg3D(1:2,4) = (fg3D(3,3)/P1_3D(3)) * (fg2D(:,4)-fg2D(:,3))+fg3D(1:2,3); 
+    fg3D(1,4) =-(fg3D(3,3)/P1_3D(3))* (fg2D(1,4)-fg2D(1,3))+fg3D(1,3);
+    fg3D(2,4) =(fg3D(3,3)/P1_3D(3))* (fg2D(2,4)-fg2D(2,3))+fg3D(2,3);
     fg3D(3,4) = fg3D(3,3);
     fv = 1 *x + 0*y +0*z -P8_3D(1);
     poly_f= get_polygon_function(fg3D(:,1),fg3D(:,4),fv );
 end
 
 end
+
 
 %% floor
 function fg3D = transfor_floor2Dto3D(fg2D,pLT,pRT,pLB,pRB,P4,P1)
