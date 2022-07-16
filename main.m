@@ -4,12 +4,12 @@ clc;
 close all;
 %% inputs for test
 addpath('img')
-Img = imread("img\simple-room.png");
+Img = imread("img\sagrada_familia.png");
 
 [sz1,sz2]=size(Img);
 
 % img size reduction
-if any(sz1>3200 | sz2>3200)
+if any(sz1>3000 | sz2>3000)
 
     reduce_scal = 3200/max(sz1,sz2);
 
