@@ -5,6 +5,18 @@ close all;
 %% inputs for test
 addpath('img')
 Img = imread("img\simple-room.png");
+
+[sz1,sz2]=size(Img);
+
+% img size reduction
+if any(sz1>3200 | sz2>3200)
+
+    reduce_scal = 3200/max(sz1,sz2);
+
+    Img = imresize(Img, reduce_scal,"Antialiasing",false);
+
+end
+
 n = 2;
 %% Image Segmentation
 % backgound is a rgb image
@@ -84,7 +96,7 @@ floor_rec = Perspective_transform(floor, P(:,1)', P(:,2)', P(:,3)', P(:,4)', out
 % uiwait
 %% 3D box construction
 % real implementation
-k = 0.55 * size(Img,1);
+k = 0.55 * sz1;
 
 % the rear wall is red
 % the ceiling is blue
