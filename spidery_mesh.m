@@ -1,4 +1,4 @@
-function [l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, OutterPoint, Updated_VanishingPoint, Updated_InnerRectangle] = spidery_mesh(Img)
+function [OutterPoint, Updated_VanishingPoint, Updated_InnerRectangle] = spidery_mesh(Img)
 % addpath('img')
 % Image2 = imread("simple-room.png");
 

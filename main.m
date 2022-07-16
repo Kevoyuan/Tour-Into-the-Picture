@@ -38,7 +38,7 @@ fg2D = find_rectangular(fg2D_ir,n);
 
 %% Spidery mesh
 
-[l1, l2, l3, l4, l5, l6, l7, l8, l9, l10, OutterPoint,Updated_VanishingPoint,Updated_InnerRectangle] = spidery_mesh(background);
+[OutterPoint,Updated_VanishingPoint,Updated_InnerRectangle] = spidery_mesh(background);
 hold on
 
 
