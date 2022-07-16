@@ -4,8 +4,8 @@ clc;
 close all;
 %% inputs for test
 addpath('img')
-Img = imread("oil-painting.png");
-n = 1;
+Img = imread("img\simple-room.png");
+n = 2;
 %% Image Segmentation
 % backgound is a rgb image
 % foreground is a cell including n foreground objects 2D image
@@ -14,8 +14,8 @@ n = 1;
 patchsize = 9;
 fillorder = "gradient";
 [fg2D,foreground,background] = ImageSegment(Img,n,patchsize,fillorder);
-fg2D = cell2mat(fg2D);
-fg2D = reshape(fg2D,2,[]);
+%fg2D = cell2mat(fg2D);
+%fg2D = reshape(fg2D,2,[]);
 % if foreground representation is not needed, you can comment the following
 % codes
 % for i = 1:n
@@ -125,8 +125,8 @@ axis equal
 %axis([-200,200,-200,200]);
 % set(gca,'XAxisLocation','bottom');
 % set(gca,'YAxisLocation','right');
-xlim([-200,200]);
-ylim([-200,200]);
+xlim([-400,400]);
+ylim([-400,400]);
 camtarget(VanishingPoint_3D);
 camup([0,-1,0]);
 

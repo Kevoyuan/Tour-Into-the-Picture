@@ -6,7 +6,7 @@ function [fg2D,foreground,background] = ImageSegment(im1,n,patchsize,fillorder)
     imshow(background);
     
     for i = 1:n
-%         % mannually draw a ROI based on edge detection
+%         % mannually draw a rectangle shaped ROI 
 %         ROI= drawrectangle;
 %         
 %         % double click the ROI when you are finished with editing
@@ -17,35 +17,35 @@ function [fg2D,foreground,background] = ImageSegment(im1,n,patchsize,fillorder)
 %         LowerrightPoint = [ROI.Position(1)+ROI.Position(3);ROI.Position(2)+ROI.Position(4)];
 %         fg2D{i} = [UpperleftPoint,UpperrightPoint,LowerleftPoint,LowerrightPoint];
 
-        % mannually draw a polygon shaped ROI 
-        ROI = drawpolygon;
+%         % mannually draw a polygon shaped ROI 
+%         ROI = drawpolygon;
+%         X = ROI.Position;
+%         X = X';
+%         
+%         Mfg = zeros(size(X));
+%         [B,I] = sort(X(1,:));
+%         if X(2,I(1)) > X(2,I(2))
+%             Mfg(:,1) = X(:,I(1));
+%             Mfg(:,4) = X(:,I(2));
+%         else 
+%             Mfg(:,1) = X(:,I(2));
+%             Mfg(:,4) = X(:,I(1));
+%         end
+%         
+%         if X(2,I(3)) > X(2,I(4))
+%             Mfg(:,2) = X(:,I(3));
+%             Mfg(:,3) = X(:,I(4));
+%         else 
+%             Mfg(:,2) = X(:,I(4));
+%             Mfg(:,3) = X(:,I(3));
+%         end
+%         fg2D{i} = Mfg;
+        
+        % mannually draw a ROI based on edge detection
+        ROI = drawassisted;
         X = ROI.Position;
         X = X';
-%         x = X(1,:);
-%         y = X(2,:);
-%         [ysorted,I] = sort(y,"descend");
-%         xsorted = x(I);
-%         X = [xsorted;ysorted];
-%         fg2D{i} = X;
-        
-        Mfg = zeros(size(X));
-        [B,I] = sort(X(1,:));
-        if X(2,I(1)) > X(2,I(2))
-            Mfg(:,1) = X(:,I(1));
-            Mfg(:,4) = X(:,I(2));
-        else 
-            Mfg(:,1) = X(:,I(2));
-            Mfg(:,4) = X(:,I(1));
-        end
-        
-        if X(2,I(3)) > X(2,I(4))
-            Mfg(:,2) = X(:,I(3));
-            Mfg(:,3) = X(:,I(4));
-        else 
-            Mfg(:,2) = X(:,I(4));
-            Mfg(:,3) = X(:,I(3));
-        end
-        fg2D{i} = Mfg;
+        fg2D{i} = X;
         wait(ROI);
 
         % separate the foreground mask and background picture
