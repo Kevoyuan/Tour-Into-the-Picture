@@ -40,9 +40,10 @@ function [image_pad,origin_image_pad,new_Pixel_Vertex,new_fg2D] = get_image_pad(
     end
     
     %get the 2D coordinates of foreground object in new image after padding
-    new_fg2D = zeros(2,4);
+    n = size(fg2D,2);
+    new_fg2D = zeros(2,n);
     for r = 1:2
-        for t = 1:4
+        for t = 1:n
             new_fg2D(r,t) = fg2D(r,t)+max_pad;
         end
     end
