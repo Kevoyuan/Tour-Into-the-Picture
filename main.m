@@ -4,7 +4,7 @@ clc;
 close all;
 %% inputs for test
 addpath('img')
-Img = imread("img\shopping-mall.png");
+Img = imread("img\simple-room.png");
 
 [sz1,sz2]=size(Img);
 
