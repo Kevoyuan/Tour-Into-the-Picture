@@ -24,18 +24,26 @@ P6_3D = TwelfPoints_3D(:,6);
 if strcmp(atteched_bg,'floor')
     fg3D(:,1) = transfor_floor2Dto3D(fg2D(:,1),P1_2D,P2_2D,P3_2D,P4_2D,P4_3D,P1_3D);
     fg3D(:,2) = transfor_floor2Dto3D(fg2D(:,2),P1_2D,P2_2D,P3_2D,P4_2D,P4_3D,P1_3D);
-    fg3D(1:2,4) = (fg3D(3,1)/P1_3D(3)) * (fg2D(:,4)-fg2D(:,1))+fg3D(1:2,1); 
+    % fg3D(1:2,4) = (fg3D(3,1)/P1_3D(3)) * (fg2D(:,4)-fg2D(:,1))+fg3D(1:2,1); 
+    fg3D(1,4) = -(fg3D(3,1)/P1_3D(3)) * (fg2D(1,4)-fg2D(1,1))+fg3D(1,1);
+    fg3D(2,4) = (fg3D(3,1)/P1_3D(3)) * (fg2D(2,4)-fg2D(2,1))+fg3D(2,1);
     fg3D(3,4) = fg3D(3,1);
-    fg3D(1:2,3) =(fg3D(3,2)/P1_3D(3)) * (fg2D(:,3)-fg2D(:,2))+fg3D(1:2,2); 
+    % fg3D(1:2,3) =(fg3D(3,2)/P1_3D(3)) * (fg2D(:,3)-fg2D(:,2))+fg3D(1:2,2); 
+    fg3D(1,3) = -(fg3D(3,2)/P1_3D(3)) * (fg2D(1,3)-fg2D(1,2))+fg3D(1,2);
+    fg3D(2,3) = (fg3D(3,2)/P1_3D(3)) * (fg2D(2,3)-fg2D(2,2))+fg3D(2,2);
     fg3D(3,3) = fg3D(3,2);
     fv = 0*x + 1*y +0*z -P1_3D(2);
     poly_f= get_polygon_function(fg3D(:,1),fg3D(:,2),fv);
 elseif strcmp(atteched_bg,'ceiling')
     fg3D(:,4) = transfor_ceiling2Dto3D(fg2D(:,4),P9_2D,P10_2D,P7_2D,P8_2D,P8_3D,P9_3D);
     fg3D(:,3) = transfor_ceiling2Dto3D(fg2D(:,3),P9_2D,P10_2D,P7_2D,P8_2D,P8_3D,P9_3D);
-    fg3D(1:2,1) =(fg3D(3,4)/P1_3D(3)) * (fg2D(:,1)-fg2D(:,4))+fg3D(1:2,4); 
+    % fg3D(1:2,1) =(fg3D(3,4)/P1_3D(3)) * (fg2D(:,1)-fg2D(:,4))+fg3D(1:2,4); 
+    fg3D(1,1) = -(fg3D(3,4)/P1_3D(3)) * (fg2D(1,1)-fg2D(1,4))+fg3D(1,4);
+    fg3D(2,1) = (fg3D(3,4)/P1_3D(3)) * (fg2D(2,1)-fg2D(2,4))+fg3D(2,4);
     fg3D(3,1) = fg3D(3,4);
-    fg3D(1:2,2) =(fg3D(3,3)/P1_3D(3)) * (fg2D(:,2)-fg2D(:,3))+fg3D(1:2,3); 
+    % fg3D(1:2,2) =(fg3D(3,3)/P1_3D(3)) * (fg2D(:,2)-fg2D(:,3))+fg3D(1:2,3); 
+    fg3D(1,2) = -(fg3D(3,3)/P1_3D(3)) * (fg2D(1,2)-fg2D(1,3))+fg3D(1,3);
+    fg3D(2,2) = (fg3D(3,3)/P1_3D(3)) * (fg2D(2,2)-fg2D(2,3))+fg3D(2,3);
     fg3D(3,2) = fg3D(3,3);
     fv = 0*x + 1*y + 0*z -P8_3D(2);
     poly_f= get_polygon_function(fg3D(:,3),fg3D(:,4),fv);
@@ -87,11 +95,13 @@ function fg3D = transfor_floor2Dto3D(fg2D,pLT,pRT,pLB,pRB,P4,P1)
     x0 = a1*(a0+a1-1)*y0/Denominator;
     x1 = a0*(a0+a1-1)*y1/Denominator;
 
-    width = P4(1)-P1(1);
+    width = -(P4(1)-P1(1));
+    % width = P4(1)-P1(1);
     tief = P1(3) - P4(3);
     Z= - round(tief*x0)+P1(3)
     Y=P1(2);
-    X = round(x1*width)+P1(1);
+    % X = round(x1*width)+P1(1);
+    X = -round(x1*width)+P1(1);
     fg3D = [X;Y;Z];
 end
 
@@ -121,11 +131,13 @@ function fg3D = transfor_ceiling2Dto3D(fg2D,pLT,pRT,pLB,pRB,P8,P9)
     x0 = a1*(a0+a1-1)*y0/Denominator;
     x1 = a0*(a0+a1-1)*y1/Denominator;
 
-    width = P8(1)-P9(1);
+    % width = P8(1)-P9(1);
+    width =-( P8(1)-P9(1));
     tief = P8(3) - P9(3);
     Z=  round(tief*x0)+P9(3)
     Y=P8(2);
-    X = round(x1*width)+P9(1);
+    % X = round(x1*width)+P9(1);
+     X = - round(x1*width)+P9(1);
     fg3D = [X;Y;Z];
 end
 
@@ -196,4 +208,3 @@ function fg3D = transfor_right2Dto3D(fg2D,pLT,pRT,pLB,pRB,P8,P6)
     Z = -round(x1*tief)+P8(3);
     fg3D = [X;Y;Z];
 end
-
