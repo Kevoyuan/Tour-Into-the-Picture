@@ -1,7 +1,10 @@
-function [] = construct_3D_room(wall1,wall2,wall3,wall4,wall5,threeDcoords)
+function [] = construct_3D_room(wall1,wall2,wall3,wall4,wall5,threeDcoords,fg3D,n,fg_polygon_function)
     %wall: rectangle image
     %threeDcoords:a 3x13 matrix:[x1 x2...x13;y1 y2...y13;z1 z2...z13]
-    %get 3D coordinates of each point
+    %fg3D: 3D coordinates of foreground objects
+    %n: number of foreground objects
+    
+    %get 3D coordinates of each point    
     p1 = threeDcoords(:,1)';
     p2 = threeDcoords(:,2)';
     p3 = threeDcoords(:,3)';
@@ -62,16 +65,12 @@ function [] = construct_3D_room(wall1,wall2,wall3,wall4,wall5,threeDcoords)
 %     v = [0,0,-1];
 %     view(v);
     view(3);
+    hold on
     
-    
-    
-    
-    
-    
-
-
-    
-
-
+    %draw foreground object
+    for i =1 :n
+        plot_polygon(fg3D(:,4*i-3:4*i),fg_polygon_function(i),sprintf('fg%d.jpg',i));
+        hold on
+    end
 
 end
