@@ -77,16 +77,28 @@ outW = size(Img_pad,2);
 
 %figure('Name', 'after perspective transformation', 'Position', [0, 0, 700, 400]);
 %subplot(3, 3, 4);
-leftwall_rec = Perspective_transform(leftwall, P(:,11)', P(:,7)', P(:,5)', P(:,1)', outH, outW);
+if sum(sum(sum(leftwall)))==0
+    
+else
+    leftwall_rec = Perspective_transform(leftwall, P(:,11)', P(:,7)', P(:,5)', P(:,1)', outH, outW);
+end
 
 %subplot(3, 3, 5);
 rearwall_rec = Perspective_transform(rearwall, P(:,7)', P(:,8)', P(:,1)', P(:,2)', outH, outW);
 
 %subplot(3, 3, 6);
-rightwall_rec = Perspective_transform(rightwall, P(:,8)', P(:,12)', P(:,2)', P(:,6)', outH, outW);
+if sum(sum(sum(rightwall)))==0
+    
+else
+    rightwall_rec = Perspective_transform(rightwall, P(:,8)', P(:,12)', P(:,2)', P(:,6)', outH, outW);
+end
 
 %subplot(3, 3, 2);
-ceiling_rec = Perspective_transform(ceiling, P(:,9)', P(:,10)', P(:,7)', P(:,8)', outH, outW);
+if sum(sum(sum(ceiling)))==0
+    
+else
+    ceiling_rec = Perspective_transform(ceiling, P(:,9)', P(:,10)', P(:,7)', P(:,8)', outH, outW);
+end
 
 %subplot(3, 3, 8);
 floor_rec = Perspective_transform(floor, P(:,1)', P(:,2)', P(:,3)', P(:,4)', outH, outW);
@@ -95,6 +107,7 @@ floor_rec = Perspective_transform(floor, P(:,1)', P(:,2)', P(:,3)', P(:,4)', out
 %hold off
 
 % uiwait
+
 %% 3D box construction
 % real implementation
 k = 0.55 * sz1;
@@ -124,7 +137,12 @@ TwelfPoints_3D_xdirection_change = [TwelfPoints_3D(:,2),TwelfPoints_3D(:,1),Twel
 
 %% construct 3D room
 
-construct_3D_room(leftwall_rec,rearwall_rec,rightwall_rec,ceiling_rec,floor_rec,TwelfPoints_3D,fg3D,n,fg_polygon_function);
+if sum(sum(sum(leftwall)))==0 || sum(sum(sum(rightwall)))==0
+    construct_3D_room(TwelfPoints_3D,fg3D,n,fg_polygon_function,rearwall_rec,floor_rec);
+else
+    construct_3D_room(TwelfPoints_3D,fg3D,n,fg_polygon_function,leftwall_rec,rearwall_rec,rightwall_rec,ceiling_rec,floor_rec);
+end
+ 
 % hold on ;
 % for i =1 :n
 %     plot_polygon(fg3D(:,4*i-3:4*i),fg_polygon_function(i),sprintf('fg%d.jpg',i));
