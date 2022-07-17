@@ -4,7 +4,7 @@ clc;
 close all;
 %% inputs for test
 addpath('img')
-Img = imread("simple-room.png");
+Img = imread("oil-painting.png");
 % Img = imread("img\sagrada_familia.png");
 
 [sz1,sz2]=size(Img);
@@ -18,7 +18,7 @@ if any(sz1>3000 | sz2>3000)
 
 end
 
-n = 2;
+n = 1;
 %% Image Segmentation
 % backgound is a rgb image
 % foreground is a cell including n foreground objects 2D image
@@ -133,7 +133,7 @@ TwelfPoints_3D(:,5),TwelfPoints_3D(:,8),TwelfPoints_3D(:,7),TwelfPoints_3D(:,10)
 
 % fg3D size(3,4*n)
 % fg_polygon_function n*1 system
-[fg3D, fg_polygon_function] = fg2Dto3D(n,origin_image_pad,new_TwelfPoints_vp,TwelfPoints_3D_xdirection_change,new_fg2D);
+[fg3D, fg_polygon_function] = fg2Dto3D(n,origin_image_pad,new_TwelfPoints_vp,TwelfPoints_3D_xdirection_change,new_fg2D,patchsize,fillorder);
 
 
 %% construct 3D room
