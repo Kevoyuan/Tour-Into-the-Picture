@@ -51,14 +51,14 @@ l4 = addlistener(roi_VanishingPoint, 'ROIMoved', @(src, evt) roiChange(src, evt,
 OutterPoint = [0.5, 0.5; m + 0.5, 0.5; 0.5, m + 0.5; n + 0.5, m + 0.5];
 
 % P9, P10, P3, P4
-P9 = images.roi.Point(gca, "MarkerSize", 1);
+P9 = images.roi.Point(gca);
 
 % P9.Position = P(1, :);
-P10 = images.roi.Point(gca, "MarkerSize", 1);
+P10 = images.roi.Point(gca);
 % P10.Position = P(2, :);
-P3 = images.roi.Point(gca, "MarkerSize", 1);
+P3 = images.roi.Point(gca);
 % P3.Position = P(3, :);
-P4 = images.roi.Point(gca, "MarkerSize", 1);
+P4 = images.roi.Point(gca);
 % P4.Position = P(4, :);
 
 l5 = addlistener(roi_InnerRectangle, 'ROIMoved', @(r1, evt) BorderPointEvent(roi_InnerRectangle, evt, P9, P10, P3, P4));

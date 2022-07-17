@@ -1,4 +1,4 @@
-function [] = construct_3D_room(varargin)
+function [f,ax] = construct_3D_room(varargin)
     %wall: rectangle image
     %threeDcoords:a 3x13 matrix:[x1 x2...x13;y1 y2...y13;z1 z2...z13]
     %fg3D: 3D coordinates of foreground objects
@@ -103,5 +103,6 @@ function [] = construct_3D_room(varargin)
         hold on
     end
     axis off
-
+    ax = gca;
+    f = gcf;
 end
