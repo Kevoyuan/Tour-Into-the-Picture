@@ -18,7 +18,7 @@ if any(sz1>3000 | sz2>3000)
 
 end
 
-n = 1;
+n = 2;
 %% Image Segmentation
 % backgound is a rgb image
 % foreground is a cell including n foreground objects 2D image
