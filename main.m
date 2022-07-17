@@ -4,7 +4,8 @@ clc;
 close all;
 %% inputs for test
 addpath('img')
-Img = imread("img\sagrada_familia.png");
+Img = imread("oil-painting.png");
+% Img = imread("img\sagrada_familia.png");
 
 [sz1,sz2]=size(Img);
 
@@ -17,7 +18,7 @@ if any(sz1>3000 | sz2>3000)
 
 end
 
-n = 1;
+n = 2;
 %% Image Segmentation
 % backgound is a rgb image
 % foreground is a cell including n foreground objects 2D image
@@ -25,10 +26,10 @@ n = 1;
 % n foreground objects
 patchsize = 9;
 fillorder = "gradient";
-[fg2D_ir,foreground,background] = ImageSegment(Img,n,patchsize,fillorder);
-fg2D = find_rectangular(fg2D_ir,n);
-%fg2D = cell2mat(fg2D);
-%fg2D = reshape(fg2D,2,[]);
+[fg2D,foreground,background] = ImageSegment(Img,n,patchsize,fillorder);
+% fg2D = find_rectangular(fg2D_ir,n);
+fg2D = cell2mat(fg2D);
+fg2D = reshape(fg2D,2,[]);
 % if foreground representation is not needed, you can comment the following
 % codes
 % for i = 1:n
