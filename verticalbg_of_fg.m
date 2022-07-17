@@ -41,7 +41,7 @@ else
                 attached_bg = 'error';
                 fig = uifigure;
                 message = {sprintf('Please reselect the foregroundobject %d ',i)};
-                uialert(message,'Error','Icon','error');
+                uialert(fig,message,'Error','Icon','error');
            end
         end
     end
