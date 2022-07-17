@@ -9,6 +9,7 @@ for i = 1 :n
     outW = max(Mfg2D(2,4*i-3:4*i))-min(Mfg2D(2,4*i-3:4*i));
     outH = max(Mfg2D(1,4*i-3:4*i))-min(Mfg2D(1,4*i-3:4*i));
     fg2Dimage = Perspective_transform(origin_image, Mfg2D(:,4*i)', Mfg2D(:,4*i-1)', Mfg2D(:,4*i-3)', Mfg2D(:,4*i-2)', round(outH), round(outW));
+    fg2Dimage = fliplr(fg2Dimage);
     imwrite(fg2Dimage,sprintf('fg%d.jpg',i));
 
 end
