@@ -141,10 +141,10 @@ TwelfPoints_3D(:,5),TwelfPoints_3D(:,8),TwelfPoints_3D(:,7),TwelfPoints_3D(:,10)
 %% construct 3D room
 
 if sum(sum(sum(leftwall)))==0 || sum(sum(sum(rightwall)))==0
-    construct_3D_room(TwelfPoints_3D,fg3D,n,fg_polygon_function,,fg_image,rearwall_rec,floor_rec,fg_image);
+    construct_3D_room(TwelfPoints_3D,fg3D,n,fg_polygon_function,fg_image,rearwall_rec,floor_rec);
 else
-    construct_3D_room(TwelfPoints_3D,fg3D,n,fg_polygon_function,,fg_image,leftwall_rec,rearwall_rec,rightwall_rec,ceiling_rec,floor_rec);
-end
+    construct_3D_room(TwelfPoints_3D,fg3D,n,fg_polygon_function,fg_image,leftwall_rec,rearwall_rec,rightwall_rec,ceiling_rec,floor_rec);
+en
  
 % hold on ;
 % for i =1 :n
