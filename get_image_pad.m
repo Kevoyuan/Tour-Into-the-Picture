@@ -23,7 +23,7 @@ function [image_pad,origin_image_pad,new_Pixel_Vertex,new_fg2D] = get_image_pad(
     Zero_border = gray2ind(Zeros_border);
     Zero_border((max_pad+1):(end-max_pad), (max_pad+1):(end-max_pad), :) = background;
     image_pad = Zero_border;
-    imwrite(image_pad,'input_image_pad.png');
+    %imwrite(image_pad,'input_image_pad.png');
     
     %extend border for original input image
     Zeros_border = zeros(size(Img,1)+2*max_pad, size(Img,2)+2*max_pad,3);
