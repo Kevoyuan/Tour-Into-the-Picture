@@ -28,8 +28,8 @@ function [f,ax] = construct_3D_room(varargin)
     
     %two situations: there are 5 walls or two walls
     if nargin==7
-        wall2 = varargin{5};
-        wall5 = varargin{6};
+        wall2 = varargin{6};
+        wall5 = varargin{7};
         
         cdata2 = flipdim(wall2,1);
         cdata5 = flipdim(wall5,1);
@@ -42,11 +42,11 @@ function [f,ax] = construct_3D_room(varargin)
         view(3);
         hold on  
     else
-        wall1 = varargin{5};
-        wall2 = varargin{6};
-        wall3 = varargin{7};
-        wall4 = varargin{8};
-        wall5 = varargin{9};
+        wall1 = varargin{6};
+        wall2 = varargin{7};
+        wall3 = varargin{8};
+        wall4 = varargin{9};
+        wall5 = varargin{10};
             %texture mapping
         cdata1_1 = flipdim(wall1,1);
         cdata1 = flipdim(cdata1_1,2);      
