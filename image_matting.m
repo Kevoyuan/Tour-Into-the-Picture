@@ -19,7 +19,7 @@ function [subimage1, subimage2, subimage3, subimage4, subimage5] = image_matting
     subimage1(:,:,1) = R.*uint8(mask1);
     subimage1(:,:,2) = G.*uint8(mask1);
     subimage1(:,:,3) = B.*uint8(mask1);
-    imwrite(subimage1, 'leftwall.png');
+    %imwrite(subimage1, 'leftwall.png');
     %figure;
     %imshow(subimage1);
 
@@ -38,7 +38,7 @@ function [subimage1, subimage2, subimage3, subimage4, subimage5] = image_matting
     subimage2(:,:,1) = R.*uint8(mask2);
     subimage2(:,:,2) = G.*uint8(mask2);
     subimage2(:,:,3) = B.*uint8(mask2);
-    imwrite(subimage2, 'rearwall.png');
+    %imwrite(subimage2, 'rearwall.png');
     %figure;
     %imshow(subimage2);
     
@@ -57,7 +57,7 @@ function [subimage1, subimage2, subimage3, subimage4, subimage5] = image_matting
     subimage3(:,:,1) = R.*uint8(mask3);
     subimage3(:,:,2) = G.*uint8(mask3);
     subimage3(:,:,3) = B.*uint8(mask3);
-    imwrite(subimage3, 'rightwall.png');
+    %imwrite(subimage3, 'rightwall.png');
     %figure;
     %imshow(subimage3);
     
@@ -76,7 +76,7 @@ function [subimage1, subimage2, subimage3, subimage4, subimage5] = image_matting
     subimage4(:,:,1) = R.*uint8(mask4);
     subimage4(:,:,2) = G.*uint8(mask4);
     subimage4(:,:,3) = B.*uint8(mask4);
-    imwrite(subimage4, 'ceiling.png');
+    %imwrite(subimage4, 'ceiling.png');
     %figure;
     %imshow(subimage4);
     
@@ -95,7 +95,7 @@ function [subimage1, subimage2, subimage3, subimage4, subimage5] = image_matting
     subimage5(:,:,1) = R.*uint8(mask5);
     subimage5(:,:,2) = G.*uint8(mask5);
     subimage5(:,:,3) = B.*uint8(mask5);
-    imwrite(subimage5, 'floor.png');
+    %imwrite(subimage5, 'floor.png');
     %figure;
     %imshow(subimage5);
 
