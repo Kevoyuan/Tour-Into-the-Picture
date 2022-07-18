@@ -37,12 +37,24 @@ function rectangle = Perspective_transform(input_image, pLT, pRT, pLB, pRB, outH
             heightC = round(OriCoord(2));
             widthC = round(OriCoord(1));
             
-            if (heightC>imgInHeight || heightC<=0 || widthC>imgInWidth || widthC<=0)
-                disp(['Perspective_transform out of range' num2str(heightC) num2str(widthC)]);
-                pause();
-                return;
-            end          
-                                
+%             if (heightC>imgInHeight || heightC<=0 || widthC>imgInWidth || widthC<=0)
+%                 disp(['Perspective_transform out of range' num2str(heightC) num2str(widthC)]);               
+%                 pause();
+%                 return;
+%             end   
+
+            if heightC>imgInHeight
+                heightC = imgInHeight;
+            elseif heightC<=0
+                heightC = 1;
+            end
+            
+            if widthC>imgInWidth
+                widthC = imgInWidth;
+            elseif heightC<=0
+                widthC = 1;
+            end
+                                              
             for k = 1:imgInDimension
                 rectangle(i,j,k) = input_image(heightC,widthC,k);
             end            
