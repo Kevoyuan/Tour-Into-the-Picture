@@ -1,4 +1,4 @@
-function [] = plot_polygon(polygon3Dpoint,polygon_function,fgimg)
+function [] = plot_polygon(polygon3Dpoint,polygon_function,textures)
 % 输入多边形3D顶点
 % polygon_function形式： f = A *x + B*y + C*z +D 
 % 或者能不能只输入系数[ A B C D]构成的矩阵
@@ -26,7 +26,7 @@ function [] = plot_polygon(polygon3Dpoint,polygon_function,fgimg)
          Y = 0.*X + 0.*Z -Coe(4)/Coe(2);
      end
  end
- textures = imread(fgimg);
+ % textures = imread(fgimg);
  warp(X,Y,Z,textures)
  % [I,map] = rgb2ind(textures,16);
  % warp(X,Y,Z,I,map)
