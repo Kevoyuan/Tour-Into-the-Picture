@@ -8,11 +8,11 @@ function camera_position = keypress(ax,key)
      camera_position = campos;
     end
     if strcmp(key,'uparrow')
-     camorbit(ax,0,2,'camera')
+     camorbit(ax,0,-2,'camera')
      camera_position = campos;
     end
     if strcmp(key,'downarrow')
-     camorbit(ax,0,-2,'camera')
+     camorbit(ax,0,2,'camera')
      camera_position = campos;
     end
 end
