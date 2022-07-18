@@ -5,7 +5,7 @@ syms poly_f
 % poly_f is the polygon function
 i =1;
 while i < n+1 
-    attached_bg{i} = verticalbg_of_fg(Mfg2D(:,4*i-3:4*i),new_TwelfPoints_vp);
+    attached_bg{i} = verticalbg_of_fg(Mfg2D(:,4*i-3:4*i),new_TwelfPoints_vp,i);
     if strcmp(attached_bg{i},'error')
         [fg_reselect,~,~] = ImageSegment(origin_image,1,patchsize,fillorder);
         Mfg2D(:,4*i-3:4*i) = fg_reselect{1};
