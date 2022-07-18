@@ -20,7 +20,7 @@ if any(sz1>3000 | sz2>3000)
 
 end
 
-n = 1;
+n = 2;
 %% Image Segmentation
 % backgound is a rgb image
 % foreground is a cell including n foreground objects 2D image
@@ -141,9 +141,9 @@ TwelfPoints_3D(:,5),TwelfPoints_3D(:,8),TwelfPoints_3D(:,7),TwelfPoints_3D(:,10)
 %% construct 3D room
 
 if sum(sum(sum(leftwall)))==0 || sum(sum(sum(rightwall)))==0
-    construct_3D_room(TwelfPoints_3D,fg3D,n,fg_polygon_function,rearwall_rec,floor_rec,fg_image);
+    construct_3D_room(TwelfPoints_3D,fg3D,n,fg_polygon_function,,fg_image,rearwall_rec,floor_rec,fg_image);
 else
-    construct_3D_room(TwelfPoints_3D,fg3D,n,fg_polygon_function,leftwall_rec,rearwall_rec,rightwall_rec,ceiling_rec,floor_rec,fg_image);
+    construct_3D_room(TwelfPoints_3D,fg3D,n,fg_polygon_function,,fg_image,leftwall_rec,rearwall_rec,rightwall_rec,ceiling_rec,floor_rec);
 end
  
 % hold on ;
