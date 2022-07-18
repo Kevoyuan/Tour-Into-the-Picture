@@ -135,15 +135,15 @@ TwelfPoints_3D(:,5),TwelfPoints_3D(:,8),TwelfPoints_3D(:,7),TwelfPoints_3D(:,10)
 
 % fg3D size(3,4*n)
 % fg_polygon_function n*1 system
-[fg3D, fg_polygon_function] = fg2Dto3D(n,origin_image_pad,new_TwelfPoints_vp,TwelfPoints_3D_xdirection_change,new_fg2D,patchsize,fillorder);
+[fg3D, fg_polygon_function,fg_image] = fg2Dto3D(n,origin_image_pad,new_TwelfPoints_vp,TwelfPoints_3D_xdirection_change,new_fg2D,patchsize,fillorder);
 
 
 %% construct 3D room
 
 if sum(sum(sum(leftwall)))==0 || sum(sum(sum(rightwall)))==0
-    construct_3D_room(TwelfPoints_3D,fg3D,n,fg_polygon_function,rearwall_rec,floor_rec);
+    construct_3D_room(TwelfPoints_3D,fg3D,n,fg_polygon_function,rearwall_rec,floor_rec,fg_image);
 else
-    construct_3D_room(TwelfPoints_3D,fg3D,n,fg_polygon_function,leftwall_rec,rearwall_rec,rightwall_rec,ceiling_rec,floor_rec);
+    construct_3D_room(TwelfPoints_3D,fg3D,n,fg_polygon_function,leftwall_rec,rearwall_rec,rightwall_rec,ceiling_rec,floor_rec,fg_image);
 end
  
 % hold on ;
