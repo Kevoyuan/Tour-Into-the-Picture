@@ -8,6 +8,7 @@ function [f,ax] = construct_3D_room(varargin)
     fg3D = varargin{2};
     n = varargin{3};
     fg_polygon_function = varargin{4};
+    fg_image= varargin{5}
     
     disp("Number of input arguments: " + nargin);
     
