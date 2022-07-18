@@ -6,9 +6,9 @@ syms poly_f
 i =1;
 while i < n+1 
     attached_bg{i} = verticalbg_of_fg(Mfg2D(:,4*i-3:4*i),new_TwelfPoints_vp);
-    if strcmp(atteched_bg,'error')
+    if strcmp(attached_bg{i},'error')
         [fg_reselect,~,~] = ImageSegment(origin_image,1,patchsize,fillorder);
-        Mfg2D(:,4*i-3:4*i) = fg_reselect{i};
+        Mfg2D(:,4*i-3:4*i) = fg_reselect{1};
     else
         [Mfg3D(:,4*i-3:4*i)  poly_f(i)]= get_fg3D_parent(new_TwelfPoints_vp,Twelfpoints_3D,Mfg2D(:,4*i-3:4*i),attached_bg{i});
         outH = max(Mfg2D(2,4*i-3:4*i))-min(Mfg2D(2,4*i-3:4*i));
