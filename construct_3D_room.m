@@ -26,7 +26,7 @@ function [f,ax] = construct_3D_room(varargin)
     p12 = threeDcoords(:,12)';
     
     %two situations: there are 5 walls or two walls
-    if nargin==6
+    if nargin==7
         wall2 = varargin{5};
         wall5 = varargin{6};
         
@@ -99,7 +99,7 @@ function [f,ax] = construct_3D_room(varargin)
            
     %draw foreground object
     for i =1 :n
-        plot_polygon(fg3D(:,4*i-3:4*i),fg_polygon_function(i),sprintf('fg%d.jpg',i));
+        plot_polygon(fg3D(:,4*i-3:4*i),fg_polygon_function(i),fg_image{i});
         hold on
     end
     axis off
