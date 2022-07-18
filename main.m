@@ -4,7 +4,9 @@ clc;
 close all;
 %% inputs for test
 addpath('img')
-Img = imread("simple-room.png");
+
+Img = imread("oil-painting.png");
+
 % Img = imread("img\sagrada_familia.png");
 
 [sz1,sz2]=size(Img);
@@ -18,7 +20,7 @@ if any(sz1>3000 | sz2>3000)
 
 end
 
-n = 2;
+n = 1;
 %% Image Segmentation
 % backgound is a rgb image
 % foreground is a cell including n foreground objects 2D image
@@ -133,7 +135,7 @@ TwelfPoints_3D(:,5),TwelfPoints_3D(:,8),TwelfPoints_3D(:,7),TwelfPoints_3D(:,10)
 
 % fg3D size(3,4*n)
 % fg_polygon_function n*1 system
-[fg3D, fg_polygon_function] = fg2Dto3D(n,origin_image_pad,new_TwelfPoints_vp,TwelfPoints_3D_xdirection_change,new_fg2D);
+[fg3D, fg_polygon_function] = fg2Dto3D(n,origin_image_pad,new_TwelfPoints_vp,TwelfPoints_3D_xdirection_change,new_fg2D,patchsize,fillorder);
 
 
 %% construct 3D room
@@ -151,123 +153,82 @@ end
 % end
 
 %% animation
+axis equal
+axis vis3d off
 v = [0,0,-1];
 view(v);
 center = [(TwelfPoints_3D(1,1)+TwelfPoints_3D(1,2))/2,(TwelfPoints_3D(2,1)+TwelfPoints_3D(2,7))/2];
+x_bound = abs((TwelfPoints_3D(1,1)-TwelfPoints_3D(1,2))/2)*0.75;
+y_bound = abs((TwelfPoints_3D(2,7)-TwelfPoints_3D(2,1))/2)*0.75;
+z_lbound = min(TwelfPoints_3D(3,3),TwelfPoints_3D(3,5))/3;
+z_rbound = VanishingPoint_3D(3)*0.5;
 camproj('perspective');
 camva('manual');
 camva(90);
 camup([0,-1,0]);
-%camtarget([center(2),center(2),VanishingPoint_3D(3)]);
-%campos([center(2),center(1),100]);
 
-campos([-100,0,100]);
-camtarget([-100,0,VanishingPoint_3D(3)]);
+campos([center(1),center(2),z_lbound]);
+camtarget([center(1),center(2),VanishingPoint_3D(3)]);
 drawnow
-axis equal
+
 %axis on
-axis vis3d off
+
 %axis([-200,200,-200,200]);
 % set(gca,'XAxisLocation','bottom');
 % set(gca,'YAxisLocation','right');
-xlim([1.5*TwelfPoints_3D(1,1),1.5*TwelfPoints_3D(1,2)]);
-ylim([1.5*TwelfPoints_3D(2,7),1.5*TwelfPoints_3D(2,1)]);
+%xlim([1.5*TwelfPoints_3D(1,1),1.5*TwelfPoints_3D(1,2)]);
+%ylim([1.5*TwelfPoints_3D(2,7),1.5*TwelfPoints_3D(2,1)]);
 
-
-
-% %zoom in
-% for z = 2000:-10:500
-%     campos([0,0,-z])
-%     drawnow
-%     pause(.05)
-%     campos
-% end
-% %look up
-% for y = 0:5:50
-%     %campos([0,-y,-800])
-%     camtarget([0,-y,VanishingPoint_3D(3)]);
-%     drawnow
-%     pause(.1)
-%     campos
-% end
-% for y = 50:-5:0
-%     %campos([0,-y,-800])
-%     camtarget([0,-y,VanishingPoint_3D(3)]);
-%     drawnow
-%     pause(.1)
-%     campos
-% end
-% for x = 0:5:50
-%     %campos([0,-y,-800])
-%     camtarget([x,0,VanishingPoint_3D(3)]);
-%     drawnow
-%     pause(.1)
-%     campos
-% end
-% for x = 50:-5:0
-%     %campos([0,-y,-800])
-%     camtarget([-x,0,VanishingPoint_3D(3)]);
-%     drawnow
-%     pause(.1)
-%     campos
-% end
-% camtarget(VanishingPoint_3D);
-% for z = 800:10:2000
-%     campos([0,0,-z])
-%     drawnow
-%     pause(.05)
-%     campos
-% end
 
 % 初始相机位置不应该与vp重合，而应该设置在rear wall中心处（此处因为vp偏左，所以设置为-100），否则画面将出现偏移
 % 平移相机位置的效果比固定相机位置，只进行转头好太多
 % 平移相机位置时，目标点也要同步平移
-for z = 100:5:200
-    campos([-100,0,z])
+for z = z_lbound:5:z_rbound
+    campos([center(1),center(2),z])
     drawnow
     pause(.1)
     campos
 end
 
-for y = 0:5:150
-    campos([-100,-y,200])
+for y = 0:5:y_bound
+    campos([center(1),center(2)-y,z_rbound])
     drawnow
     pause(.1)
     campos
 end
-for y = 150:-5:0
-    campos([-100,-y,200])
-    drawnow
-    pause(.1)
-    campos
-end
-
-for x = 0:5:100
-    campos([-100-x,0,200])
-    camtarget([-100-x,0,VanishingPoint_3D(3)])
+for y = y_bound:-5:0
+    campos([center(1),center(2)-y,z_rbound])
     drawnow
     pause(.1)
     campos
 end
 
-for x = 100:-5:-100
-    campos([-100-x,0,200])
-    camtarget([-100-x,0,VanishingPoint_3D(3)])
+for x = 0:5:x_bound
+    campos([center(1)-x,center(2),z_rbound])
+    camtarget([center(1)-x,center(2),VanishingPoint_3D(3)])
     drawnow
     pause(.1)
     campos
 end
 
-for x = -100:5:0
-    campos([-100-x,0,200])
-    camtarget([-100-x,0,VanishingPoint_3D(3)])
+for x = x_bound:-5:-x_bound
+    campos([center(1)-x,center(2),z_rbound])
+    camtarget([center(1)-x,center(2),VanishingPoint_3D(3)])
     drawnow
     pause(.1)
     campos
 end
 
-for z = 200:-5:100
-    campos([-100,0,z])
+for x = -x_bound:5:0
+    campos([center(1)-x,center(2),z_rbound])
+    camtarget([center(1)-x,center(2),VanishingPoint_3D(3)])
+    drawnow
+    pause(.1)
+    campos
+end
+
+for z = z_rbound:-5:z_lbound
+    campos([center(1),center(2),z])
     drawnow
     pause(.1)
     campos

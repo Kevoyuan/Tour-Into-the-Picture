@@ -1,4 +1,4 @@
-function [attached_bg] = verticalbg_of_fg(Mfg2D,Twelfpoint)
+function [attached_bg] = verticalbg_of_fg(Mfg2D,Twelfpoint,i)
 % this function is used to judge,to which one of the five 3D regions of the 3D background is the foreground orthogonally attached 
 % Mfg2D contains the 2D coordinate of the 4 points of the polygon, M1 = [x1 x2 x3 x4;y1 y2 y3 y4]
 
@@ -37,11 +37,10 @@ else
            if right_sum >=2
                 attached_bg = 'rightwall';
                 return;
-           elseif floor_sum+left_sum >=2 || floor_sum+right_sum >=2
-                 attached_bg = 'floor';
-                 return;
-           elseif ceil_sum+left_sum >=2 || ceil_sum+right_sum >=2
-                   attached_bg = 'floor';
+           else
+               attached_bg = 'error';
+               f = warndlg(sprintf('Please reselect the foregroundobject %d',i),'Warning');
+
            end
         end
     end
