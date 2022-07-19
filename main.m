@@ -41,7 +41,12 @@ fg2D = reshape(fg2D,2,[]);
 % end
 
 %% Spidery mesh
-% enable draggable Vanishing Points, Inner Rectangle and Radial Lines
+% This function is to create an interative tool to enable draggable inner
+% rectangle, vanning point and radial lines. The position of end point of
+% radial line will be updated while the inner rectangle or vanishing point
+% changed. The position of vanishing point will also be updated when radial
+% line is changing.
+
 
 [OutterPoint,Updated_VanishingPoint,Updated_InnerRectangle] = spidery_mesh(background);
 hold on
@@ -49,6 +54,7 @@ hold on
 
 uiwait
 %% Calculate 12 2D-Vertexes
+% calculate 12 2D vertexes in the image
 %  close the figure window to obtain 12 points matrix
 %  size(TwelfPoints) = (2,12)
 
@@ -84,7 +90,7 @@ outW = size(Img_pad,2);
 %figure('Name', 'after perspective transformation', 'Position', [0, 0, 700, 400]);
 %subplot(3, 3, 4);
 if sum(sum(sum(leftwall)))==0
-    
+
 else
     leftwall_rec = Perspective_transform(leftwall, P(:,11)', P(:,7)', P(:,5)', P(:,1)', outH, outW);
 end
@@ -94,14 +100,14 @@ rearwall_rec = Perspective_transform(rearwall, P(:,7)', P(:,8)', P(:,1)', P(:,2)
 
 %subplot(3, 3, 6);
 if sum(sum(sum(rightwall)))==0
-    
+
 else
     rightwall_rec = Perspective_transform(rightwall, P(:,8)', P(:,12)', P(:,2)', P(:,6)', outH, outW);
 end
 
 %subplot(3, 3, 2);
 if sum(sum(sum(ceiling)))==0
-    
+
 else
     ceiling_rec = Perspective_transform(ceiling, P(:,9)', P(:,10)', P(:,7)', P(:,8)', outH, outW);
 end
@@ -133,7 +139,7 @@ k = 0.55 * sz1;
 %[twelfPoints_3D,vanishingpoint3d] = boxconstruction(vanishingpoint,twelfPoints);
 
 TwelfPoints_3D_xdirection_change = [TwelfPoints_3D(:,2),TwelfPoints_3D(:,1),TwelfPoints_3D(:,4),TwelfPoints_3D(:,3),TwelfPoints_3D(:,6),...
-TwelfPoints_3D(:,5),TwelfPoints_3D(:,8),TwelfPoints_3D(:,7),TwelfPoints_3D(:,10),TwelfPoints_3D(:,9),TwelfPoints_3D(:,12),TwelfPoints_3D(:,11)];
+    TwelfPoints_3D(:,5),TwelfPoints_3D(:,8),TwelfPoints_3D(:,7),TwelfPoints_3D(:,10),TwelfPoints_3D(:,9),TwelfPoints_3D(:,12),TwelfPoints_3D(:,11)];
 
 %% foregroundobject 3D parameters calculation
 
