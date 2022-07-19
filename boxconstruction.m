@@ -1,4 +1,5 @@
 function [twelfPoints_3D,Vanishing_point] = boxconstruction(twelfPoints,k)
+% extract 2D coordinates of the Twelf points
     P1 = twelfPoints(:,1);
     P2 = twelfPoints(:,2);
     P3 = twelfPoints(:,3);
@@ -11,15 +12,18 @@ function [twelfPoints_3D,Vanishing_point] = boxconstruction(twelfPoints,k)
     P10 = twelfPoints(:,10);
     P11 = twelfPoints(:,11);
     P12 = twelfPoints(:,12);
+
+% extract 2D coordinates of the vanishing point
     vanishingpoint = twelfPoints(:,13);
 
     u_v = vanishingpoint(1);
     v_v = vanishingpoint(2);
     
-    
+% calculate 3D coordinates of the vanishing point    
     Vanishing_point = twoD2threeD(u_v,v_v,vanishingpoint(1),vanishingpoint(2));
     % rear wall z = 1
-    
+
+% calculate 3D coordinates of the twelf points      
     p1 = twoD2threeD(u_v,v_v,P1(1), P1(2));
     p2 = twoD2threeD(u_v,v_v,P2(1), P2(2));
     % floor y = y(p1) = y(p2);
@@ -67,7 +71,8 @@ function [twelfPoints_3D,Vanishing_point] = boxconstruction(twelfPoints,k)
     % p12 on the ceiling and right wall
     p12 = twoD2threeD(u_v,v_v,P12(1), P12(2));
     p12 = p12/p12(2) * ceiling;
-    
+ 
+    % magnify the depth value
     Vanishing_point(3) = Vanishing_point(3) * k;
     p1(3) = p1(3) * k;
     p2(3) = p2(3) * k;
@@ -81,12 +86,14 @@ function [twelfPoints_3D,Vanishing_point] = boxconstruction(twelfPoints,k)
     p10(3) = p10(3) * k;
     p11(3) = p11(3) * k;
     p12(3) = p12(3) * k;
+
     % % p_test on the ceiling
     % p_test = twoD2threeD(u_v,v_v,6,2);
     % p_test = p_test / p_test(2) * ceiling;
     
     twelfPoints_3D = [p1,p2,p3,p4,p5,p6,p7,p8,p9,p10,p11,p12]; 
 
+%     plot 3d box
 %     figure;
 %     rotate3d on;
 %     camproj("perspective");
