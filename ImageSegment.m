@@ -1,4 +1,5 @@
 function [fg2D,foreground,background] = ImageSegment(im1,n,patchsize,fillorder)
+    % initial settings
     background = im1;
     foreground = cell(1,n);
     fg2D = cell(1,n);

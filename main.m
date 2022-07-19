@@ -22,10 +22,16 @@ end
 
 n = 2;
 %% Image Segmentation
+% In this section, the foreground object is selected by the user using ROI.
+% The background picture is patched using inpaintExampler function. Outputs
+% are 2D coordinates of the foreground objects, foreground masks, and
+% background image.
+
 % backgound is a rgb image
 % foreground is a cell including n foreground objects 2D image
 % fg2D is a cell containing all the 2D coordinates of the corner points of
 % n foreground objects
+
 patchsize = 9;
 fillorder = "gradient";
 [fg2D,foreground,background] = ImageSegment(Img,n,patchsize,fillorder);
@@ -125,7 +131,10 @@ floor_rec = Perspective_transform(floor, P(:,1)', P(:,2)', P(:,3)', P(:,4)', out
 % uiwait
 
 %% 3D box construction
-% real implementation
+% In this section, the 3D coordinates of the twelf points and the vanishing
+% point is generated using reverse perspective projection. The depth
+% value of the points is magnified by a constant ration k.
+
 k = 0.55 * sz1;
 
 % the rear wall is red
@@ -166,10 +175,19 @@ end
 
 
 %% animation
+% In this section, basic movements of the camera is defined, which are zoom
+% in/zoom out/look up/look down/turn left/turn right. A tour animation
+% using these 6 types of camera movements is generated for demonstration.
+
+% initial settings
 axis equal
 axis vis3d off
 v = [0,0,-1];
 view(v);
+
+% the initial point of the camera should not coincide with the vanishing
+% point. It should be set to align with the center of the rear wall,
+% otherwise the whole picture is going to have some offset.
 center = [(TwelfPoints_3D(1,1)+TwelfPoints_3D(1,2))/2,(TwelfPoints_3D(2,1)+TwelfPoints_3D(2,7))/2];
 x_bound = abs((TwelfPoints_3D(1,1)-TwelfPoints_3D(1,2))/2)*0.75;
 y_bound = abs((TwelfPoints_3D(2,7)-TwelfPoints_3D(2,1))/2)*0.75;
@@ -183,39 +201,28 @@ camup([0,-1,0]);
 campos([center(1),center(2),z_lbound]);
 camtarget([center(1),center(2),VanishingPoint_3D(3)]);
 drawnow
-
-%axis on
-
-%axis([-200,200,-200,200]);
-% set(gca,'XAxisLocation','bottom');
-% set(gca,'YAxisLocation','right');
-%xlim([1.5*TwelfPoints_3D(1,1),1.5*TwelfPoints_3D(1,2)]);
-%ylim([1.5*TwelfPoints_3D(2,7),1.5*TwelfPoints_3D(2,1)]);
-
-
-% 初始相机位置不应该与vp重合，而应该设置在rear wall中心处（此处因为vp偏左，所以设置为-100），否则画面将出现偏移
-% 平移相机位置的效果比固定相机位置，只进行转头好太多
-% 平移相机位置时，目标点也要同步平移
+% zoom in
 for z = z_lbound:5:z_rbound
     campos([center(1),center(2),z])
     drawnow
     pause(.1)
     campos
 end
-
+% look up
 for y = 0:5:y_bound
     campos([center(1),center(2)-y,z_rbound])
     drawnow
     pause(.1)
     campos
 end
+% look down
 for y = y_bound:-5:0
     campos([center(1),center(2)-y,z_rbound])
     drawnow
     pause(.1)
     campos
 end
-
+% turn right
 for x = 0:5:x_bound
     campos([center(1)-x,center(2),z_rbound])
     camtarget([center(1)-x,center(2),VanishingPoint_3D(3)])
@@ -223,7 +230,7 @@ for x = 0:5:x_bound
     pause(.1)
     campos
 end
-
+% turn left
 for x = x_bound:-5:-x_bound
     campos([center(1)-x,center(2),z_rbound])
     camtarget([center(1)-x,center(2),VanishingPoint_3D(3)])
@@ -231,7 +238,7 @@ for x = x_bound:-5:-x_bound
     pause(.1)
     campos
 end
-
+% turn right to initial point
 for x = -x_bound:5:0
     campos([center(1)-x,center(2),z_rbound])
     camtarget([center(1)-x,center(2),VanishingPoint_3D(3)])
@@ -239,7 +246,7 @@ for x = -x_bound:5:0
     pause(.1)
     campos
 end
-
+%zoom out
 for z = z_rbound:-5:z_lbound
     campos([center(1),center(2),z])
     drawnow
