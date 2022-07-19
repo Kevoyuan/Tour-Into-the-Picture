@@ -3,7 +3,7 @@ function [image_pad,origin_image_pad,new_Pixel_Vertex,new_fg2D] = get_image_pad(
     % background: image of background after image segmentation
     % Pixel_Vertex: positions of Point1~Point13, size = 2 * 13
     % Pixel_Vertex= [x1,x2,...x13; y1, y2,...y13]
-    % fg2D: 2*4 matrix that saves positions of foreground objects
+    % fg2D: (2,4*n) matrix that saves positions of foreground objects,n is the nummer of foreground objects
 
     max_pad = 0;
     %iterate the 2D coordinates of 13 points, in order to find max absolute
