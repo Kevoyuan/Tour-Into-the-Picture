@@ -62,8 +62,9 @@ TwelfPoints_vp = gen12Points(Updated_VanishingPoint,Updated_InnerRectangle,Outte
 
 
 %% add black outline
-% enlarge the image size by using the black outline,
-% fill the missing parts that out of the view plane
+% To enable all the vertices visualized in the image, add black border for
+% original image
+% fill the missing parts that out of the view plane with black triangle
 
 [Img_pad,origin_image_pad,new_TwelfPoints_vp,new_fg2D] = get_image_pad(background,Img,TwelfPoints_vp,fg2D);
 
@@ -79,10 +80,13 @@ TwelfPoints_vp = gen12Points(Updated_VanishingPoint,Updated_InnerRectangle,Outte
 
 % uiwait
 %% sperate 5 regions
+% generate mask for each region and then get individual image of each wall
 
 [leftwall, rearwall, rightwall, ceiling, floor] = image_matting(Img_pad, new_TwelfPoints_vp);
 
 %% perspective transform: get rectangles of 5 walls
+% In the view of trapeziform shape of each region, tilt correction should
+% be executed to obtain rectangle for each wall
 P = new_TwelfPoints_vp;
 outH = size(Img_pad,1);
 outW = size(Img_pad,2);
@@ -147,6 +151,8 @@ TwelfPoints_3D_xdirection_change = [TwelfPoints_3D(:,2),TwelfPoints_3D(:,1),Twel
 
 
 %% construct 3D room
+% Take 3D coordinates of 12 vertices and foreground object as input, the surface of
+% each wall can be plotted in 3D model of room
 
 if sum(sum(sum(leftwall)))==0 || sum(sum(sum(rightwall)))==0
     construct_3D_room(TwelfPoints_3D,fg3D,n,fg_polygon_function,fg_image,rearwall_rec,floor_rec);
