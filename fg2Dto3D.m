@@ -19,7 +19,9 @@ while i < n+1
         %define the height and width of the retangle image after perspektive transform
         outH = max(Mfg2D(2,4*i-3:4*i))-min(Mfg2D(2,4*i-3:4*i));
         outW = max(Mfg2D(1,4*i-3:4*i))-min(Mfg2D(1,4*i-3:4*i));
-        fg_image{i} = Perspective_transform(origin_image, Mfg2D(:,4*i)', Mfg2D(:,4*i-1)', Mfg2D(:,4*i-3)', Mfg2D(:,4*i-2)', round(outH), round(outW));
+        % optimise the quad to rectangle for better inheriting the textures
+        fg2D_rec = find_rectangular(Mfg2D(:,4*i-3:4*i));
+        fg_image{i} = Perspective_transform(origin_image, fg2D_rec(:,4)', fg2D_rec(:,3)', fg2D_rec(:,1)', fg2D_rec(:,2)', round(outH), round(outW));
         fg_image{i} = fliplr(fg_image{i});
         i = i +1;
 
