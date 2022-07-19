@@ -8,10 +8,10 @@ Firstly, once the user has selected foreground objects, it's possible to disting
 
 1. MATLAB_R2020a (at least)
 2. Toolbox Requirement:
-    1> Computer Vision
-    2> Statistics and Machine Learning Toolbox 
-    3> Image Processing Toolbox
-    4> Symbolic Math Toolbox
+    - Computer Vision
+    - Statistics and Machine Learning Toolbox 
+    - Image Processing Toolbox
+    - Symbolic Math Toolbox
 
 ## GUI User's Instructions
 1. Select an 2D image: 
