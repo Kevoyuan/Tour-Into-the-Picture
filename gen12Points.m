@@ -1,4 +1,9 @@
 function TwelfPoints_VP = gen12Points(vp, rect, OutterPoint)
+% calculate 12 2D vertexes in the image
+% vp: vanishing point position
+% rect: inner rectagle position
+% Outterpoint: intersection of radial line and image border
+
 global m
 global n
 % global OutterPoint

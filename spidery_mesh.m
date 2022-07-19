@@ -1,6 +1,11 @@
 function [OutterPoint, Updated_VanishingPoint, Updated_InnerRectangle] = spidery_mesh(Img)
-% addpath('img')
-% Image2 = imread("simple-room.png");
+% This function is to create an interative tool to enable draggable inner
+% rectangle, vanning point and radial lines. The position of end point of
+% radial line will be updated while the inner rectangle or vanishing point
+% changed. The position of vanishing point will also be updated when radial
+% line is changing.
+
+% Img: input image
 
 IGray2 = rgb_to_gray(Img);
 h = figure('Name', 'Spidery Mesh', 'Position', [0, 0, 700, 400]);

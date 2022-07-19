@@ -1,4 +1,8 @@
 function plot_2D_background(new_12Points,InnerRectangle,ax)
+% connect 12 vertexes as a background
+% InnerRectangle: inner rectangle position
+% new_12Points: 12 vertexes matrix
+
 plot(ax,new_12Points(1,:),new_12Points(2,:),'r*')
 
 names = {'P1';'P2';'P3';'P4';'P5';'P6';'P7';'P8';'P9';'P10';'P11';'P12';"VP"};
