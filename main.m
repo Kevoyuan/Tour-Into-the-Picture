@@ -29,9 +29,10 @@ n = 2;
 patchsize = 9;
 fillorder = "gradient";
 [fg2D,foreground,background] = ImageSegment(Img,n,patchsize,fillorder);
-% fg2D = find_rectangular(fg2D_ir,n);
+% convert fg2D cell into size(2,4*n)matrix.
 fg2D = cell2mat(fg2D);
 fg2D = reshape(fg2D,2,[]);
+
 % if foreground representation is not needed, you can comment the following
 % codes
 % for i = 1:n
@@ -56,8 +57,7 @@ TwelfPoints_vp = gen12Points(Updated_VanishingPoint,Updated_InnerRectangle,Outte
 %% add black outline
 
 [Img_pad,origin_image_pad,new_TwelfPoints_vp,new_fg2D] = get_image_pad(background,Img,TwelfPoints_vp,fg2D);
-%[image_pad,new_TwelfPoints_vp,new_fg2D] = get_image_pad(background, TwelfPoints_vp,fg2D);
-%[origin_image_pad,~,~] = get_image_pad(Img, TwelfPoints_vp,fg2D);
+
 
 %% plot 12 points
 
@@ -131,10 +131,11 @@ k = 0.55 * sz1;
 
 TwelfPoints_3D_xdirection_change = [TwelfPoints_3D(:,2),TwelfPoints_3D(:,1),TwelfPoints_3D(:,4),TwelfPoints_3D(:,3),TwelfPoints_3D(:,6),...
 TwelfPoints_3D(:,5),TwelfPoints_3D(:,8),TwelfPoints_3D(:,7),TwelfPoints_3D(:,10),TwelfPoints_3D(:,9),TwelfPoints_3D(:,12),TwelfPoints_3D(:,11)];
-%% foreground 3D coordinate and polygon function
+%% foregroundobject 3D parameters calculation
 
 % fg3D size(3,4*n)
-% fg_polygon_function n*1 system
+% fg_polygon_function 1*n system,represents the foregroundobjects 3D planes
+% fg_image 1*n cell,save the rgb matrix of each foregroundobject textures
 [fg3D, fg_polygon_function,fg_image] = fg2Dto3D(n,origin_image_pad,new_TwelfPoints_vp,TwelfPoints_3D_xdirection_change,new_fg2D,patchsize,fillorder);
 
 
@@ -145,12 +146,7 @@ if sum(sum(sum(leftwall)))==0 || sum(sum(sum(rightwall)))==0
 else
     construct_3D_room(TwelfPoints_3D,fg3D,n,fg_polygon_function,fg_image,leftwall_rec,rearwall_rec,rightwall_rec,ceiling_rec,floor_rec);
 end
- 
-% hold on ;
-% for i =1 :n
-%     plot_polygon(fg3D(:,4*i-3:4*i),fg_polygon_function(i),sprintf('fg%d.jpg',i));
-%     hold on
-% end
+
 
 %% animation
 axis equal
