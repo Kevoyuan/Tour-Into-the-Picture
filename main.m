@@ -11,7 +11,7 @@ Img = imread("oil-painting.png");
 
 [sz1,sz2]=size(Img);
 
-% img size reduction
+% img size reduction, faster image processing
 if any(sz1>3000 | sz2>3000)
 
     reduce_scal = 3200/max(sz1,sz2);
@@ -41,13 +41,14 @@ fg2D = reshape(fg2D,2,[]);
 % end
 
 %% Spidery mesh
+% enable draggable Vanishing Points, Inner Rectangle and Radial Lines
 
 [OutterPoint,Updated_VanishingPoint,Updated_InnerRectangle] = spidery_mesh(background);
 hold on
 
 
 uiwait
-%% generate 12 points
+%% Calculate 12 2D-Vertexes
 %  close the figure window to obtain 12 points matrix
 %  size(TwelfPoints) = (2,12)
 
@@ -55,11 +56,13 @@ TwelfPoints_vp = gen12Points(Updated_VanishingPoint,Updated_InnerRectangle,Outte
 
 
 %% add black outline
+% enlarge the image size by using the black outline,
+% fill the missing parts that out of the view plane
 
 [Img_pad,origin_image_pad,new_TwelfPoints_vp,new_fg2D] = get_image_pad(background,Img,TwelfPoints_vp,fg2D);
 
 
-%% plot 12 points
+%% plot 12 Vertices
 
 % Img_pad = imread("input_image_pad.png");
 % imshow(Img_pad)
