@@ -3,7 +3,7 @@ function [f,ax] = construct_3D_room(varargin)
     %threeDcoords:a 3x13 matrix:[x1 x2...x13;y1 y2...y13;z1 z2...z13]
     %fg3D: 3D coordinates of foreground objects
     %n: number of foreground objects
-    
+    %fg_image : texture matrix of foreground objects
     threeDcoords = varargin{1};
     fg3D = varargin{2};
     n = varargin{3};
