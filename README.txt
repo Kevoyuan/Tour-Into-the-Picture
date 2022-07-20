@@ -1,4 +1,4 @@
-# Tour Into the Picture ###
+# Tour Into the Picture
 
 ## Introduction
 In this project we provide an interactive application, which enable the user to generate animation from a single 2D image. This application provides users with the following functions in the form of GUI: select an image, select the foreground object, select the vanishing point and inner rectangle, as well as change the perspective.
