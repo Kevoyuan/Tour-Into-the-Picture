@@ -53,7 +53,7 @@ With the help of ‘drawpolygon’ function in ROI-Based Processing, the user ca
 
 step 2: **Modeling the Background**
 - function _spidery_mesh_ (Zhengxuan Yuan)  
-This step is also based on ROI-Based Processing. 'drawpoint', 'drawrectangle', 'roiChange', etc. These functions enable the user to determine the vanishing point and inner rectangle in the picture and to move their positions or to deform the rectangle. Once the vanishing point and inner rectangle are certain, four radial lines scatter from the vanishing point and intersect with the four vertices of inner rectangle respectively. The points, which are intersections of the ray and the outer rectangle can also be adjusted.
+This step is also based on ROI-Based Processing. `drawpoint`, `drawrectangle`, roiChange, etc. These functions enable the user to determine the vanishing point and inner rectangle in the picture and to move their positions or to deform the rectangle. Once the vanishing point and inner rectangle are certain, four radial lines scatter from the vanishing point and intersect with the four vertices of inner rectangle respectively. The points, which are intersections of the ray and the outer rectangle can also be adjusted.
 - function _gen12Points_ (Zhengxuan Yuan)  
 To extract 5 regions, it's necessary to calculate the 2D coordinates of four vertices of each region respectively. Positions of point1,2,7,8 are determined after ROI-Based Processing, and 2D coordinates of other points can be calculated with straight line equation. So at the end of this step, we obtain 2D coordinated of 12 vertices and one vanishing point.
 - function _get_image_pad_ (Siyao Wang)  
@@ -62,7 +62,7 @@ Consider that some points are calculated with negative coordinates, which means 
 Take image with black border and 2D coordinates of points as input, generating mask for each regions(left wall, rear wall, right wall, ceiling, floor) respectively is possible. With the mask and input RGB image we can obtain individual image of 5 regions.
 - function _Perspective_transfom_ (Siyao Wang)  
 To construct a model of 3D room, five rectangles are needed to compose the walls of room. In the view of trapeziform shape of each region, we should do tilt correction (perspective transform) firstly for each region to obtain rectangle.
-- function twoD2threeD (Chi Zhang)  
+- function _twoD2threeD_ (Chi Zhang)  
 We set a default value for focal length of virtual camera firstly, and then we specify the height and width of the rear wall plane in 3D model. Based on the properties of similar triangles, we can calculate the 3D coordinate of each point with the help of its 2D coordinate.
 - function _construct_3D_room_ (Siyao Wang)  
 With 3D positions of vertices, positions of each surface are determined. Take 3D coordinates of vertices as input of function surface(), the five walls will be plotted in 3D-coordinate-system. Then function flipdim() contributes to mapping the textures of 2D images into 3D surfaces. In this step the model of background is constructed.
@@ -72,7 +72,7 @@ step 3: **Modeling the Foreground Objects**
 Take 2D coordinates of two points on the plane and surface that vertical to foreground object as input, the plane equation of polygon that fits the foreground object is available.
 - function _fg2Dto3D_ (Wenxin Tang)  
 With 2D coordinates of four vertices of foreground object, the polygon function of the plane, which is used to fit the foreground object is calculable. On the other hand, foreground objects are always attached to the floor, therefore we can calculate the 3D position of foreground object with its 2D coordinates and 3D coordinates of floor's vertices and plane equation of foreground object.
-- function plot_polygon (Wenxin Tang)  
+- function _plot_polygon_ (Wenxin Tang)  
 After calculating the 3D coordinates of foreground object, its position in 3D-coordinate-system can be determined. Function warp() is used here to plot foreground object, and to map the texture from 2D image into 3D surface for representing model of foreground object.
 
 step 4: **Animation**
